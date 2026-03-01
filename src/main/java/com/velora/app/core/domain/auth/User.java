@@ -112,9 +112,14 @@ public class User {
      * Sets the profile URL with validation.
      * 
      * @param profileUrl The new profile URL (must be valid HTTP/HTTPS if provided)
+     *                    or null/blank to clear the profile URL.
      * @throws IllegalArgumentException if URL format is invalid
      */
     public void setProfileUrl(String profileUrl) {
+        if (profileUrl == null || profileUrl.isBlank()) {
+            this.profileUrl = null;
+            return;
+        }
         ValidationUtils.validateUrl(profileUrl, "Profile URL");
         this.profileUrl = profileUrl;
     }
