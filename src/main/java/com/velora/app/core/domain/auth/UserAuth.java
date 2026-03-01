@@ -59,16 +59,21 @@ public class UserAuth {
         setAuthId(authId);
         setUserId(userId);
         this.createdAt = LocalDateTime.now();
-        setProviderUid(providerUid);
         setEmail(email);
         setPasswordHash(passwordHash);
         setProvider(provider);
         this.lastLoginAt = null; // No login yet
-        if(provider != null) {
+
+        // providerUid is optional for EMAIL auth, but required for OAuth providers
+        if (provider == Provider.EMAIL) {
+            // Allow null/blank providerUid for email authentication
+            this.providerUid = providerUid;
+        } else if (provider != null) {
+            // For OAuth providers, delegate to setter for strict validation
             setProviderUid(providerUid);
-            
         } else {
-            this.providerUid = null; // Ensure providerUid is null if provider is null
+            // If provider itself is null, ensure providerUid is also null
+            this.providerUid = null;
         }
     }
 
