@@ -7,11 +7,21 @@ public class Product {
     private double price;
 
     public Product(String id, String name, double price) {
+        if (id == null || id.isBlank())
+            throw new DomainException("Product id required");
+        if (name == null || name.isBlank())
+            throw new DomainException("Product name required");
         if (price < 0)
             throw new DomainException("Price cannot be negative");
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public void setName(String name) {
+        if (name == null || name.isBlank())
+            throw new DomainException("Product name required");
+        this.name = name;
     }
 
     public String getId() {
