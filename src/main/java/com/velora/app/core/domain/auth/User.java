@@ -134,7 +134,9 @@ public class User {
      * @param bio The new biography (can be null or empty)
      */
     public void setBio(String bio) {
-        ValidationUtils.validateFormat(bio, RegexPatterns.BIO, "Bio");    
+        if (bio != null && !bio.isBlank()) {
+            ValidationUtils.validateFormat(bio, RegexPatterns.BIO, "Bio");
+        }
         this.bio = bio;
     }
 
