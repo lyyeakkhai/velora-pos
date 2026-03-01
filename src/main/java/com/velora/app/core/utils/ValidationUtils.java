@@ -1,5 +1,7 @@
 package com.velora.app.core.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 public class ValidationUtils {
@@ -64,7 +66,7 @@ public class ValidationUtils {
      * @throws IllegalArgumentException if uuid is null, empty, or not a valid UUID
      */
     public static void validateUUID(Object uuid, String fieldName) {
-        
+
         if (uuid == null || uuid.toString().isBlank()) {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
         }
@@ -80,7 +82,8 @@ public class ValidationUtils {
      *
      * @param hash      The hash string to validate
      * @param fieldName Name of the field for error messages
-     * @throws IllegalArgumentException if hash is null, empty, or not a valid bcrypt hash
+     * @throws IllegalArgumentException if hash is null, empty, or not a valid
+     *                                  bcrypt hash
      */
     public static void validateBcryptHash(String hash, String fieldName) {
         if (hash == null || hash.isBlank()) {
@@ -91,14 +94,14 @@ public class ValidationUtils {
         }
     }
 
-
     /**
      * Validates that the given value is a valid enum constant.
      *
      * @param value     The string value to validate
      * @param enumClass The enum class to check against
      * @param fieldName Name of the field for error messages
-     * @throws IllegalArgumentException if value is null, empty, or not a valid enum constant
+     * @throws IllegalArgumentException if value is null, empty, or not a valid enum
+     *                                  constant
      */
     public static <T extends Enum<T>> void validateEnum(String value, Class<T> enumClass, String fieldName) {
         if (value == null || value.isBlank()) {
@@ -111,7 +114,42 @@ public class ValidationUtils {
         }
     }
 
+    /**
+     * Validates the string contains exactly {@code digits} numeric characters.
+     */
+    public static void validateExactDigits(String value, int digits, String fieldName) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+        }
+        if (digits <= 0) {
+            throw new IllegalArgumentException("digits must be > 0");
+        }
+        if (!value.matches("\\d{" + digits + "}")) {
+            throw new IllegalArgumentException(fieldName + " must be exactly " + digits + " digits");
+        }
+    }
 
+    /**
+     * Normalizes a monetary amount to scale=2 using HALF_UP and validates
+     * non-negative.
+     */
+    public static BigDecimal normalizeMoney(BigDecimal amount, String fieldName) {
+        validateNotBlank(amount, fieldName);
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(fieldName + " must be >= 0");
+        }
+        return amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Validates a non-negative integer (>= 0).
+     */
+    public static void validateNonNegativeInteger(Integer value, String fieldName) {
+        validateNotBlank(value, fieldName);
+        if (value < 0) {
+            throw new IllegalArgumentException(fieldName + " must be >= 0");
+        }
+    }
 
     /**
      * Example: generate default format value if needed
