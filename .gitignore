@@ -1,0 +1,17 @@
+# Maven build output
+target/
+
+# IDE files
+.idea/
+*.iml
+.eclipse/
+.classpath
+.project
+.settings/
+
+# VS Code (keeping .vscode/settings.json if needed, but excluding user-specific files)
+.vscode/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
