@@ -6,6 +6,5 @@ package com.velora.app.core.domain.payment;
 public enum CardType {
     VISA,
     MASTERCARD,
-    AMEX,
-    QRCODE
+    AMEX
 }
