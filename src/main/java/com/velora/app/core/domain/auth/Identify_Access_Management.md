@@ -1,48 +1,64 @@
-You are a senior Java backend architect.
+# Identity and Access Management (IAM) Module
 
-Generate a complete technical documentation and implementation guide inside:
+This document describes the authentication, authorization, and user identity management
+domain within the `auth/` package:
 
-Implementation.readme
-
-For the following folder structure:
-
-auth/
- ├── User.java
- ├── UserAuth.java
- ├── Membership.java
- └── Role.java
+- `User.java`
+- `UserAuth.java`
+- `Membership.java`
+- `Role.java`
 
 
 ====================================
 📌 SYSTEM CONTEXT
 ====================================
 
-This module is for Authentication, Authorization, and User Identity Management.
+This module is responsible for Authentication, Authorization, and User Identity Management.
 
-It is part of a scalable enterprise system.
-
-The design must follow clean architecture and domain-driven principles.
+It is part of a scalable enterprise system and should follow clean architecture and
+domain-driven design (DDD) principles. The core domain objects in this package
+should remain independent of infrastructure concerns (persistence, transport, etc.).
 
 
 ====================================
 📌 DATABASE STRUCTURE
 ====================================
 
-TABLE: USERS
-- username (VARCHAR, NOT NULL, UNIQUE)
-- profileUrl (TEXT, NULLABLE)
-- bio (TEXT, NULLABLE)
-- status (ENUM: ACTIVE, SUSPENDED, DELETED)
+The following relational model is a typical representation of the IAM domain and can
+be used by the persistence layer that backs the `auth` domain classes.
+
+**TABLE: USERS**
+- `username` (VARCHAR, NOT NULL, UNIQUE)
+- `profileUrl` (TEXT, NULLABLE)
+- `bio` (TEXT, NULLABLE)
+- `status` (ENUM: ACTIVE, SUSPENDED, DELETED)
 
 
-TABLE: USER_AUTH
-- authID (UUID/BIGINT, PK)
-- provider (ENUM: EMAIL, GOOGLE, FACEBOOK)
-- provider_uid (VARCHAR, NULLABLE)
-- email (VARCHAR, UNIQUE)
-- password_hash (TEXT, NULLABLE)
-- created_at (TIMESTAMP, NOT NULL)
-- last_login_at (TIMESTAMP, NULLABLE)
+**TABLE: USER_AUTH**
+- `authID` (UUID/BIGINT, PK)
+- `provider` (ENUM: EMAIL, GOOGLE, FACEBOOK)
+- `provider_uid` (VARCHAR, NULLABLE)
+- `email` (VARCHAR, UNIQUE)
+- `password_hash` (TEXT, NULLABLE)
+- `created_at` (TIMESTAMP, NOT NULL)
+- `last_login_at` (TIMESTAMP, NULLABLE)
+
+
+**Domain Mapping (Conceptual)**
+
+- `User` represents the user profile and core identity in the system and maps primarily
+  to the `USERS` table.
+- `UserAuth` represents authentication credentials and provider details for a user and
+  maps primarily to the `USER_AUTH` table.
+- `Role` represents a named set of permissions or access rights that can be associated
+  with users (directly or via memberships).
+- `Membership` represents the association between a `User` and one or more `Role`
+  instances (for example, user-to-role or user-to-group relationships), depending on
+  the specific domain model.
+
+The concrete mapping strategy and additional tables (e.g. `ROLES`, `USER_ROLES`,
+or `MEMBERSHIPS`) should be defined in the persistence layer, keeping the domain
+model free from infrastructure-specific dependencies.
 - user_id (FK → USERS)
 
 
