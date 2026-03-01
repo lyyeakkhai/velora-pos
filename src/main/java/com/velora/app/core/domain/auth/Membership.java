@@ -20,7 +20,7 @@ import com.velora.app.core.utils.ValidationUtils;
  */
 public class Membership {
 
-    private  UUID memberId;
+    private UUID memberId;
     private String sellerName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -42,38 +42,42 @@ public class Membership {
      * @throws IllegalArgumentException if validation fails
      */
 
-    //use for normal user creation with default role
+    // use for normal user creation with default role
     public Membership(UUID memberId, UUID userId, UUID roleId) {
         setMemberId(memberId);
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
         setRoleId(roleId);
         setUserId(userId);
-        
+
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     }
 
     // user to create seller with seller name and default role
     public Membership(UUID memberId, String sellerName, UUID userId, UUID shopId, UUID roleId) {
         setMemberId(memberId);
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
         setRoleId(roleId);
         setUserId(userId);
         setSellerName(sellerName);
         setShopId(shopId);
-    }
 
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
 
     // user for create shop owner
     public Membership(UUID memberId, UUID userId, UUID shopId, UUID roleId) {
         setMemberId(memberId);
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
         setRoleId(roleId);
         setUserId(userId);
         setShopId(shopId);
+
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
     }
-    
+
     /**
      * Gets the unique identifier for this membership.
      * 
@@ -184,7 +188,7 @@ public class Membership {
         this.shopId = shopId;
         updateTimestamp();
     }
-    
+
     /**
      * Sets the role ID with validation and timestamp update.
      * 
@@ -219,10 +223,10 @@ public class Membership {
     public boolean hasSellerName() {
         return sellerName != null && !sellerName.trim().isEmpty();
     }
+
     public boolean isSeller() {
         return hasSellerName();
     }
-    
 
     /**
      * Gets the seller name or a default display name.
