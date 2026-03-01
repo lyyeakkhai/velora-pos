@@ -159,8 +159,12 @@ public class UserAuth {
      * @throws IllegalArgumentException if email format is invalid
      */
     public void setEmail(String email) {
-        ValidationUtils.validateFormat(email.trim(), RegexPatterns.EMAIL, "Email");
-        this.email = email.trim();
+        if (email == null) {
+            throw new IllegalArgumentException("Email cannot be null");
+        }
+        String trimmedEmail = email.trim();
+        ValidationUtils.validateFormat(trimmedEmail, RegexPatterns.EMAIL, "Email");
+        this.email = trimmedEmail;
     }
 
     /**
