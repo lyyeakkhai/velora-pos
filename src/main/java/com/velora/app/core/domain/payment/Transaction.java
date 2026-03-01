@@ -86,10 +86,6 @@ public class Transaction {
      * Optional unique gateway reference. Once set, it cannot be changed.
      */
     public void setGatewayRef(String gatewayRef) {
-        if (gatewayRef == null) {
-            this.gatewayRef = null;
-            return;
-        }
         ValidationUtils.validateNotBlank(gatewayRef, "gatewayRef");
         if (this.gatewayRef != null && !this.gatewayRef.equals(gatewayRef)) {
             throw new DomainException("gatewayRef cannot be changed once set");
