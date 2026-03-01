@@ -150,6 +150,7 @@ CORE DESIGN REQUIREMENTS
    - cancel()
    - renew()
    - isActive()
+   - upgrade(Newplan)
 
    Subscription:
    - calculateEndDate()
@@ -176,7 +177,7 @@ CORE DESIGN REQUIREMENTS
     - Add JPA/Hibernate annotations only if useful
     - No database queries inside entities
 
-13. plan_subscroption.java:
+13. PlanSubscriptionTest.java:
    - Test all class inside payement
    - Use create simple class with simple data
    - Test all case  
