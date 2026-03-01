@@ -92,7 +92,7 @@ public class Role {
      * @return true if role is OWNER or MANAGER, false otherwise
      */
     public boolean isAdministrative() {
-        return roleName == RoleName.OWNER || roleName == RoleName.MANAGER;
+        return roleName == RoleName.SUPER_ADMIN || roleName == RoleName.OWNER || roleName == RoleName.MANAGER;
     }
 
     /**
