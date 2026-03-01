@@ -1,0 +1,9 @@
+com\velora\app\core\service\SaleService.class
+com\velora\app\infrastructure\ui\ConsoleUI.class
+com\velora\app\core\domain\Shop.class
+com\velora\app\core\repository\ShopRepository.class
+com\velora\app\infrastructure\db\PostgresShopRepository.class
+com\velora\app\common\DomainException.class
+com\velora\app\core\domain\Product.class
+com\velora\app\infrastructure\util\DatabaseConfig.class
+com\velora\app\Main.class
