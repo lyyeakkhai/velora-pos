@@ -35,7 +35,8 @@ public class AnalyticsAggregationService {
     private final Clock clock;
 
     public AnalyticsAggregationService(TransactionRunner transactionRunner, AnalyticsJobLockStore lockStore,
-            AnalyticsJobRunStore runStore, AnalyticsJobLogStore logStore, ConfirmedOrderReadRepository orderReadRepository,
+            AnalyticsJobRunStore runStore, AnalyticsJobLogStore logStore,
+            ConfirmedOrderReadRepository orderReadRepository,
             OrderItemReadRepository orderItemReadRepository, InventoryAnalyticsReadRepository inventoryReadRepository,
             DailyProductSnapshotRepository productSnapshotRepository,
             DailyCategorySnapshotRepository categorySnapshotRepository, DailySnapshotRepository dailySnapshotRepository,
@@ -64,7 +65,8 @@ public class AnalyticsAggregationService {
         ValidationUtils.validateUUID(orgId, "orgId");
         ValidationUtils.validateNotBlank(snapshotDate, "snapshotDate");
 
-        if (dailySnapshotRepository.existsForShopAndDate(shopId, snapshotDate) || runStore.isCompleted(shopId, snapshotDate)) {
+        if (dailySnapshotRepository.existsForShopAndDate(shopId, snapshotDate)
+                || runStore.isCompleted(shopId, snapshotDate)) {
             return AnalyticsAggregationResult.SKIPPED_ALREADY_EXISTS;
         }
 
@@ -74,7 +76,8 @@ public class AnalyticsAggregationService {
         }
 
         try {
-            final AnalyticsAggregationResult[] result = new AnalyticsAggregationResult[] { AnalyticsAggregationResult.COMPLETED };
+            final AnalyticsAggregationResult[] result = new AnalyticsAggregationResult[] {
+                    AnalyticsAggregationResult.COMPLETED };
             transactionRunner.runInTransaction(() -> {
                 if (dailySnapshotRepository.existsForShopAndDate(shopId, snapshotDate)
                         || runStore.isCompleted(shopId, snapshotDate)) {
@@ -107,7 +110,8 @@ public class AnalyticsAggregationService {
             });
             return result[0];
         } catch (RuntimeException ex) {
-            logStore.log(shopId, snapshotDate, AnalyticsJobLogStore.LogLevel.ERROR, "Aggregation failed: " + ex.getMessage(),
+            logStore.log(shopId, snapshotDate, AnalyticsJobLogStore.LogLevel.ERROR,
+                    "Aggregation failed: " + ex.getMessage(),
                     LocalDateTime.now(clock).atOffset(ZoneOffset.UTC).toLocalDateTime());
             throw ex;
         } finally {
@@ -142,7 +146,8 @@ public class AnalyticsAggregationService {
             ProductAccumulator acc = productAcc.computeIfAbsent(key, k -> new ProductAccumulator());
             acc.qtySold += item.quantity();
             acc.soldPriceSum = acc.soldPriceSum.add(AnalyticsMoney.normalizeNonNegative(item.soldPrice(), "soldPrice"));
-            acc.costPriceSum = acc.costPriceSum.add(AnalyticsMoney.normalizeNonNegative(item.baseCostPrice(), "baseCostPrice"));
+            acc.costPriceSum = acc.costPriceSum
+                    .add(AnalyticsMoney.normalizeNonNegative(item.baseCostPrice(), "baseCostPrice"));
             acc.lines += 1;
             acc.verifiedLoss = acc.verifiedLoss || item.verifiedLoss();
         }
@@ -164,8 +169,8 @@ public class AnalyticsAggregationService {
                     stockAtMidnight, createdAt);
             productSnapshots.add(snapshot);
 
-                BigDecimal gross = unitSalePrice.multiply(new BigDecimal(acc.qtySold)).setScale(2, RoundingMode.HALF_UP);
-                BigDecimal profit = unitSalePrice.subtract(baseCostPrice).multiply(new BigDecimal(acc.qtySold)).setScale(2,
+            BigDecimal gross = unitSalePrice.multiply(new BigDecimal(acc.qtySold)).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal profit = unitSalePrice.subtract(baseCostPrice).multiply(new BigDecimal(acc.qtySold)).setScale(2,
                     RoundingMode.HALF_UP);
 
             if (gross.compareTo(BigDecimal.ZERO) < 0) {
@@ -188,8 +193,8 @@ public class AnalyticsAggregationService {
         for (Map.Entry<UUID, CategoryAccumulator> entry : categoryAcc.entrySet()) {
             UUID categoryId = entry.getKey();
             CategoryAccumulator acc = entry.getValue();
-                BigDecimal gross = AnalyticsMoney.normalizeNonNegative(acc.gross, "catGrossRevenue");
-                BigDecimal profit = AnalyticsMoney.normalizeSigned(acc.profit, "catNetProfit");
+            BigDecimal gross = AnalyticsMoney.normalizeNonNegative(acc.gross, "catGrossRevenue");
+            BigDecimal profit = AnalyticsMoney.normalizeSigned(acc.profit, "catNetProfit");
             DailyCategorySnapshot snap = new DailyCategorySnapshot(UUID.randomUUID(), snapshotDate, categoryId, shopId,
                     gross, profit, acc.itemsSold, createdAt);
             categorySnapshots.add(snap);
@@ -198,8 +203,8 @@ public class AnalyticsAggregationService {
         }
 
         DailySnapshot dailySnapshot = new DailySnapshot(UUID.randomUUID(), snapshotDate, orgId, shopId,
-            AnalyticsMoney.normalizeNonNegative(totalGross, "totalGross"),
-            AnalyticsMoney.normalizeSigned(totalProfit, "totalProfit"), orderCount, createdAt);
+                AnalyticsMoney.normalizeNonNegative(totalGross, "totalGross"),
+                AnalyticsMoney.normalizeSigned(totalProfit, "totalProfit"), orderCount, createdAt);
 
         return new Aggregates(productSnapshots, categorySnapshots, dailySnapshot);
     }
@@ -244,7 +249,8 @@ public class AnalyticsAggregationService {
                 return false;
             }
             ProductKey that = (ProductKey) o;
-            return productId.equals(that.productId) && variantId.equals(that.variantId) && sellerId.equals(that.sellerId)
+            return productId.equals(that.productId) && variantId.equals(that.variantId)
+                    && sellerId.equals(that.sellerId)
                     && categoryId.equals(that.categoryId);
         }
 

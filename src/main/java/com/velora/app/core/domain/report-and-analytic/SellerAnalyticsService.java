@@ -30,14 +30,16 @@ public class SellerAnalyticsService {
         DateRange range = new DateRange(startInclusive, endInclusive);
         ValidationUtils.validateUUID(shopId, "shopId");
 
-        List<DailyProductSnapshot> snaps = productSnapshotRepository.findByShopAndDateRange(shopId, range.startInclusive(),
+        List<DailyProductSnapshot> snaps = productSnapshotRepository.findByShopAndDateRange(shopId,
+                range.startInclusive(),
                 range.endInclusive());
         Map<UUID, Acc> bySeller = new HashMap<>();
         for (DailyProductSnapshot s : snaps) {
             Acc acc = bySeller.computeIfAbsent(s.getSellerId(), id -> new Acc());
             BigDecimal gross = s.getUnitSalePrice().multiply(new BigDecimal(s.getQtySold())).setScale(2,
                     RoundingMode.HALF_UP);
-            BigDecimal profit = s.getUnitSalePrice().subtract(s.getBaseCostPrice()).multiply(new BigDecimal(s.getQtySold()))
+            BigDecimal profit = s.getUnitSalePrice().subtract(s.getBaseCostPrice())
+                    .multiply(new BigDecimal(s.getQtySold()))
                     .setScale(2, RoundingMode.HALF_UP);
             acc.gross = acc.gross.add(gross);
             acc.profit = acc.profit.add(profit);
@@ -52,13 +54,15 @@ public class SellerAnalyticsService {
         return ranks;
     }
 
-    public SellerPerformanceDTO getSellerPerformance(Role.RoleName actorRole, UUID actorSellerId, UUID requestedSellerId,
+    public SellerPerformanceDTO getSellerPerformance(Role.RoleName actorRole, UUID actorSellerId,
+            UUID requestedSellerId,
             UUID shopId, LocalDate startInclusive, LocalDate endInclusive) {
         AnalyticsAccessPolicy.requireSellerSelfOrElevated(actorRole, actorSellerId, requestedSellerId);
         DateRange range = new DateRange(startInclusive, endInclusive);
         ValidationUtils.validateUUID(shopId, "shopId");
 
-        List<DailyProductSnapshot> snaps = productSnapshotRepository.findByShopAndDateRange(shopId, range.startInclusive(),
+        List<DailyProductSnapshot> snaps = productSnapshotRepository.findByShopAndDateRange(shopId,
+                range.startInclusive(),
                 range.endInclusive());
         BigDecimal gross = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         BigDecimal profit = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
@@ -68,9 +72,11 @@ public class SellerAnalyticsService {
             if (!s.getSellerId().equals(requestedSellerId)) {
                 continue;
             }
-            gross = gross.add(s.getUnitSalePrice().multiply(new BigDecimal(s.getQtySold())).setScale(2, RoundingMode.HALF_UP));
-            profit = profit.add(s.getUnitSalePrice().subtract(s.getBaseCostPrice()).multiply(new BigDecimal(s.getQtySold()))
-                    .setScale(2, RoundingMode.HALF_UP));
+            gross = gross.add(
+                    s.getUnitSalePrice().multiply(new BigDecimal(s.getQtySold())).setScale(2, RoundingMode.HALF_UP));
+            profit = profit
+                    .add(s.getUnitSalePrice().subtract(s.getBaseCostPrice()).multiply(new BigDecimal(s.getQtySold()))
+                            .setScale(2, RoundingMode.HALF_UP));
             itemsSold += s.getQtySold();
         }
         return new SellerPerformanceDTO(requestedSellerId, range, gross, profit, itemsSold);

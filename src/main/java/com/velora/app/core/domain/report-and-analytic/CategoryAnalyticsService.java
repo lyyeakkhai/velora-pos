@@ -29,7 +29,8 @@ public class CategoryAnalyticsService {
         DateRange range = new DateRange(startInclusive, endInclusive);
         ValidationUtils.validateUUID(shopId, "shopId");
 
-        List<DailyCategorySnapshot> snaps = categorySnapshotRepository.findByShopAndDateRange(shopId, range.startInclusive(),
+        List<DailyCategorySnapshot> snaps = categorySnapshotRepository.findByShopAndDateRange(shopId,
+                range.startInclusive(),
                 range.endInclusive());
         Map<UUID, Acc> byCategory = new HashMap<>();
         for (DailyCategorySnapshot s : snaps) {
@@ -41,7 +42,8 @@ public class CategoryAnalyticsService {
 
         List<CategoryTrendDTO> result = new ArrayList<>();
         for (Map.Entry<UUID, Acc> e : byCategory.entrySet()) {
-            result.add(new CategoryTrendDTO(e.getKey(), e.getValue().gross, e.getValue().profit, e.getValue().itemsSold));
+            result.add(
+                    new CategoryTrendDTO(e.getKey(), e.getValue().gross, e.getValue().profit, e.getValue().itemsSold));
         }
         return result;
     }
@@ -71,7 +73,8 @@ public class CategoryAnalyticsService {
     }
 
     private Map<UUID, BigDecimal> sumGrossByCategory(UUID shopId, DateRange range) {
-        List<DailyCategorySnapshot> snaps = categorySnapshotRepository.findByShopAndDateRange(shopId, range.startInclusive(),
+        List<DailyCategorySnapshot> snaps = categorySnapshotRepository.findByShopAndDateRange(shopId,
+                range.startInclusive(),
                 range.endInclusive());
         Map<UUID, BigDecimal> totals = new HashMap<>();
         for (DailyCategorySnapshot s : snaps) {

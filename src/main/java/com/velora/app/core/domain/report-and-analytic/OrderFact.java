@@ -8,11 +8,4 @@ import com.velora.app.core.utils.ValidationUtils;
 /**
  * Read model of a confirmed order used for analytics aggregation.
  */
-public record OrderFact(UUID orderId, UUID shopId, UUID orgId, LocalDateTime confirmedAtUtc) {
-    public OrderFact {
-        ValidationUtils.validateUUID(orderId, "orderId");
-        ValidationUtils.validateUUID(shopId, "shopId");
-        ValidationUtils.validateUUID(orgId, "orgId");
-        ValidationUtils.validateNotBlank(confirmedAtUtc, "confirmedAtUtc");
-    }
-}
+public record OrderFact(UUID orderId,UUID shopId,UUID orgId,LocalDateTime confirmedAtUtc){public OrderFact{ValidationUtils.validateUUID(orderId,"orderId");ValidationUtils.validateUUID(shopId,"shopId");ValidationUtils.validateUUID(orgId,"orgId");ValidationUtils.validateNotBlank(confirmedAtUtc,"confirmedAtUtc");}}

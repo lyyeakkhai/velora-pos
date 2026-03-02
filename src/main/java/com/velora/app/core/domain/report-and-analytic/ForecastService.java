@@ -59,8 +59,10 @@ public class ForecastService {
                     : new BigDecimal(acc.latestStockAtMidnight).divide(avgDaily, 2, RoundingMode.HALF_UP);
 
             RiskLevel risk = estimatedDays.compareTo(new BigDecimal(horizonDays)) <= 0 ? RiskLevel.HIGH : RiskLevel.LOW;
-            String rec = risk == RiskLevel.HIGH ? "Restock or adjust pricing/promotions" : "Stock level appears healthy";
-            result.add(new OutOfStockPredictionDTO(variantId, acc.latestStockAtMidnight, avgDaily, estimatedDays, risk, rec));
+            String rec = risk == RiskLevel.HIGH ? "Restock or adjust pricing/promotions"
+                    : "Stock level appears healthy";
+            result.add(new OutOfStockPredictionDTO(variantId, acc.latestStockAtMidnight, avgDaily, estimatedDays, risk,
+                    rec));
         }
 
         result.sort(Comparator.comparing(OutOfStockPredictionDTO::riskLevel).reversed());
@@ -79,7 +81,8 @@ public class ForecastService {
         BigDecimal change = percentChange(prev, cur);
         RiskLevel risk = change.compareTo(new BigDecimal("-20.00")) <= 0 ? RiskLevel.HIGH
                 : (change.compareTo(new BigDecimal("-10.00")) <= 0 ? RiskLevel.MEDIUM : RiskLevel.LOW);
-        String rec = risk == RiskLevel.HIGH ? "Investigate revenue drop and operational issues" : "Monitor revenue trend";
+        String rec = risk == RiskLevel.HIGH ? "Investigate revenue drop and operational issues"
+                : "Monitor revenue trend";
         return new AnalyticsInsightDTO("shop_total_gross", prev, cur, change, risk, rec);
     }
 

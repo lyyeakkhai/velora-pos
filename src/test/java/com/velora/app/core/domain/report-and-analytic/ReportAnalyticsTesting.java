@@ -48,7 +48,7 @@ public class ReportAnalyticsTesting {
 
         InMemoryOrderItemRepo itemRepo = new InMemoryOrderItemRepo(
                 List.of(new OrderItemFact(order1, productA, variantA, seller1, cat1, 2, new BigDecimal("10"),
-                                new BigDecimal("4"), false),
+                        new BigDecimal("4"), false),
                         new OrderItemFact(order2, productA, variantA, seller1, cat1, 1, new BigDecimal("12"),
                                 new BigDecimal("4"), false),
                         new OrderItemFact(order2, productB, variantB, seller2, cat2, 3, new BigDecimal("5"),
@@ -109,7 +109,8 @@ public class ReportAnalyticsTesting {
                 new InMemoryDailyProductSnapshotRepo(), new InMemoryDailyCategorySnapshotRepo(), dailySnaps,
                 Clock.systemUTC());
 
-        assertEquals(AnalyticsAggregationResult.SKIPPED_ALREADY_EXISTS, svc.runDailyAggregation(shopId, orgId, date, false));
+        assertEquals(AnalyticsAggregationResult.SKIPPED_ALREADY_EXISTS,
+                svc.runDailyAggregation(shopId, orgId, date, false));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -127,9 +128,10 @@ public class ReportAnalyticsTesting {
         LocalDate end = LocalDate.of(2026, 3, 1);
 
         InMemoryDailyProductSnapshotRepo productSnaps = new InMemoryDailyProductSnapshotRepo();
-        productSnaps.saveAll(List.of(new DailyProductSnapshot(UUID.randomUUID(), end, UUID.randomUUID(), UUID.randomUUID(),
-                seller, UUID.randomUUID(), shopId, 1, new BigDecimal("2"), new BigDecimal("5"), 10,
-                LocalDateTime.now(ZoneOffset.UTC))));
+        productSnaps
+                .saveAll(List.of(new DailyProductSnapshot(UUID.randomUUID(), end, UUID.randomUUID(), UUID.randomUUID(),
+                        seller, UUID.randomUUID(), shopId, 1, new BigDecimal("2"), new BigDecimal("5"), 10,
+                        LocalDateTime.now(ZoneOffset.UTC))));
 
         SellerAnalyticsService svc = new SellerAnalyticsService(productSnaps);
         SellerPerformanceDTO perf = svc.getSellerPerformance(Role.RoleName.SELLER, seller, seller, shopId, start, end);
@@ -162,8 +164,10 @@ public class ReportAnalyticsTesting {
                         new BigDecimal("10"), false)));
 
         AnalyticsAggregationService svc = new AnalyticsAggregationService(work -> work.run(), new InMemoryLockStore(),
-                new InMemoryRunStore(), new InMemoryLogStore(), orderRepo, itemRepo, new InMemoryInventoryRepo(List.of()),
-                new InMemoryDailyProductSnapshotRepo(), new InMemoryDailyCategorySnapshotRepo(), new InMemoryDailySnapshotRepo(),
+                new InMemoryRunStore(), new InMemoryLogStore(), orderRepo, itemRepo,
+                new InMemoryInventoryRepo(List.of()),
+                new InMemoryDailyProductSnapshotRepo(), new InMemoryDailyCategorySnapshotRepo(),
+                new InMemoryDailySnapshotRepo(),
                 Clock.systemUTC());
 
         svc.runDailyAggregation(shopId, orgId, date, false);
@@ -293,7 +297,8 @@ public class ReportAnalyticsTesting {
         }
 
         @Override
-        public List<DailySnapshot> findByShopAndDateRange(UUID shopId, LocalDate startInclusive, LocalDate endInclusive) {
+        public List<DailySnapshot> findByShopAndDateRange(UUID shopId, LocalDate startInclusive,
+                LocalDate endInclusive) {
             List<DailySnapshot> out = new ArrayList<>();
             for (DailySnapshot s : byShopDate.values()) {
                 if (!s.getShopId().equals(shopId)) {
