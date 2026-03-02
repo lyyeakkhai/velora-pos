@@ -286,6 +286,7 @@ public class SaleTesting {
     private static class RecordingInventoryService implements InventoryService {
         Map<UUID, Integer> lastSoftCheck;
         Map<UUID, Integer> lastHardDeduct;
+        Map<UUID, Integer> lastRestore;
 
         @Override
         public void softCheckStock(UUID shopId, Map<UUID, Integer> productQuantities) {
@@ -295,6 +296,11 @@ public class SaleTesting {
         @Override
         public void hardDeductStock(UUID shopId, Map<UUID, Integer> productQuantities) {
             lastHardDeduct = new HashMap<>(productQuantities);
+        }
+
+        @Override
+        public void restoreStock(UUID shopId, Map<UUID, Integer> productQuantities) {
+            lastRestore = new HashMap<>(productQuantities);
         }
     }
 

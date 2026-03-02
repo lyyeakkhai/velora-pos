@@ -1,0 +1,17 @@
+package com.velora.app.core.domain.inventoryeventmanagement;
+
+import java.util.Optional;
+import java.util.UUID;
+
+/**
+ * Persistence port for products.
+ */
+public interface ProductStore {
+    boolean existsByShopIdAndName(UUID shopId, String name);
+
+    boolean existsBySlug(String slug);
+
+    Product save(Product product);
+
+    Optional<Product> findById(UUID productId);
+}

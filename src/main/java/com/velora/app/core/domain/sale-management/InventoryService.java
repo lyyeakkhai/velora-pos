@@ -17,4 +17,9 @@ public interface InventoryService {
      * Performs a strict stock deduction (should be transactional).
      */
     void hardDeductStock(UUID shopId, Map<UUID, Integer> productQuantities);
+
+    /**
+     * Restores stock (e.g., order cancellation / refund).
+     */
+    void restoreStock(UUID shopId, Map<UUID, Integer> productQuantities);
 }

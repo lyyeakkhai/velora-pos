@@ -125,6 +125,9 @@ VALIDATION RULES
 - activePayingShops >= 0
 - BigDecimal scale must be enforced
 - No null monetary fields
+- implement validation in all setter
+   - Use validaton support function from utils/ValidationUtils.java
+   - validation function not exist inside ValidatoinUtils.java create it inside the ValidationUtils.java and that function must become another support function
 
 All validation must be centralized.
 
