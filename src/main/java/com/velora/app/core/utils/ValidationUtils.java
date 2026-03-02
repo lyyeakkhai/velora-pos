@@ -198,6 +198,16 @@ public class ValidationUtils {
     }
 
     /**
+     * Validates a receipt/invoice number in the format INV-XXXX where X is a digit.
+     */
+    public static void validateReceiptNumber(String receiptNumber, String fieldName) {
+        validateNotBlank(receiptNumber, fieldName);
+        if (!receiptNumber.matches("^INV-\\d{4}$")) {
+            throw new IllegalArgumentException(fieldName + " must match format INV-XXXX");
+        }
+    }
+
+    /**
      * Example: generate default format value if needed
      */
     public static String generateDefault(String prefix) {

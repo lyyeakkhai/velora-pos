@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.plansubscription;
+package com.velora.app.core.domain.plan_subscription;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures

@@ -48,6 +48,10 @@ ENTITIES
    - cartSnapshot (JSON/String)
    - status (Enum: CREATED, CONFIRMED, EXPIRED)
    - createdAt (LocalDateTime)
+6. SaleTesting.java:
+   - Test all class inside sale
+   - Use create simple class with simple data
+   - Test all case 
 
 --------------------------------------------------
 RELATIONSHIPS
@@ -89,6 +93,9 @@ CORE DESIGN REQUIREMENTS
    - totalPrice = sum(items)
    - address not empty
    - receiptNumber format: INV-XXXX
+   - implement validation in all setter
+   - Use validaton support function from utils/ValidationUtils.java
+   - validation function not exist inside ValidatoinUtils.java create it inside the ValidationUtils.java and that function must become another support function
 
 6. State Machine Enforcement
 

@@ -1,5 +1,13 @@
-com\velora\AppTest.class
+com\velora\app\core\domain\salemanagement\SaleTesting$InMemoryOrderStore.class
 com\velora\app\core\domain\payment\PaymentTesting.class
+com\velora\app\core\domain\salemanagement\SaleTestingTest.class
+com\velora\app\core\domain\salemanagement\SaleTesting.class
+com\velora\AppTest.class
+com\velora\app\core\domain\plan_subscription\PlanSubscriptionTesting.class
+com\velora\app\core\domain\salemanagement\SaleTesting$InMemoryWebhookSecurity.class
+com\velora\app\core\domain\plan_subscription\PlanSubscriptionTest.class
+com\velora\app\core\domain\salemanagement\SaleTesting$RecordingInventoryService.class
+com\velora\app\core\domain\salemanagement\SaleTesting$InMemoryDeliveryStore.class
+com\velora\app\core\domain\salemanagement\SaleTesting$InMemoryPaymentIntentStore.class
+com\velora\app\core\domain\salemanagement\SaleTesting$InMemoryReceiptStore.class
 com\velora\app\core\domain\payment\PaymentTestingTest.class
-com\velora\app\core\domain\plansubscription\PlanSubscriptionTest.class
-com\velora\app\core\domain\plansubscription\PlanSubscriptionTesting.class
