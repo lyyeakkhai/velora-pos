@@ -1,0 +1,5 @@
+com\velora\AppTest.class
+com\velora\app\core\domain\payment\PaymentTesting.class
+com\velora\app\core\domain\payment\PaymentTestingTest.class
+com\velora\app\core\domain\plansubscription\PlanSubscriptionTest.class
+com\velora\app\core\domain\plansubscription\PlanSubscriptionTesting.class

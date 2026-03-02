@@ -2,6 +2,7 @@ package com.velora.app.core.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ValidationUtils {
@@ -148,6 +149,51 @@ public class ValidationUtils {
         validateNotBlank(value, fieldName);
         if (value < 0) {
             throw new IllegalArgumentException(fieldName + " must be >= 0");
+        }
+    }
+
+    /**
+     * Validates a strictly positive integer (> 0).
+     */
+    public static void validatePositiveInteger(Integer value, String fieldName) {
+        validateNotBlank(value, fieldName);
+        if (value <= 0) {
+            throw new IllegalArgumentException(fieldName + " must be > 0");
+        }
+    }
+
+    /**
+     * Validates a URL-safe lowercase slug.
+     */
+    public static void validateSlug(String slug, String fieldName) {
+        validateNotBlank(slug, fieldName);
+        validateFormat(slug, RegexPatterns.SLUG, fieldName);
+        if (!slug.equals(slug.toLowerCase())) {
+            throw new IllegalArgumentException(fieldName + " must be lowercase");
+        }
+    }
+
+    /**
+     * Validates a feature key / identifier format.
+     * <p>
+     * Allowed: lowercase letters, digits, underscore; must start with a letter.
+     */
+    public static void validateIdentifierKey(String key, String fieldName) {
+        validateNotBlank(key, fieldName);
+        if (!key.matches("^[a-z][a-z0-9_]{0,63}$")) {
+            throw new IllegalArgumentException(fieldName + " has invalid identifier format");
+        }
+    }
+
+    /**
+     * Validates that start is strictly before end.
+     */
+    public static void validateStartBeforeEnd(LocalDateTime start, LocalDateTime end, String startFieldName,
+            String endFieldName) {
+        validateNotBlank(start, startFieldName);
+        validateNotBlank(end, endFieldName);
+        if (!start.isBefore(end)) {
+            throw new IllegalArgumentException(startFieldName + " must be before " + endFieldName);
         }
     }
 

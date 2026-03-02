@@ -78,6 +78,10 @@ ENTITIES
    - start_date (LocalDateTime)
    - end_date (LocalDateTime)
    - refund_deadline (LocalDateTime)
+9  - PlanSubscriptionTest
+   - Test all class inside payement
+   - Use create simple class with simple data
+   - Test all case  
 
 --------------------------------------------------
 CORE DESIGN REQUIREMENTS
