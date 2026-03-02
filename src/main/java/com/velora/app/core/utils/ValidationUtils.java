@@ -143,6 +143,53 @@ public class ValidationUtils {
     }
 
     /**
+     * Normalizes a monetary amount to scale=2 using HALF_UP and validates > 0.
+     */
+    public static BigDecimal normalizePositiveMoney(BigDecimal amount, String fieldName) {
+        validateNotBlank(amount, fieldName);
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException(fieldName + " must be > 0");
+        }
+        return amount.setScale(2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * Validates that costPrice is <= basePrice.
+     */
+    public static void validateCostNotAboveBase(BigDecimal costPrice, BigDecimal basePrice, String costFieldName,
+            String baseFieldName) {
+        validateNotBlank(costPrice, costFieldName);
+        validateNotBlank(basePrice, baseFieldName);
+        if (costPrice.compareTo(basePrice) > 0) {
+            throw new IllegalArgumentException(costFieldName + " must be <= " + baseFieldName);
+        }
+    }
+
+    /**
+     * Validates SKU format.
+     * <p>
+     * Allowed: uppercase letters, digits, hyphen, underscore; 3-32 chars.
+     */
+    public static void validateSku(String sku, String fieldName) {
+        validateNotBlank(sku, fieldName);
+        String trimmed = sku.trim();
+        if (!trimmed.matches("^[A-Z0-9][A-Z0-9_-]{2,31}$")) {
+            throw new IllegalArgumentException(fieldName + " has invalid SKU format");
+        }
+    }
+
+    /**
+     * Validates a percentage value in range [0, 100].
+     */
+    public static BigDecimal normalizePercentage(BigDecimal percentage, String fieldName) {
+        BigDecimal normalized = normalizeMoney(percentage, fieldName);
+        if (normalized.compareTo(new BigDecimal("100.00")) > 0) {
+            throw new IllegalArgumentException(fieldName + " must be <= 100");
+        }
+        return normalized;
+    }
+
+    /**
      * Validates a non-negative integer (>= 0).
      */
     public static void validateNonNegativeInteger(Integer value, String fieldName) {
@@ -194,6 +241,16 @@ public class ValidationUtils {
         validateNotBlank(end, endFieldName);
         if (!start.isBefore(end)) {
             throw new IllegalArgumentException(startFieldName + " must be before " + endFieldName);
+        }
+    }
+
+    /**
+     * Validates a receipt/invoice number in the format INV-XXXX where X is a digit.
+     */
+    public static void validateReceiptNumber(String receiptNumber, String fieldName) {
+        validateNotBlank(receiptNumber, fieldName);
+        if (!receiptNumber.matches("^INV-\\d{4}$")) {
+            throw new IllegalArgumentException(fieldName + " must match format INV-XXXX");
         }
     }
 

@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.plansubscription;
+package com.velora.app.core.domain.plan_subscription;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -8,19 +8,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.junit.Test;
-
-import com.velora.app.core.domain.plan_subscription.Feature;
-import com.velora.app.core.domain.plan_subscription.PayerType;
-import com.velora.app.core.domain.plan_subscription.PlanSubscriptionEngine;
-import com.velora.app.core.domain.plan_subscription.PlatformRegistry;
-import com.velora.app.core.domain.plan_subscription.RegistryStatus;
-import com.velora.app.core.domain.plan_subscription.ShopAccountStatus;
-import com.velora.app.core.domain.plan_subscription.ShopSubscription;
-import com.velora.app.core.domain.plan_subscription.SubscriptionPlan;
-import com.velora.app.core.domain.plan_subscription.TargetType;
-import com.velora.app.core.domain.plan_subscription.UserAccount;
-import com.velora.app.core.domain.plan_subscription.UserAccountStatus;
-import com.velora.app.core.domain.plan_subscription.UserSubscription;
 
 public class PlanSubscriptionTesting {
 

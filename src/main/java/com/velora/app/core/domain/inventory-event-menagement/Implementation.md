@@ -54,6 +54,12 @@ ENTITIES
    - categoryId (UUID)
    - eventId (UUID)
 
+5. inventoryTest
+this is test case for all component
+write simple test case
+make sure to test all case
+
+
 --------------------------------------------------
 RELATIONSHIPS
 --------------------------------------------------
@@ -97,6 +103,9 @@ CORE DESIGN REQUIREMENTS
    - discount >= 0
    - percentage discount <= 100
    - event date range valid
+   - implement validation in all setter
+   - Use validaton support function from utils/ValidationUtils.java
+   - validation function not exist inside ValidatoinUtils.java create it inside the ValidationUtils.java and that function must become another support function
 
 6. Role Enforcement
    - OWNER: full access

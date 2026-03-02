@@ -21,6 +21,11 @@ Key attributes include:
 - status (PENDING, ACTIVE, SUSPENDED, BANNED)
 - physical_address (street, city, district, province)
 
+validation
+  - implement validation in all setter
+   - Use validaton support function from utils/ValidationUtils.java
+   - validation function not exist inside ValidatoinUtils.java create it inside the ValidationUtils.java and that function must become another support function
+
 Business rules:
 
 - Shop cannot be ACTIVE without tax_id and legal_name.
