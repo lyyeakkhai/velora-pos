@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.feedback;
 
+import com.velora.app.common.AbstractDomainService;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.util.List;
@@ -8,12 +9,12 @@ import java.util.UUID;
 /**
  * Domain service for private feedback/suggestions.
  */
-public class FeedbackService {
+public class FeedbackService extends AbstractDomainService {
 
     private final FeatureSuggestionRepository repository;
 
     public FeedbackService(FeatureSuggestionRepository repository) {
-        ValidationUtils.validateNotBlank(repository, "repository");
+        requireNotNull(repository, "repository");
         this.repository = repository;
     }
 

@@ -14,13 +14,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractDomainService;
 import com.velora.app.core.domain.salemanagement.TransactionRunner;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Aggregates transactional read models into immutable analytics snapshots.
  */
-public class AnalyticsAggregationService {
+public class AnalyticsAggregationService extends AbstractDomainService {
 
     private final TransactionRunner transactionRunner;
     private final AnalyticsJobLockStore lockStore;
@@ -41,17 +42,28 @@ public class AnalyticsAggregationService {
             DailyProductSnapshotRepository productSnapshotRepository,
             DailyCategorySnapshotRepository categorySnapshotRepository, DailySnapshotRepository dailySnapshotRepository,
             Clock clock) {
-        this.transactionRunner = require(transactionRunner, "transactionRunner");
-        this.lockStore = require(lockStore, "lockStore");
-        this.runStore = require(runStore, "runStore");
-        this.logStore = require(logStore, "logStore");
-        this.orderReadRepository = require(orderReadRepository, "orderReadRepository");
-        this.orderItemReadRepository = require(orderItemReadRepository, "orderItemReadRepository");
-        this.inventoryReadRepository = require(inventoryReadRepository, "inventoryReadRepository");
-        this.productSnapshotRepository = require(productSnapshotRepository, "productSnapshotRepository");
-        this.categorySnapshotRepository = require(categorySnapshotRepository, "categorySnapshotRepository");
-        this.dailySnapshotRepository = require(dailySnapshotRepository, "dailySnapshotRepository");
-        this.clock = require(clock, "clock");
+        requireNotNull(transactionRunner, "transactionRunner");
+        this.transactionRunner = transactionRunner;
+        requireNotNull(lockStore, "lockStore");
+        this.lockStore = lockStore;
+        requireNotNull(runStore, "runStore");
+        this.runStore = runStore;
+        requireNotNull(logStore, "logStore");
+        this.logStore = logStore;
+        requireNotNull(orderReadRepository, "orderReadRepository");
+        this.orderReadRepository = orderReadRepository;
+        requireNotNull(orderItemReadRepository, "orderItemReadRepository");
+        this.orderItemReadRepository = orderItemReadRepository;
+        requireNotNull(inventoryReadRepository, "inventoryReadRepository");
+        this.inventoryReadRepository = inventoryReadRepository;
+        requireNotNull(productSnapshotRepository, "productSnapshotRepository");
+        this.productSnapshotRepository = productSnapshotRepository;
+        requireNotNull(categorySnapshotRepository, "categorySnapshotRepository");
+        this.categorySnapshotRepository = categorySnapshotRepository;
+        requireNotNull(dailySnapshotRepository, "dailySnapshotRepository");
+        this.dailySnapshotRepository = dailySnapshotRepository;
+        requireNotNull(clock, "clock");
+        this.clock = clock;
     }
 
     /**
@@ -129,7 +141,7 @@ public class AnalyticsAggregationService {
     }
 
     public void persistSnapshots(Aggregates aggregates) {
-        ValidationUtils.validateNotBlank(aggregates, "aggregates");
+        requireNotNull(aggregates, "aggregates");
         productSnapshotRepository.saveAll(aggregates.productSnapshots);
         categorySnapshotRepository.saveAll(aggregates.categorySnapshots);
         dailySnapshotRepository.save(aggregates.dailySnapshot);
@@ -209,8 +221,8 @@ public class AnalyticsAggregationService {
         return new Aggregates(productSnapshots, categorySnapshots, dailySnapshot);
     }
 
-    private static <T> T require(T value, String fieldName) {
-        ValidationUtils.validateNotBlank(value, fieldName);
+    private static <T> T requireStatic(T value, String fieldName) {
+        if (value == null) throw new com.velora.app.common.DomainException(fieldName + " must not be null");
         return value;
     }
 
@@ -221,9 +233,9 @@ public class AnalyticsAggregationService {
 
         public Aggregates(List<DailyProductSnapshot> productSnapshots, List<DailyCategorySnapshot> categorySnapshots,
                 DailySnapshot dailySnapshot) {
-            this.productSnapshots = require(productSnapshots, "productSnapshots");
-            this.categorySnapshots = require(categorySnapshots, "categorySnapshots");
-            this.dailySnapshot = require(dailySnapshot, "dailySnapshot");
+            this.productSnapshots = requireStatic(productSnapshots, "productSnapshots");
+            this.categorySnapshots = requireStatic(categorySnapshots, "categorySnapshots");
+            this.dailySnapshot = requireStatic(dailySnapshot, "dailySnapshot");
         }
     }
 

@@ -6,18 +6,20 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractDomainService;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Snapshot-only reporting service.
  */
-public class ReportingService {
+public class ReportingService extends AbstractDomainService {
 
     private final DailySnapshotRepository dailySnapshotRepository;
 
     public ReportingService(DailySnapshotRepository dailySnapshotRepository) {
-        this.dailySnapshotRepository = require(dailySnapshotRepository, "dailySnapshotRepository");
+        requireNotNull(dailySnapshotRepository, "dailySnapshotRepository");
+        this.dailySnapshotRepository = dailySnapshotRepository;
     }
 
     public DailyReportDTO getDailyReport(Role.RoleName actorRole, UUID shopId, LocalDate snapshotDate) {
@@ -65,8 +67,4 @@ public class ReportingService {
         return new PeriodReportDTO(range, totalGross, totalProfit, avgGross, avgProfit, days);
     }
 
-    private static <T> T require(T value, String fieldName) {
-        ValidationUtils.validateNotBlank(value, fieldName);
-        return value;
-    }
 }

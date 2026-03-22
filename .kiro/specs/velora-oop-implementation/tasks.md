@@ -153,8 +153,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 10: requireNotNull Throws for Null Values** — any null value must throw `DomainException` whose message contains fieldName
     - **Validates: Requirements 8.1, 8.2, 8.7, 8.8**
 
-- [ ] INH-17 — Apply `AbstractDomainService` to Domain Services
-  - [ ] INH-17.1 Refactor `NotificationService.java`, `FeedbackService.java`, `ReportingService.java`, `AnalyticsAggregationService.java`
+- [x] INH-17 — Apply `AbstractDomainService` to Domain Services
+  - [x] INH-17.1 Refactor `NotificationService.java`, `FeedbackService.java`, `ReportingService.java`, `AnalyticsAggregationService.java`
     - All four extend `AbstractDomainService`
     - Replace inline role checks with `requireRole(...)` calls
     - Replace inline null checks with `requireNotNull(...)` calls
