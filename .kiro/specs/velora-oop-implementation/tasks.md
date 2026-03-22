@@ -114,8 +114,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Implement `isActive()` — return `status == ACTIVE`
     - _Requirements: 5.8, 5.9_
 
-- [ ] INH-12 — Create `AbstractSubscriptionRecord`
-  - [ ] INH-12.1 Create `src/main/java/com/velora/app/common/AbstractSubscriptionRecord.java`
+- [x] INH-12 — Create `AbstractSubscriptionRecord`
+  - [x] INH-12.1 Create `src/main/java/com/velora/app/common/AbstractSubscriptionRecord.java`
     - Fields: `subscriptionId`, `transactionId`, `planId`, `status`, `startDate`, `endDate`, `refundDeadline`
     - Method: `markRefunded()` — sets status to REFUNDED
     - _Requirements: 6.1, 6.2_
