@@ -39,17 +39,17 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 3: touch() Updates updatedAt** — calling `touch()` must result in `updatedAt >= previous updatedAt`
     - **Validates: Requirements 2.3, 2.4, 4.7**
 
-- [ ] INH-03 — Apply Inheritance to Auth Domain
-  - [ ] INH-03.1 Refactor `src/main/java/com/velora/app/core/domain/auth/User.java`
+- [x] INH-03 — Apply Inheritance to Auth Domain
+  - [x] INH-03.1 Refactor `src/main/java/com/velora/app/core/domain/auth/User.java`
     - `User extends AbstractAuditableEntity` — remove duplicate `id`, `createdAt`, `updatedAt`
     - _Requirements: 3.1_
-  - [ ] INH-03.2 Refactor `src/main/java/com/velora/app/core/domain/auth/UserAuth.java`
+  - [x] INH-03.2 Refactor `src/main/java/com/velora/app/core/domain/auth/UserAuth.java`
     - `UserAuth extends AbstractAuditableEntity` — remove duplicate `createdAt`
     - _Requirements: 3.2_
-  - [ ] INH-03.3 Refactor `src/main/java/com/velora/app/core/domain/auth/Membership.java`
+  - [x] INH-03.3 Refactor `src/main/java/com/velora/app/core/domain/auth/Membership.java`
     - `Membership extends AbstractAuditableEntity` — remove duplicate timestamps, call `touch()` on any mutation method
     - _Requirements: 3.3, 3.5_
-  - [ ] INH-03.4 Refactor `src/main/java/com/velora/app/core/domain/auth/Role.java`
+  - [x] INH-03.4 Refactor `src/main/java/com/velora/app/core/domain/auth/Role.java`
     - `Role extends AbstractEntity` — remove duplicate `roleId`, `equals()`, `hashCode()`
     - _Requirements: 3.4_
 
