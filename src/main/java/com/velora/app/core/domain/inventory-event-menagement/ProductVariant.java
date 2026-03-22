@@ -1,17 +1,18 @@
 package com.velora.app.core.domain.inventoryeventmanagement;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Variant of a product (e.g., size/color) with stock control and SKU.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class ProductVariant {
+public class ProductVariant extends AbstractAuditableEntity {
 
-    private UUID variantId;
     private UUID productId;
     private String size;
     private String color;
@@ -20,11 +21,10 @@ public class ProductVariant {
     private UUID imageId;
     private UUID shopId;
     private UUID categoryId;
-    private LocalDateTime createdAt;
 
-    public ProductVariant(UUID productId, UUID shopId, UUID categoryId, String sku, Integer stockQuantity, UUID imageId,
-            String size, String color) {
-        setVariantId(UUID.randomUUID());
+    public ProductVariant(UUID productId, UUID shopId, UUID categoryId, String sku, Integer stockQuantity,
+            UUID imageId, String size, String color) {
+        super(UUID.randomUUID());
         setProductId(productId);
         setShopId(shopId);
         setCategoryId(categoryId);
@@ -33,11 +33,6 @@ public class ProductVariant {
         setImageId(imageId);
         setSize(size);
         setColor(color);
-        setCreatedAt(LocalDateTime.now());
-    }
-
-    public UUID getVariantId() {
-        return variantId;
     }
 
     public UUID getProductId() {
@@ -72,21 +67,13 @@ public class ProductVariant {
         return categoryId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void adjustStock(int delta) {
         int next = stockQuantity + delta;
         if (next < 0) {
             throw new IllegalStateException("stockQuantity cannot go negative");
         }
         setStockQuantity(next);
-    }
-
-    private void setVariantId(UUID variantId) {
-        ValidationUtils.validateUUID(variantId, "variantId");
-        this.variantId = variantId;
+        touch();
     }
 
     private void setProductId(UUID productId) {
@@ -137,32 +124,9 @@ public class ProductVariant {
         this.categoryId = categoryId;
     }
 
-    private void setCreatedAt(LocalDateTime createdAt) {
-        ValidationUtils.validateNotBlank(createdAt, "createdAt");
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ProductVariant)) {
-            return false;
-        }
-        ProductVariant that = (ProductVariant) o;
-        return Objects.equals(variantId, that.variantId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(variantId);
-    }
-
     @Override
     public String toString() {
-        return "ProductVariant{" +
-                "variantId=" + variantId +
+        return "ProductVariant{id=" + getId() +
                 ", productId=" + productId +
                 ", sku='" + sku + '\'' +
                 ", stockQuantity=" + stockQuantity +

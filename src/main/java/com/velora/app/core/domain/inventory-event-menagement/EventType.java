@@ -2,17 +2,19 @@ package com.velora.app.core.domain.inventoryeventmanagement;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Discount rule / promotional event definition.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class EventType {
+public class EventType extends AbstractAuditableEntity {
 
-    private UUID eventId;
     private String name;
     private BigDecimal discountValue;
     private DiscountType discountType;
@@ -25,7 +27,7 @@ public class EventType {
 
     public EventType(UUID shopId, String name, BigDecimal discountValue, DiscountType discountType, boolean available,
             LocalDateTime startDate, LocalDateTime endDate, BigDecimal minAmount, Integer usageLimit) {
-        setEventId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setShopId(shopId);
         setName(name);
         setDiscountType(discountType);
@@ -37,10 +39,6 @@ public class EventType {
         setMinAmount(minAmount);
         setUsageLimit(usageLimit);
         validateDiscountBounds();
-    }
-
-    public UUID getEventId() {
-        return eventId;
     }
 
     public String getName() {
@@ -86,6 +84,7 @@ public class EventType {
 
     public void setAvailable(boolean available) {
         this.available = available;
+        touch();
     }
 
     public BigDecimal calculateDiscountAmount(BigDecimal salePrice) {
@@ -105,14 +104,9 @@ public class EventType {
         }
     }
 
-    private void setEventId(UUID eventId) {
-        ValidationUtils.validateUUID(eventId, "eventId");
-        this.eventId = eventId;
-    }
-
     private void setName(String name) {
         ValidationUtils.validateNotBlank(name, "name");
-        this.name = name.toString().trim();
+        this.name = name.trim();
     }
 
     private void setDiscountValue(BigDecimal discountValue) {
@@ -149,26 +143,8 @@ public class EventType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof EventType)) {
-            return false;
-        }
-        EventType eventType = (EventType) o;
-        return Objects.equals(eventId, eventType.eventId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(eventId);
-    }
-
-    @Override
     public String toString() {
-        return "EventType{" +
-                "eventId=" + eventId +
+        return "EventType{id=" + getId() +
                 ", name='" + name + '\'' +
                 ", discountType=" + discountType +
                 ", available=" + available +

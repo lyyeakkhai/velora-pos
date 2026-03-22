@@ -1,30 +1,25 @@
 package com.velora.app.core.domain.inventoryeventmanagement;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Product category scoped by shop.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class Category {
+public class Category extends AbstractAuditableEntity {
 
-    private UUID categoryId;
     private UUID shopId;
     private String name;
-    private LocalDateTime createdAt;
 
     public Category(UUID shopId, String name) {
-        setCategoryId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setShopId(shopId);
         setName(name);
-        setCreatedAt(LocalDateTime.now());
-    }
-
-    public UUID getCategoryId() {
-        return categoryId;
     }
 
     public UUID getShopId() {
@@ -35,17 +30,9 @@ public class Category {
         return name;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void rename(String newName) {
         setName(newName);
-    }
-
-    private void setCategoryId(UUID categoryId) {
-        ValidationUtils.validateUUID(categoryId, "categoryId");
-        this.categoryId = categoryId;
+        touch();
     }
 
     private void setShopId(UUID shopId) {
@@ -55,39 +42,16 @@ public class Category {
 
     private void setName(String name) {
         ValidationUtils.validateNotBlank(name, "name");
-        String normalized = name.toString().trim();
+        String normalized = name.trim();
         if (normalized.isBlank()) {
             throw new IllegalArgumentException("name cannot be blank");
         }
         this.name = normalized;
     }
 
-    private void setCreatedAt(LocalDateTime createdAt) {
-        ValidationUtils.validateNotBlank(createdAt, "createdAt");
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Category)) {
-            return false;
-        }
-        Category category = (Category) o;
-        return Objects.equals(categoryId, category.categoryId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(categoryId);
-    }
-
     @Override
     public String toString() {
-        return "Category{" +
-                "categoryId=" + categoryId +
+        return "Category{id=" + getId() +
                 ", shopId=" + shopId +
                 ", name='" + name + '\'' +
                 '}';

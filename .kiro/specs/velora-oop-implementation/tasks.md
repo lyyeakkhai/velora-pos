@@ -59,8 +59,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Call `touch()` inside `transitionStatus()` and `updateAddress()`
     - _Requirements: 4.1_
 
-- [ ] INH-05 — Apply Inheritance to Inventory Domain
-  - [ ] INH-05.1 Refactor `Product.java`, `ProductVariant.java`, `Category.java`, `EventType.java`, `EventProduct.java` in `inventory-event-menagement`
+- [x] INH-05 — Apply Inheritance to Inventory Domain
+  - [x] INH-05.1 Refactor `Product.java`, `ProductVariant.java`, `Category.java`, `EventType.java`, `EventProduct.java` in `inventory-event-menagement`
     - All five extend `AbstractAuditableEntity`
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - Call `touch()` on any mutation method
