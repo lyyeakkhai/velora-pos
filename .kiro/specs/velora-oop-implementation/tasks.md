@@ -178,8 +178,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* ABS-01.2 Write unit test for `AbstractAccessPolicy` — `requireAdmin()` with non-admin role throws `DomainException`
     - **Validates: Requirement 9.7**
 
-- [ ] ABS-02 — Apply `AbstractAccessPolicy` to Domain Policies
-  - [ ] ABS-02.1 Refactor `NotificationAccessPolicy.java`, `FeedbackAccessPolicy.java`, `RolePolicy.java`, `AnalyticsAccessPolicy.java`
+- [x] ABS-02 — Apply `AbstractAccessPolicy` to Domain Policies
+  - [x] ABS-02.1 Refactor `NotificationAccessPolicy.java`, `FeedbackAccessPolicy.java`, `RolePolicy.java`, `AnalyticsAccessPolicy.java`
     - All four extend `AbstractAccessPolicy`
     - Each implements `check()` with domain-specific role rules
     - Use inherited `requireAdmin()` where applicable

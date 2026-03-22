@@ -1,47 +1,54 @@
 package com.velora.app.core.domain.notification;
 
+import com.velora.app.common.AbstractAccessPolicy;
+import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.util.UUID;
 
 /**
- * Central access-control rules for notifications.
+ * Access-control rules for notifications.
+ * Extends AbstractAccessPolicy; implements check() with notification-specific role rules.
+ * Requirements: 9.3
  */
-public final class NotificationAccessPolicy {
+public class NotificationAccessPolicy extends AbstractAccessPolicy {
 
-    private NotificationAccessPolicy() {
+    @Override
+    public void check(Role.RoleName actorRole, String operation) {
+        if (actorRole == Role.RoleName.SUPER_ADMIN) return;
+        switch (operation) {
+            case "ADMIN_ONLY":
+                throw new DomainException("SUPER_ADMIN role required for: " + operation);
+            case "CREATE_NOTIFICATION":
+                throw new DomainException("Only SYSTEM or SUPER_ADMIN can create notifications");
+            case "READ_INBOX":
+                if (actorRole == null) throw new DomainException("actorRole must not be null");
+                break;
+            default:
+                throw new DomainException("Unknown operation: " + operation);
+        }
     }
 
-    public static void requireReadableInbox(Role.RoleName actorRole, boolean systemActor) {
-        if (systemActor) {
-            throw new IllegalStateException("SYSTEM cannot read user inbox");
-        }
+    public void requireReadableInbox(Role.RoleName actorRole, boolean systemActor) {
+        if (systemActor) throw new DomainException("SYSTEM cannot read user inbox");
         ValidationUtils.validateNotBlank(actorRole, "actorRole");
-        if (actorRole == Role.RoleName.SUPER_ADMIN) {
-            throw new IllegalStateException("ADMIN has no access to private alerts");
-        }
+        if (actorRole == Role.RoleName.SUPER_ADMIN) throw new DomainException("ADMIN has no access to private alerts");
     }
 
-    public static void requireUserScope(UUID actorUserId, UUID userId) {
+    public void requireUserScope(UUID actorUserId, UUID userId) {
         ValidationUtils.validateUUID(actorUserId, "actorUserId");
         ValidationUtils.validateUUID(userId, "userId");
-        if (!actorUserId.equals(userId)) {
-            throw new IllegalStateException("No cross-user access");
-        }
+        if (!actorUserId.equals(userId)) throw new DomainException("No cross-user access");
     }
 
-    public static void requireCanCreate(Role.RoleName actorRole, boolean systemActor, NotificationType type) {
+    public void requireCanCreate(Role.RoleName actorRole, boolean systemActor, NotificationType type) {
         NotificationValidation.validateType(type);
-        if (systemActor) {
-            return;
-        }
+        if (systemActor) return;
         ValidationUtils.validateNotBlank(actorRole, "actorRole");
         if (actorRole == Role.RoleName.SUPER_ADMIN) {
-            if (type != NotificationType.SYSTEM) {
-                throw new IllegalStateException("ADMIN can create SYSTEM notifications only");
-            }
+            if (type != NotificationType.SYSTEM) throw new DomainException("ADMIN can create SYSTEM notifications only");
             return;
         }
-        throw new IllegalStateException("Only SYSTEM or ADMIN can create notifications");
+        throw new DomainException("Only SYSTEM or ADMIN can create notifications");
     }
 }
