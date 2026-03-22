@@ -27,8 +27,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* INH-01.3 Write unit test for `AbstractEntity` — null id constructor throws `DomainException`
     - **Validates: Requirement 1.5**
 
-- [ ] INH-02 — Create `AbstractAuditableEntity`
-  - [ ] INH-02.1 Create `src/main/java/com/velora/app/common/AbstractAuditableEntity.java`
+- [x] INH-02 — Create `AbstractAuditableEntity`
+  - [x] INH-02.1 Create `src/main/java/com/velora/app/common/AbstractAuditableEntity.java`
     - Extends `AbstractEntity`
     - Field: `LocalDateTime createdAt` (set in constructor, immutable)
     - Field: `LocalDateTime updatedAt` (mutable, managed via `touch()` only)
