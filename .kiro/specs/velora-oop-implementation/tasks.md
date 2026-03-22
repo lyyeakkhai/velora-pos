@@ -106,8 +106,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 7: isActive Reflects ACTIVE Status** — `isActive()` returns true iff `status == ACTIVE`
     - **Validates: Requirements 5.2, 5.3, 5.4, 5.8, 5.9**
 
-- [ ] INH-11 — Apply `AbstractSubscriptionAccount` to Subscription Entities
-  - [ ] INH-11.1 Refactor `UserAccount.java` and `ShopAccount.java` in `plan_subscription`
+- [x] INH-11 — Apply `AbstractSubscriptionAccount` to Subscription Entities
+  - [x] INH-11.1 Refactor `UserAccount.java` and `ShopAccount.java` in `plan_subscription`
     - Both extend `AbstractSubscriptionAccount`
     - Remove duplicate shared fields
     - Keep domain-specific methods: `activatePlan()`, `upgrade()`, `renew()`, `cancel()`, `expire()`

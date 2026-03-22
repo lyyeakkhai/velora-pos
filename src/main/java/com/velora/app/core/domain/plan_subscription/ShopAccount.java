@@ -1,83 +1,82 @@
 package com.velora.app.core.domain.plan_subscription;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractSubscriptionAccount;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Represents a shop's subscription account lifecycle.
+ *
+ * <p>Extends {@link AbstractSubscriptionAccount} for shared subscription fields
+ * and lifecycle helpers. Provides shop-specific activation, upgrade, renew, and cancel logic.
+ *
+ * <p>Requirements: 5.9
  */
-public class ShopAccount {
+public class ShopAccount extends AbstractSubscriptionAccount {
 
-    private UUID subscriptionId;
     private UUID shopId;
-    private UUID planId;
-    private UUID registryId;
     private ShopAccountStatus status;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private LocalDateTime refundDeadline;
     private boolean autoRenew;
-
-    private Integer currentPlanDurationMonths;
 
     /**
      * Creates a shop account with mandatory identifiers and initial status.
      */
     public ShopAccount(UUID shopId, UUID planId, UUID registryId, ShopAccountStatus status, boolean autoRenew) {
-        setSubscriptionId(UUID.randomUUID());
-        setShopId(shopId);
-        setPlanId(planId);
-        setRegistryId(registryId);
+        this.subscriptionId = UUID.randomUUID();
+        ValidationUtils.validateUUID(shopId, "shopId");
+        this.shopId = shopId;
+        ValidationUtils.validateUUID(planId, "planId");
+        this.planId = planId;
+        ValidationUtils.validateUUID(registryId, "registryId");
+        this.registryId = registryId;
         setStatus(status);
-        setStartDate(null);
-        setEndDate(null);
-        setRefundDeadline(null);
-        setAutoRenew(autoRenew);
-        setCurrentPlanDurationMonths(null);
+        this.startDate = null;
+        this.endDate = null;
+        this.refundDeadline = null;
+        this.autoRenew = autoRenew;
+        this.currentPlanDurationMonths = null;
     }
 
-    public UUID getSubscriptionId() {
-        return subscriptionId;
-    }
+    // --- Domain-specific getters ---
 
     public UUID getShopId() {
         return shopId;
-    }
-
-    public UUID getPlanId() {
-        return planId;
-    }
-
-    public UUID getRegistryId() {
-        return registryId;
     }
 
     public ShopAccountStatus getStatus() {
         return status;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public LocalDateTime getRefundDeadline() {
-        return refundDeadline;
-    }
-
     public boolean isAutoRenew() {
         return autoRenew;
     }
 
+    // --- AbstractSubscriptionAccount contract ---
+
+    /**
+     * Returns true if the shop account is currently active and not expired.
+     *
+     * <p>Requirement: 5.9
+     */
+    @Override
+    public boolean isActive() {
+        if (status != ShopAccountStatus.ACTIVE) {
+            return false;
+        }
+        if (startDate == null || endDate == null) {
+            return false;
+        }
+        return endDate.isAfter(LocalDateTime.now());
+    }
+
     /**
      * Activates a plan for this shop (sets timestamps).
+     *
+     * <p>Requirement: 5.9
      */
+    @Override
     public void activatePlan(SubscriptionPlan plan) {
         ValidationUtils.validateNotBlank(plan, "plan");
         if (!plan.isAvailable()) {
@@ -86,24 +85,40 @@ public class ShopAccount {
         if (plan.getPayerType() != PayerType.SHOP) {
             throw new IllegalArgumentException("Plan payerType must be SHOP for a ShopAccount");
         }
-        setPlanId(plan.getPlanId());
-        setCurrentPlanDurationMonths(plan.getDurationMonths());
+        this.planId = plan.getPlanId();
+        this.currentPlanDurationMonths = plan.getDurationMonths();
         LocalDateTime now = LocalDateTime.now();
-        setStartDate(now);
-        setEndDate(calculateEndDate());
-        setRefundDeadline(calculateRefundDeadline());
+        this.startDate = now;
+        this.endDate = calculateEndDate(now, currentPlanDurationMonths);
+        this.refundDeadline = calculateRefundDeadline(now);
         setStatus(ShopAccountStatus.ACTIVE);
     }
 
     /**
-     * Extends the current plan by its duration.
+     * Cancels the shop account immediately.
+     *
+     * <p>Requirement: 5.9
      */
-    public void extendPlan() {
-        requireActive();
-        requireDurationKnown();
-        ValidationUtils.validateNotBlank(endDate, "endDate");
-        setEndDate(endDate.plusMonths(currentPlanDurationMonths));
+    @Override
+    public void cancel() {
+        if (status == ShopAccountStatus.CANCELLED) {
+            throw new IllegalStateException("Account already cancelled");
+        }
+        setStatus(ShopAccountStatus.CANCELLED);
+        if (startDate != null) {
+            this.endDate = LocalDateTime.now();
+        }
     }
+
+    /**
+     * Transitions status to EXPIRED. Called by {@link #markExpiredIfNeeded()}.
+     */
+    @Override
+    protected void expireStatus() {
+        setStatus(ShopAccountStatus.EXPIRED);
+    }
+
+    // --- Domain-specific methods ---
 
     /**
      * Expires this shop account.
@@ -113,19 +128,6 @@ public class ShopAccount {
             setStatus(ShopAccountStatus.EXPIRED);
         } else {
             throw new IllegalStateException("Cannot expire from status " + status);
-        }
-    }
-
-    /**
-     * Cancels the shop account immediately.
-     */
-    public void cancel() {
-        if (status == ShopAccountStatus.CANCELLED) {
-            throw new IllegalStateException("Account already cancelled");
-        }
-        setStatus(ShopAccountStatus.CANCELLED);
-        if (startDate != null) {
-            setEndDate(LocalDateTime.now());
         }
     }
 
@@ -141,9 +143,9 @@ public class ShopAccount {
         }
         requireDurationKnown();
         LocalDateTime now = LocalDateTime.now();
-        setStartDate(now);
-        setEndDate(calculateEndDate());
-        setRefundDeadline(calculateRefundDeadline());
+        this.startDate = now;
+        this.endDate = calculateEndDate(now, currentPlanDurationMonths);
+        this.refundDeadline = calculateRefundDeadline(now);
         setStatus(ShopAccountStatus.ACTIVE);
     }
 
@@ -158,37 +160,23 @@ public class ShopAccount {
         if (newPlan.getPayerType() != PayerType.SHOP) {
             throw new IllegalArgumentException("Plan payerType must be SHOP for a ShopAccount");
         }
-        setPlanId(newPlan.getPlanId());
-        setCurrentPlanDurationMonths(newPlan.getDurationMonths());
+        this.planId = newPlan.getPlanId();
+        this.currentPlanDurationMonths = newPlan.getDurationMonths();
         LocalDateTime now = LocalDateTime.now();
-        setStartDate(now);
-        setEndDate(calculateEndDate());
-        setRefundDeadline(calculateRefundDeadline());
+        this.startDate = now;
+        this.endDate = calculateEndDate(now, currentPlanDurationMonths);
+        this.refundDeadline = calculateRefundDeadline(now);
         setStatus(ShopAccountStatus.ACTIVE);
     }
 
     /**
-     * Returns true if active and not expired.
+     * Extends the current plan by its duration.
      */
-    public boolean isActive() {
-        if (status != ShopAccountStatus.ACTIVE) {
-            return false;
-        }
-        if (startDate == null || endDate == null) {
-            return false;
-        }
-        return endDate.isAfter(LocalDateTime.now());
-    }
-
-    /**
-     * Cron/job helper: marks expired if needed.
-     */
-    public void markExpiredIfNeeded() {
-        if (status == ShopAccountStatus.ACTIVE
-                && endDate != null
-                && !endDate.isAfter(LocalDateTime.now())) {
-            setStatus(ShopAccountStatus.EXPIRED);
-        }
+    public void extendPlan() {
+        requireActive();
+        requireDurationKnown();
+        ValidationUtils.validateNotBlank(endDate, "endDate");
+        this.endDate = endDate.plusMonths(currentPlanDurationMonths);
     }
 
     /**
@@ -199,15 +187,22 @@ public class ShopAccount {
         return status;
     }
 
-    public LocalDateTime calculateEndDate() {
-        ValidationUtils.validateNotBlank(startDate, "startDate");
-        requireDurationKnown();
-        return startDate.plusMonths(currentPlanDurationMonths);
+    // --- Setters ---
+
+    public void setPlanId(UUID planId) {
+        ValidationUtils.validateUUID(planId, "planId");
+        this.planId = planId;
     }
 
-    public LocalDateTime calculateRefundDeadline() {
-        ValidationUtils.validateNotBlank(startDate, "startDate");
-        return startDate.plusDays(14);
+    public void setAutoRenew(boolean autoRenew) {
+        this.autoRenew = autoRenew;
+    }
+
+    // --- Guards ---
+
+    private void setStatus(ShopAccountStatus status) {
+        ValidationUtils.validateNotBlank(status, "status");
+        this.status = status;
     }
 
     private void requireActive() {
@@ -222,69 +217,17 @@ public class ShopAccount {
         }
     }
 
-    private void setSubscriptionId(UUID subscriptionId) {
-        ValidationUtils.validateUUID(subscriptionId, "subscriptionId");
-        this.subscriptionId = subscriptionId;
-    }
-
-    private void setShopId(UUID shopId) {
-        ValidationUtils.validateUUID(shopId, "shopId");
-        this.shopId = shopId;
-    }
-
-    public void setPlanId(UUID planId) {
-        ValidationUtils.validateUUID(planId, "planId");
-        this.planId = planId;
-    }
-
-    private void setRegistryId(UUID registryId) {
-        ValidationUtils.validateUUID(registryId, "registryId");
-        this.registryId = registryId;
-    }
-
-    private void setStatus(ShopAccountStatus status) {
-        ValidationUtils.validateNotBlank(status, "status");
-        this.status = status;
-    }
-
-    private void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    private void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-        if (startDate != null && endDate != null) {
-            ValidationUtils.validateStartBeforeEnd(startDate, endDate, "startDate", "endDate");
-        }
-    }
-
-    private void setRefundDeadline(LocalDateTime refundDeadline) {
-        this.refundDeadline = refundDeadline;
-    }
-
-    public void setAutoRenew(boolean autoRenew) {
-        this.autoRenew = autoRenew;
-    }
-
-    private void setCurrentPlanDurationMonths(Integer currentPlanDurationMonths) {
-        this.currentPlanDurationMonths = currentPlanDurationMonths;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ShopAccount)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof ShopAccount)) return false;
         ShopAccount that = (ShopAccount) o;
-        return Objects.equals(subscriptionId, that.subscriptionId);
+        return subscriptionId != null && subscriptionId.equals(that.subscriptionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subscriptionId);
+        return subscriptionId != null ? subscriptionId.hashCode() : 0;
     }
 
     @Override
