@@ -66,8 +66,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Call `touch()` on any mutation method
     - _Requirements: 4.2, 4.7_
 
-- [ ] INH-06 — Apply Inheritance to Sale Domain
-  - [ ] INH-06.1 Refactor `Order.java`, `OrderItem.java`, `Receipt.java`, `Delivery.java`, `PaymentIntent.java` in `sale-management`
+- [x] INH-06 — Apply Inheritance to Sale Domain
+  - [x] INH-06.1 Refactor `Order.java`, `OrderItem.java`, `Receipt.java`, `Delivery.java`, `PaymentIntent.java` in `sale-management`
     - All five extend `AbstractAuditableEntity`
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - _Requirements: 4.3_

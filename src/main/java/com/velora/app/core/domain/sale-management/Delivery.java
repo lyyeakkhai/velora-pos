@@ -1,17 +1,19 @@
 package com.velora.app.core.domain.salemanagement;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Delivery lifecycle for a paid order.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class Delivery {
+public class Delivery extends AbstractAuditableEntity {
 
-    private UUID deliveryId;
     private UUID orderId;
     private DeliveryStatus status;
     private String address;
@@ -22,16 +24,12 @@ public class Delivery {
      * Creates a delivery in PENDING status.
      */
     public Delivery(UUID orderId, String address) {
-        setDeliveryId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setOrderId(orderId);
         setAddress(address);
         setStatus(DeliveryStatus.PENDING);
-        setCompletedAt(null);
-        setFailReason(null);
-    }
-
-    public UUID getDeliveryId() {
-        return deliveryId;
+        this.completedAt = null;
+        this.failReason = null;
     }
 
     public UUID getOrderId() {
@@ -63,6 +61,7 @@ public class Delivery {
             throw new IllegalStateException("Illegal delivery transition from " + status);
         }
         setStatus(DeliveryStatus.IN_TRANSIT);
+        touch();
     }
 
     /**
@@ -74,7 +73,8 @@ public class Delivery {
             throw new IllegalStateException("Illegal delivery transition from " + status);
         }
         setStatus(DeliveryStatus.DELIVERED);
-        setCompletedAt(LocalDateTime.now());
+        this.completedAt = LocalDateTime.now();
+        touch();
     }
 
     /**
@@ -90,7 +90,14 @@ public class Delivery {
         ValidationUtils.validateNotBlank(reason, "reason");
         setStatus(DeliveryStatus.FAILED);
         setFailReason(reason);
-        setCompletedAt(LocalDateTime.now());
+        this.completedAt = LocalDateTime.now();
+        touch();
+    }
+
+    public void setAddress(String address) {
+        ValidationUtils.validateNotBlank(address, "address");
+        this.address = address.trim();
+        touch();
     }
 
     private void requireNotFailed() {
@@ -99,28 +106,14 @@ public class Delivery {
         }
     }
 
-    private void setDeliveryId(UUID deliveryId) {
-        ValidationUtils.validateUUID(deliveryId, "deliveryId");
-        this.deliveryId = deliveryId;
-    }
-
     private void setOrderId(UUID orderId) {
         ValidationUtils.validateUUID(orderId, "orderId");
         this.orderId = orderId;
     }
 
-    public void setAddress(String address) {
-        ValidationUtils.validateNotBlank(address, "address");
-        this.address = address.toString().trim();
-    }
-
     private void setStatus(DeliveryStatus status) {
         ValidationUtils.validateNotBlank(status, "status");
         this.status = status;
-    }
-
-    private void setCompletedAt(LocalDateTime completedAt) {
-        this.completedAt = completedAt;
     }
 
     private void setFailReason(String failReason) {
@@ -133,26 +126,8 @@ public class Delivery {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Delivery)) {
-            return false;
-        }
-        Delivery delivery = (Delivery) o;
-        return Objects.equals(deliveryId, delivery.deliveryId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(deliveryId);
-    }
-
-    @Override
     public String toString() {
-        return "Delivery{" +
-                "deliveryId=" + deliveryId +
+        return "Delivery{id=" + getId() +
                 ", orderId=" + orderId +
                 ", status=" + status +
                 '}';

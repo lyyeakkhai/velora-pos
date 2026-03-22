@@ -1,17 +1,19 @@
 package com.velora.app.core.domain.salemanagement;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Immutable snapshot item within an order.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class OrderItem {
+public class OrderItem extends AbstractAuditableEntity {
 
-    private UUID orderItemId;
     private UUID orderId;
     private UUID productId;
     private Integer quantity;
@@ -19,19 +21,15 @@ public class OrderItem {
     private BigDecimal subtotal;
 
     /**
-     * Creates an order item with mandatory fields. orderItemId is generated.
+     * Creates an order item with mandatory fields. id is generated internally.
      */
     public OrderItem(UUID orderId, UUID productId, Integer quantity, BigDecimal soldPrice) {
-        setOrderItemId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setOrderId(orderId);
         setProductId(productId);
         setQuantity(quantity);
         setSoldPrice(soldPrice);
         setSubtotal(calculateSubtotal());
-    }
-
-    public UUID getOrderItemId() {
-        return orderItemId;
     }
 
     public UUID getOrderId() {
@@ -63,11 +61,6 @@ public class OrderItem {
         return ValidationUtils.normalizeMoney(normalizedPrice.multiply(BigDecimal.valueOf(quantity)), "subtotal");
     }
 
-    private void setOrderItemId(UUID orderItemId) {
-        ValidationUtils.validateUUID(orderItemId, "orderItemId");
-        this.orderItemId = orderItemId;
-    }
-
     private void setOrderId(UUID orderId) {
         ValidationUtils.validateUUID(orderId, "orderId");
         this.orderId = orderId;
@@ -92,26 +85,8 @@ public class OrderItem {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof OrderItem)) {
-            return false;
-        }
-        OrderItem orderItem = (OrderItem) o;
-        return Objects.equals(orderItemId, orderItem.orderItemId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(orderItemId);
-    }
-
-    @Override
     public String toString() {
-        return "OrderItem{" +
-                "orderItemId=" + orderItemId +
+        return "OrderItem{id=" + getId() +
                 ", orderId=" + orderId +
                 ", productId=" + productId +
                 ", quantity=" + quantity +

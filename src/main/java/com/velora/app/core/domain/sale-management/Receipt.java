@@ -1,40 +1,37 @@
 package com.velora.app.core.domain.salemanagement;
 
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Immutable receipt record for an order.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
+ * createdAt serves as the issuedAt timestamp.
  */
-public class Receipt {
+public class Receipt extends AbstractAuditableEntity {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
-    private UUID receiptId;
     private UUID orderId;
     private String receiptNumber;
     private boolean paid;
     private String bankTransactionRef;
-    private LocalDateTime issuedAt;
 
     /**
-     * Creates a receipt for an order. receiptId/issuedAt are generated.
+     * Creates a receipt for an order. id/createdAt are managed by the base class.
      */
     public Receipt(UUID orderId) {
-        setReceiptId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setOrderId(orderId);
-        setIssuedAt(LocalDateTime.now());
         setReceiptNumber(generateNumber());
         setPaid(false);
         setBankTransactionRef(null);
-    }
-
-    public UUID getReceiptId() {
-        return receiptId;
     }
 
     public UUID getOrderId() {
@@ -53,10 +50,6 @@ public class Receipt {
         return bankTransactionRef;
     }
 
-    public LocalDateTime getIssuedAt() {
-        return issuedAt;
-    }
-
     /**
      * Confirms payment for this receipt.
      * <p>
@@ -73,6 +66,7 @@ public class Receipt {
         }
         setBankTransactionRef(bankRef);
         setPaid(true);
+        touch();
     }
 
     /**
@@ -83,11 +77,6 @@ public class Receipt {
         String number = String.format("INV-%04d", n);
         ValidationUtils.validateReceiptNumber(number, "receiptNumber");
         return number;
-    }
-
-    private void setReceiptId(UUID receiptId) {
-        ValidationUtils.validateUUID(receiptId, "receiptId");
-        this.receiptId = receiptId;
     }
 
     private void setOrderId(UUID orderId) {
@@ -113,36 +102,13 @@ public class Receipt {
         this.bankTransactionRef = bankTransactionRef;
     }
 
-    private void setIssuedAt(LocalDateTime issuedAt) {
-        ValidationUtils.validateNotBlank(issuedAt, "issuedAt");
-        this.issuedAt = issuedAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Receipt)) {
-            return false;
-        }
-        Receipt receipt = (Receipt) o;
-        return Objects.equals(receiptId, receipt.receiptId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(receiptId);
-    }
-
     @Override
     public String toString() {
-        return "Receipt{" +
-                "receiptId=" + receiptId +
+        return "Receipt{id=" + getId() +
                 ", orderId=" + orderId +
                 ", receiptNumber='" + receiptNumber + '\'' +
                 ", paid=" + paid +
-                ", issuedAt=" + issuedAt +
+                ", issuedAt=" + getCreatedAt() +
                 '}';
     }
 }

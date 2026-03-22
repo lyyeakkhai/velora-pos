@@ -1,46 +1,42 @@
 package com.velora.app.core.domain.salemanagement;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Permanent order record.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class Order {
+public class Order extends AbstractAuditableEntity {
 
-    private UUID orderId;
     private OrderStatus status;
     private BigDecimal totalPrice;
     private UUID shopId;
     private UUID customerId;
-    private LocalDateTime createdAt;
     private final List<OrderItem> items;
 
     /**
      * Creates an order with mandatory fields.
      * <p>
-     * orderId is supplied by the caller and is immutable.
+     * orderId must be supplied by the caller so that OrderItems can reference it
+     * before the Order is constructed.
      */
     public Order(UUID orderId, UUID shopId, UUID customerId, List<OrderItem> items) {
-        setOrderId(orderId);
+        super(orderId);
         setShopId(shopId);
         setCustomerId(customerId);
-        setCreatedAt(LocalDateTime.now());
         setStatus(OrderStatus.PENDING);
-        this.items = freezeItems(orderId, items);
+        this.items = freezeItems(getId(), items);
         setTotalPrice(sumItems(this.items));
         verifyTotal();
-    }
-
-    public UUID getOrderId() {
-        return orderId;
     }
 
     public OrderStatus getStatus() {
@@ -57,10 +53,6 @@ public class Order {
 
     public UUID getCustomerId() {
         return customerId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     public List<OrderItem> getItems() {
@@ -134,11 +126,6 @@ public class Order {
         return ValidationUtils.normalizeMoney(sum, "totalPrice");
     }
 
-    private void setOrderId(UUID orderId) {
-        ValidationUtils.validateUUID(orderId, "orderId");
-        this.orderId = orderId;
-    }
-
     private void setStatus(OrderStatus status) {
         ValidationUtils.validateNotBlank(status, "status");
         this.status = status;
@@ -158,37 +145,14 @@ public class Order {
         this.customerId = customerId;
     }
 
-    private void setCreatedAt(LocalDateTime createdAt) {
-        ValidationUtils.validateNotBlank(createdAt, "createdAt");
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Order)) {
-            return false;
-        }
-        Order order = (Order) o;
-        return Objects.equals(orderId, order.orderId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(orderId);
-    }
-
     @Override
     public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
+        return "Order{id=" + getId() +
                 ", status=" + status +
                 ", totalPrice=" + totalPrice +
                 ", shopId=" + shopId +
                 ", customerId=" + customerId +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + getCreatedAt() +
                 '}';
     }
 }
