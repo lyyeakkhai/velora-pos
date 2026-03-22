@@ -13,8 +13,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Eliminate duplicate fields across entities by introducing shared abstract base classes.
 > Demonstrates: code reuse through class hierarchy, `extends` keyword, `super()` constructor chaining.
 
-- [ ] INH-01 — Create `AbstractEntity`
-  - [ ] INH-01.1 Create `src/main/java/com/velora/app/common/AbstractEntity.java`
+- [x] INH-01 — Create `AbstractEntity`
+  - [x] INH-01.1 Create `src/main/java/com/velora/app/common/AbstractEntity.java`
     - Field: `UUID id` (set in constructor, immutable, no public setter)
     - Override `equals(Object)` and `hashCode()` based solely on `id`
     - Override `toString()` returning `ClassName{id=<uuid>}`
