@@ -185,16 +185,16 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Use inherited `requireAdmin()` where applicable
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
 
-- [ ] ABS-03 — Abstract `AbstractSubscriptionAccount` Lifecycle Methods
-  - [ ] ABS-03.1 Update `AbstractSubscriptionAccount.java` and refactor `UserAccount.java`, `ShopAccount.java`
+- [x] ABS-03 — Abstract `AbstractSubscriptionAccount` Lifecycle Methods
+  - [x] ABS-03.1 Update `AbstractSubscriptionAccount.java` and refactor `UserAccount.java`, `ShopAccount.java`
     - `activatePlan(SubscriptionPlan plan)` and `cancel()` are declared abstract in `AbstractSubscriptionAccount`
     - `UserAccount.activatePlan()` — sets user-specific fields, calls `calculateEndDate()`, sets `refundDeadline` via `calculateRefundDeadline()`
     - `ShopAccount.activatePlan()` — same pattern with shop-specific fields and `autoRenew` handling
     - Both implement `cancel()` with their own cancellation state transitions
     - _Requirements: 5.6, 5.7, 5.8, 5.9_
 
-- [ ] ABS-04 — Abstract `AbstractSnapshotAggregator`
-  - [ ] ABS-04.1 Create `src/main/java/com/velora/app/common/AbstractSnapshotAggregator.java`
+- [x] ABS-04 — Abstract `AbstractSnapshotAggregator`
+  - [x] ABS-04.1 Create `src/main/java/com/velora/app/common/AbstractSnapshotAggregator.java`
     - Generic class: `AbstractSnapshotAggregator<T>`
     - Abstract methods: `abstract T aggregate(UUID shopId, LocalDate date)`, `abstract void persist(T snapshot)`
     - Concrete method: `boolean alreadyExists(UUID shopId, LocalDate date)` — queries repository
