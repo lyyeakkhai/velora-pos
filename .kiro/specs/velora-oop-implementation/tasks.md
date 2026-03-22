@@ -128,8 +128,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Remove duplicate shared fields
     - _Requirements: 6.3, 6.4_
 
-- [ ] INH-14 — Create `AbstractSnapshot`
-  - [ ] INH-14.1 Create `src/main/java/com/velora/app/common/AbstractSnapshot.java`
+- [x] INH-14 — Create `AbstractSnapshot`
+  - [x] INH-14.1 Create `src/main/java/com/velora/app/common/AbstractSnapshot.java`
     - Fields (all immutable, set in constructor): `snapshotId` (UUID), `snapshotDate` (LocalDate), `shopId` (UUID), `createdAt` (LocalDateTime)
     - No public setters — enforce write-once semantics
     - _Requirements: 7.1, 7.2, 7.4, 25.6_
@@ -137,8 +137,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 8: AbstractSnapshot Write-Once** — `snapshotId`, `snapshotDate`, `shopId`, `createdAt` must be identical before and after any non-reconstructing operation
     - **Validates: Requirements 7.1, 7.4, 25.6**
 
-- [ ] INH-15 — Apply `AbstractSnapshot` to Analytics Domain
-  - [ ] INH-15.1 Refactor `DailyProductSnapshot.java`, `DailyCategorySnapshot.java`, `DailySnapshot.java` in `report-and-analytic`
+- [x] INH-15 — Apply `AbstractSnapshot` to Analytics Domain
+  - [x] INH-15.1 Refactor `DailyProductSnapshot.java`, `DailyCategorySnapshot.java`, `DailySnapshot.java` in `report-and-analytic`
     - All three extend `AbstractSnapshot`
     - Remove duplicate `snapshotId`, `snapshotDate`, `shopId`, `createdAt`
     - _Requirements: 7.3_
