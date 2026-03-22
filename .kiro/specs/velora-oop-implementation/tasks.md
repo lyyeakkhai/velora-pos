@@ -84,8 +84,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - _Requirements: 4.5_
 
-- [ ] INH-09 — Apply Inheritance to Feedback Domain
-  - [ ] INH-09.1 Refactor `src/main/java/com/velora/app/core/domain/feedback/FeatureSuggestion.java`
+- [x] INH-09 — Apply Inheritance to Feedback Domain
+  - [x] INH-09.1 Refactor `src/main/java/com/velora/app/core/domain/feedback/FeatureSuggestion.java`
     - `FeatureSuggestion extends AbstractAuditableEntity`
     - Remove duplicate `id`, `createdAt`, `updatedAt`
     - Call `touch()` inside `edit()` and `updateStatus()`

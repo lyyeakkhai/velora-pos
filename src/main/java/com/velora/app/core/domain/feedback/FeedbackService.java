@@ -2,7 +2,6 @@ package com.velora.app.core.domain.feedback;
 
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
-import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,12 +11,10 @@ import java.util.UUID;
 public class FeedbackService {
 
     private final FeatureSuggestionRepository repository;
-    private final Clock clock;
 
-    public FeedbackService(FeatureSuggestionRepository repository, Clock clock) {
+    public FeedbackService(FeatureSuggestionRepository repository) {
         ValidationUtils.validateNotBlank(repository, "repository");
         this.repository = repository;
-        this.clock = clock == null ? Clock.systemUTC() : clock;
     }
 
     public FeatureSuggestion submitSuggestion(UUID userId, SuggestionCategory category, String problemText,
@@ -25,7 +22,7 @@ public class FeedbackService {
         ValidationUtils.validateUUID(userId, "userId");
 
         FeatureSuggestion suggestion = new FeatureSuggestion(UUID.randomUUID(), userId, category, problemText,
-                solutionText, clock);
+                solutionText);
         repository.save(suggestion);
         return suggestion;
     }
@@ -46,9 +43,7 @@ public class FeedbackService {
             throw new IllegalStateException("Suggestion can only be edited while NEW");
         }
 
-        suggestion.setCategory(category);
-        suggestion.setProblemText(problemText);
-        suggestion.setSolutionText(solutionText);
+        suggestion.edit(category, problemText, solutionText);
         repository.save(suggestion);
         return suggestion;
     }
@@ -62,10 +57,7 @@ public class FeedbackService {
         FeatureSuggestion suggestion = repository.findById(suggestionId)
                 .orElseThrow(() -> new IllegalStateException("suggestion not found"));
 
-        suggestion.transitionStatus(newStatus);
-        if (adminNotes != null) {
-            suggestion.setAdminNotes(adminNotes);
-        }
+        suggestion.updateStatus(newStatus, adminNotes);
         repository.save(suggestion);
         return suggestion;
     }

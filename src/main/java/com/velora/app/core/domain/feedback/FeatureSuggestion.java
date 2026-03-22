@@ -1,18 +1,16 @@
 package com.velora.app.core.domain.feedback;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
-import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
  * Aggregate root representing a private product improvement suggestion.
+ * Extends AbstractAuditableEntity for id, createdAt, updatedAt, and touch().
  */
-public class FeatureSuggestion {
+public class FeatureSuggestion extends AbstractAuditableEntity {
 
-    private final UUID suggestionId;
     private final UUID userId;
-    private final LocalDateTime createdAt;
 
     private SuggestionCategory category;
     private String problemText;
@@ -21,69 +19,66 @@ public class FeatureSuggestion {
     private SuggestionStatus status;
     private String adminNotes;
 
-    public FeatureSuggestion(UUID suggestionId, UUID userId, SuggestionCategory category, String problemText,
-            String solutionText, Clock clock) {
-        ValidationUtils.validateUUID(suggestionId, "suggestionId");
+    public FeatureSuggestion(UUID suggestionId, UUID userId, SuggestionCategory category,
+            String problemText, String solutionText) {
+        super(suggestionId);
         ValidationUtils.validateUUID(userId, "userId");
         ValidationUtils.validateNotBlank(category, "category");
         ValidationUtils.validateNotBlank(problemText, "problemText");
 
-        this.suggestionId = suggestionId;
         this.userId = userId;
-        this.createdAt = LocalDateTime.now(clock == null ? Clock.systemUTC() : clock);
         setCategory(category);
         setProblemText(problemText);
         setSolutionText(solutionText);
         this.status = SuggestionStatus.NEW;
     }
 
+    /** Convenience alias for getId(). */
     public UUID getSuggestionId() {
-        return suggestionId;
+        return getId();
     }
 
     public UUID getUserId() {
         return userId;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public SuggestionCategory getCategory() {
         return category;
-    }
-
-    public void setCategory(SuggestionCategory category) {
-        ValidationUtils.validateNotBlank(category, "category");
-        this.category = category;
     }
 
     public String getProblemText() {
         return problemText;
     }
 
-    public void setProblemText(String problemText) {
-        ValidationUtils.validateNotBlank(problemText, "problemText");
-        this.problemText = problemText.trim();
-    }
-
     public String getSolutionText() {
         return solutionText;
     }
 
-    public void setSolutionText(String solutionText) {
-        if (solutionText == null) {
-            this.solutionText = null;
-            return;
-        }
-        if (solutionText.isBlank()) {
-            throw new IllegalArgumentException("solutionText cannot be blank");
-        }
-        this.solutionText = solutionText.trim();
-    }
-
     public SuggestionStatus getStatus() {
         return status;
+    }
+
+    public String getAdminNotes() {
+        return adminNotes;
+    }
+
+    /**
+     * Edit the suggestion content. Calls touch() to record the modification timestamp.
+     */
+    public void edit(SuggestionCategory category, String problemText, String solutionText) {
+        setCategory(category);
+        setProblemText(problemText);
+        setSolutionText(solutionText);
+        touch();
+    }
+
+    /**
+     * Update the suggestion status. Calls touch() to record the modification timestamp.
+     */
+    public void updateStatus(SuggestionStatus newStatus, String adminNotes) {
+        transitionStatus(newStatus);
+        setAdminNotes(adminNotes);
+        touch();
     }
 
     public void transitionStatus(SuggestionStatus newStatus) {
@@ -91,7 +86,6 @@ public class FeatureSuggestion {
         if (status == SuggestionStatus.SHIPPED && newStatus != SuggestionStatus.SHIPPED) {
             throw new IllegalStateException("SHIPPED suggestions cannot revert");
         }
-
         if (status == SuggestionStatus.NEW) {
             if (newStatus != SuggestionStatus.NEW && newStatus != SuggestionStatus.IN_REVIEW) {
                 throw new IllegalStateException("Invalid transition from NEW");
@@ -107,15 +101,31 @@ public class FeatureSuggestion {
                 throw new IllegalStateException("Invalid transition from BACKLOG");
             }
         }
-
         this.status = newStatus;
     }
 
-    public String getAdminNotes() {
-        return adminNotes;
+    private void setCategory(SuggestionCategory category) {
+        ValidationUtils.validateNotBlank(category, "category");
+        this.category = category;
     }
 
-    public void setAdminNotes(String adminNotes) {
+    private void setProblemText(String problemText) {
+        ValidationUtils.validateNotBlank(problemText, "problemText");
+        this.problemText = problemText.trim();
+    }
+
+    private void setSolutionText(String solutionText) {
+        if (solutionText == null) {
+            this.solutionText = null;
+            return;
+        }
+        if (solutionText.isBlank()) {
+            throw new IllegalArgumentException("solutionText cannot be blank");
+        }
+        this.solutionText = solutionText.trim();
+    }
+
+    private void setAdminNotes(String adminNotes) {
         if (adminNotes == null) {
             this.adminNotes = null;
             return;
