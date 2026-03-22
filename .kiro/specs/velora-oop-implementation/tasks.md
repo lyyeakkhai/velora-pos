@@ -232,7 +232,7 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 14: billingAlerts Always Dispatched** — for any `BILLING_ALERT` notification and any preferences, `shouldSend()` must return true
     - **Validates: Requirements 13.2, 13.4, 25.7**
 
-- [ ] Checkpoint — Phase 2 complete
+- [x] Checkpoint — Phase 2 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 ---

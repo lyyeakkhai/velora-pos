@@ -11,13 +11,15 @@ import com.velora.app.core.utils.ValidationUtils;
 public class CategoryService {
 
     private final CategoryStore categoryStore;
+    private final RolePolicy policy;
 
     public CategoryService(CategoryStore categoryStore) {
         this.categoryStore = require(categoryStore, "categoryStore");
+        this.policy = new RolePolicy();
     }
 
     public Category createCategory(Role.RoleName actorRole, UUID shopId, String name) {
-        RolePolicy.requireCatalogWrite(actorRole);
+        policy.requireCatalogWrite(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         ValidationUtils.validateNotBlank(name, "name");
         if (categoryStore.existsByShopIdAndName(shopId, name.trim())) {
@@ -27,7 +29,7 @@ public class CategoryService {
     }
 
     public void validateOwnership(Role.RoleName actorRole) {
-        RolePolicy.requireOwner(actorRole);
+        policy.requireOwner(actorRole);
     }
 
     private static <T> T require(T value, String fieldName) {

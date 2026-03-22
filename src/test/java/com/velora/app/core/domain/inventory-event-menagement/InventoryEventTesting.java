@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.domain.salemanagement.TransactionRunner;
 
@@ -116,7 +117,7 @@ public class InventoryEventTesting {
         assertEquals(created.getId(), variantStore.saved.get(0).getProductId());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = DomainException.class)
     public void productService_sellerCannotWrite() {
         ProductService service = new ProductService(work -> work.run(), new InMemoryCategoryStore(),
                 new InMemoryProductStore(), new InMemoryVariantStore());

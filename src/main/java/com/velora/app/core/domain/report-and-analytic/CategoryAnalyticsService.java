@@ -18,14 +18,16 @@ import com.velora.app.core.utils.ValidationUtils;
 public class CategoryAnalyticsService {
 
     private final DailyCategorySnapshotRepository categorySnapshotRepository;
+    private final AnalyticsAccessPolicy policy;
 
     public CategoryAnalyticsService(DailyCategorySnapshotRepository categorySnapshotRepository) {
         this.categorySnapshotRepository = require(categorySnapshotRepository, "categorySnapshotRepository");
+        this.policy = new AnalyticsAccessPolicy();
     }
 
     public List<CategoryTrendDTO> getCategoryTrends(Role.RoleName actorRole, UUID shopId, LocalDate startInclusive,
             LocalDate endInclusive) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         DateRange range = new DateRange(startInclusive, endInclusive);
         ValidationUtils.validateUUID(shopId, "shopId");
 
@@ -50,7 +52,7 @@ public class CategoryAnalyticsService {
 
     public List<AnalyticsInsightDTO> comparePeriods(Role.RoleName actorRole, UUID shopId, DateRange current,
             DateRange previous) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         ValidationUtils.validateNotBlank(current, "current");
         ValidationUtils.validateNotBlank(previous, "previous");

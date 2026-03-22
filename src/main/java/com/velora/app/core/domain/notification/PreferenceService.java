@@ -12,17 +12,19 @@ public class PreferenceService {
 
     private final NotificationPreferencesRepository repository;
     private final Clock clock;
+    private final NotificationAccessPolicy policy;
 
     public PreferenceService(NotificationPreferencesRepository repository, Clock clock) {
         ValidationUtils.validateNotBlank(repository, "repository");
         this.repository = repository;
         this.clock = clock == null ? Clock.systemUTC() : clock;
+        this.policy = new NotificationAccessPolicy();
     }
 
     public NotificationPreferences getPreferences(Role.RoleName actorRole, boolean systemActor, UUID actorUserId,
             UUID userId) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
 
         return repository.findByUserId(userId).orElseGet(() -> {
             NotificationPreferences created = NotificationPreferences.defaults(userId);
@@ -33,8 +35,8 @@ public class PreferenceService {
 
     public NotificationPreferences updatePreferences(Role.RoleName actorRole, boolean systemActor, UUID actorUserId,
             UUID userId, boolean emailEnabled, boolean marketingAlerts) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
 
         NotificationPreferences preferences = repository.findByUserId(userId)
                 .orElse(NotificationPreferences.defaults(userId));
@@ -47,8 +49,8 @@ public class PreferenceService {
 
     public NotificationPreferences resetToDefault(Role.RoleName actorRole, boolean systemActor, UUID actorUserId,
             UUID userId) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
 
         NotificationPreferences preferences = NotificationPreferences.defaults(userId);
         repository.save(preferences);

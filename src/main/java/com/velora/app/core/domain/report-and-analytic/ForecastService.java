@@ -20,16 +20,18 @@ public class ForecastService {
 
     private final DailyProductSnapshotRepository productSnapshotRepository;
     private final DailySnapshotRepository dailySnapshotRepository;
+    private final AnalyticsAccessPolicy policy;
 
     public ForecastService(DailyProductSnapshotRepository productSnapshotRepository,
             DailySnapshotRepository dailySnapshotRepository) {
         this.productSnapshotRepository = require(productSnapshotRepository, "productSnapshotRepository");
         this.dailySnapshotRepository = require(dailySnapshotRepository, "dailySnapshotRepository");
+        this.policy = new AnalyticsAccessPolicy();
     }
 
     public List<OutOfStockPredictionDTO> predictOutOfStock(Role.RoleName actorRole, UUID shopId, LocalDate asOfDate,
             int horizonDays) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         ValidationUtils.validateNotBlank(asOfDate, "asOfDate");
         if (horizonDays <= 0) {
@@ -71,7 +73,7 @@ public class ForecastService {
 
     public AnalyticsInsightDTO detectRevenueDrop(Role.RoleName actorRole, UUID shopId, DateRange current,
             DateRange previous) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         ValidationUtils.validateNotBlank(current, "current");
         ValidationUtils.validateNotBlank(previous, "previous");

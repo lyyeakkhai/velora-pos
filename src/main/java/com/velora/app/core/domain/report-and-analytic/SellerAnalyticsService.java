@@ -19,14 +19,16 @@ import com.velora.app.core.utils.ValidationUtils;
 public class SellerAnalyticsService {
 
     private final DailyProductSnapshotRepository productSnapshotRepository;
+    private final AnalyticsAccessPolicy policy;
 
     public SellerAnalyticsService(DailyProductSnapshotRepository productSnapshotRepository) {
         this.productSnapshotRepository = require(productSnapshotRepository, "productSnapshotRepository");
+        this.policy = new AnalyticsAccessPolicy();
     }
 
     public List<SellerRankDTO> rankSellers(Role.RoleName actorRole, UUID shopId, LocalDate startInclusive,
             LocalDate endInclusive) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         DateRange range = new DateRange(startInclusive, endInclusive);
         ValidationUtils.validateUUID(shopId, "shopId");
 
@@ -57,7 +59,7 @@ public class SellerAnalyticsService {
     public SellerPerformanceDTO getSellerPerformance(Role.RoleName actorRole, UUID actorSellerId,
             UUID requestedSellerId,
             UUID shopId, LocalDate startInclusive, LocalDate endInclusive) {
-        AnalyticsAccessPolicy.requireSellerSelfOrElevated(actorRole, actorSellerId, requestedSellerId);
+        policy.requireSellerSelfOrElevated(actorRole, actorSellerId, requestedSellerId);
         DateRange range = new DateRange(startInclusive, endInclusive);
         ValidationUtils.validateUUID(shopId, "shopId");
 

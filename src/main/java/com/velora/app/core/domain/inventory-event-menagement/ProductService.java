@@ -25,6 +25,7 @@ public class ProductService {
     private final CategoryStore categoryStore;
     private final ProductStore productStore;
     private final ProductVariantStore variantStore;
+    private final RolePolicy policy;
 
     public ProductService(TransactionRunner transactionRunner, CategoryStore categoryStore, ProductStore productStore,
             ProductVariantStore variantStore) {
@@ -32,6 +33,7 @@ public class ProductService {
         this.categoryStore = require(categoryStore, "categoryStore");
         this.productStore = require(productStore, "productStore");
         this.variantStore = require(variantStore, "variantStore");
+        this.policy = new RolePolicy();
     }
 
     /**
@@ -39,7 +41,7 @@ public class ProductService {
      */
     public Product createProductAtomic(Role.RoleName actorRole, UUID shopId, UUID categoryId, String name, String slug,
             java.math.BigDecimal basePrice, java.math.BigDecimal costPrice, List<VariantDraft> variants) {
-        RolePolicy.requireCatalogWrite(actorRole);
+        policy.requireCatalogWrite(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         ValidationUtils.validateUUID(categoryId, "categoryId");
         ValidationUtils.validateNotBlank(variants, "variants");
@@ -75,14 +77,14 @@ public class ProductService {
 
     public Product updateProduct(Role.RoleName actorRole, Product product, String name, String slug,
             java.math.BigDecimal basePrice, java.math.BigDecimal costPrice, UUID categoryId) {
-        RolePolicy.requireCatalogWrite(actorRole);
+        policy.requireCatalogWrite(actorRole);
         ValidationUtils.validateNotBlank(product, "product");
         product.updateProduct(name, slug, basePrice, costPrice, categoryId);
         return productStore.save(product);
     }
 
     public Product disableProduct(Role.RoleName actorRole, Product product) {
-        RolePolicy.requireOwner(actorRole);
+        policy.requireOwner(actorRole);
         ValidationUtils.validateNotBlank(product, "product");
         product.disable();
         return productStore.save(product);
@@ -90,7 +92,7 @@ public class ProductService {
 
     public List<ProductVariant> bulkInsertVariants(Role.RoleName actorRole, Product product,
             List<VariantDraft> drafts) {
-        RolePolicy.requireCatalogWrite(actorRole);
+        policy.requireCatalogWrite(actorRole);
         ValidationUtils.validateNotBlank(product, "product");
         ValidationUtils.validateNotBlank(drafts, "drafts");
         if (drafts.isEmpty()) {

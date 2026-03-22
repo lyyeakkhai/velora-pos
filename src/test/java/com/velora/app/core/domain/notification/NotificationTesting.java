@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.notification;
 
+import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import java.time.Clock;
 import java.time.Instant;
@@ -223,7 +224,7 @@ public class NotificationTesting {
         try {
             service.getUnreadCount(Role.RoleName.OWNER, false, UUID.randomUUID(), userId);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("cross"));
         }
 
@@ -231,7 +232,7 @@ public class NotificationTesting {
         try {
             service.getUnreadCount(Role.RoleName.SUPER_ADMIN, false, userId, userId);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("admin"));
         }
 
