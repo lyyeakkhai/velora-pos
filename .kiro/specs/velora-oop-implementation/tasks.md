@@ -143,8 +143,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Remove duplicate `snapshotId`, `snapshotDate`, `shopId`, `createdAt`
     - _Requirements: 7.3_
 
-- [ ] INH-16 — Create `AbstractDomainService`
-  - [ ] INH-16.1 Create `src/main/java/com/velora/app/common/AbstractDomainService.java`
+- [x] INH-16 — Create `AbstractDomainService`
+  - [x] INH-16.1 Create `src/main/java/com/velora/app/common/AbstractDomainService.java`
     - Method: `protected void requireRole(Role.RoleName actual, Role.RoleName... allowed)` — throws `DomainException` if not in allowed list
     - Method: `protected void requireNotNull(Object value, String fieldName)` — throws `DomainException` if null, message includes fieldName
     - _Requirements: 8.1, 8.2, 8.7, 8.8_
