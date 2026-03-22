@@ -91,8 +91,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Call `touch()` inside `edit()` and `updateStatus()`
     - _Requirements: 4.6, 4.7_
 
-- [ ] INH-10 — Create `AbstractSubscriptionAccount`
-  - [ ] INH-10.1 Create `src/main/java/com/velora/app/common/AbstractSubscriptionAccount.java`
+- [x] INH-10 — Create `AbstractSubscriptionAccount`
+  - [x] INH-10.1 Create `src/main/java/com/velora/app/common/AbstractSubscriptionAccount.java`
     - Fields: `subscriptionId`, `planId`, `registryId`, `status`, `startDate`, `endDate`, `refundDeadline`, `currentPlanDurationMonths`
     - Method: `calculateEndDate(LocalDate start, int months)` — returns `start.plusMonths(months)`
     - Method: `calculateRefundDeadline(LocalDate start)` — returns `start.plusDays(14)`
