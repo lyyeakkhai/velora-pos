@@ -204,8 +204,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 11: AbstractSnapshotAggregator Idempotency** — when `alreadyExists()` returns true, `run()` must not invoke `aggregate()` or `persist()`
     - **Validates: Requirements 10.5, 10.6, 20.6**
 
-- [ ] ABS-05 — Abstract `AbstractReportPeriod`
-  - [ ] ABS-05.1 Create `src/main/java/com/velora/app/common/AbstractReportPeriod.java`
+- [x] ABS-05 — Abstract `AbstractReportPeriod`
+  - [x] ABS-05.1 Create `src/main/java/com/velora/app/common/AbstractReportPeriod.java`
     - Abstract methods: `abstract DateRange getDateRange(LocalDate endDate)`, `abstract String getPeriodName()`
     - Concrete method: `PeriodReportDTO buildReport(UUID shopId, LocalDate endDate, DailySnapshotRepository repo)` — calls `getDateRange()` then queries repo
     - _Requirements: 11.1, 11.2, 11.3_
