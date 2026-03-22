@@ -78,8 +78,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - _Requirements: 4.4_
 
-- [ ] INH-08 — Apply Inheritance to Notification Domain
-  - [ ] INH-08.1 Refactor `Notification.java`, `NotificationPreferences.java`, `NotificationDispatchRecord.java` in `notification`
+- [x] INH-08 — Apply Inheritance to Notification Domain
+  - [x] INH-08.1 Refactor `Notification.java`, `NotificationPreferences.java`, `NotificationDispatchRecord.java` in `notification`
     - All three extend `AbstractAuditableEntity`
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - _Requirements: 4.5_

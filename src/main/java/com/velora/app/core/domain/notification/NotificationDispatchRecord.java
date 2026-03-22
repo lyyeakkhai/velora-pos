@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.notification;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.util.UUID;
 /**
  * Idempotency and audit state for dispatching a notification in a specific channel.
  */
-public class NotificationDispatchRecord {
+public class NotificationDispatchRecord extends AbstractAuditableEntity {
 
     private final UUID notificationId;
     private final NotificationChannel channel;
@@ -21,6 +22,7 @@ public class NotificationDispatchRecord {
     private String lastFailureReason;
 
     public NotificationDispatchRecord(UUID notificationId, NotificationChannel channel, LocalDateTime nextAttemptAt) {
+        super(UUID.randomUUID());
         ValidationUtils.validateUUID(notificationId, "notificationId");
         ValidationUtils.validateNotBlank(channel, "channel");
         ValidationUtils.validateNotBlank(nextAttemptAt, "nextAttemptAt");
@@ -73,6 +75,7 @@ public class NotificationDispatchRecord {
         this.lastFailureReason = null;
         this.lastAttemptAt = LocalDateTime.now(clock == null ? Clock.systemUTC() : clock);
         this.nextAttemptAt = null;
+        touch();
     }
 
     public void markSkipped(String reason, Clock clock) {
@@ -83,6 +86,7 @@ public class NotificationDispatchRecord {
         this.lastFailureReason = reason.trim();
         this.lastAttemptAt = LocalDateTime.now(clock == null ? Clock.systemUTC() : clock);
         this.nextAttemptAt = null;
+        touch();
     }
 
     public void markFailed(String failureReason, LocalDateTime nextAttemptAt, Clock clock) {
@@ -95,16 +99,13 @@ public class NotificationDispatchRecord {
         this.lastFailureReason = failureReason.trim();
         this.lastAttemptAt = LocalDateTime.now(clock == null ? Clock.systemUTC() : clock);
         this.nextAttemptAt = nextAttemptAt;
+        touch();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         NotificationDispatchRecord that = (NotificationDispatchRecord) o;
         return notificationId.equals(that.notificationId) && channel == that.channel;
     }

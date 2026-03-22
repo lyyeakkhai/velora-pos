@@ -1,47 +1,41 @@
 package com.velora.app.core.domain.notification;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * User preferences for notification delivery.
  */
-public class NotificationPreferences {
-
-    private final UUID userId;
+public class NotificationPreferences extends AbstractAuditableEntity {
 
     private boolean emailEnabled;
     private final boolean billingAlerts;
     private boolean marketingAlerts;
-    private LocalDateTime updatedAt;
 
-    public NotificationPreferences(UUID userId, Boolean emailEnabled, Boolean marketingAlerts, Clock clock) {
+    public NotificationPreferences(UUID userId, Boolean emailEnabled, Boolean marketingAlerts) {
+        super(userId);
         ValidationUtils.validateUUID(userId, "userId");
-        this.userId = userId;
         this.emailEnabled = emailEnabled == null ? true : emailEnabled;
         this.billingAlerts = true;
         this.marketingAlerts = marketingAlerts == null ? false : marketingAlerts;
-        this.updatedAt = LocalDateTime.now(clock == null ? Clock.systemUTC() : clock);
     }
 
-    public static NotificationPreferences defaults(UUID userId, Clock clock) {
-        return new NotificationPreferences(userId, true, false, clock);
+    public static NotificationPreferences defaults(UUID userId) {
+        return new NotificationPreferences(userId, true, false);
     }
 
     public UUID getUserId() {
-        return userId;
+        return getId();
     }
 
     public boolean isEmailEnabled() {
         return emailEnabled;
     }
 
-    public void setEmailEnabled(boolean emailEnabled, Clock clock) {
+    public void setEmailEnabled(boolean emailEnabled) {
         this.emailEnabled = emailEnabled;
-        touch(clock);
+        touch();
     }
 
     /**
@@ -55,33 +49,8 @@ public class NotificationPreferences {
         return marketingAlerts;
     }
 
-    public void setMarketingAlerts(boolean marketingAlerts, Clock clock) {
+    public void setMarketingAlerts(boolean marketingAlerts) {
         this.marketingAlerts = marketingAlerts;
-        touch(clock);
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    private void touch(Clock clock) {
-        this.updatedAt = LocalDateTime.now(clock == null ? Clock.systemUTC() : clock);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        NotificationPreferences that = (NotificationPreferences) o;
-        return userId.equals(that.userId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId);
+        touch();
     }
 }

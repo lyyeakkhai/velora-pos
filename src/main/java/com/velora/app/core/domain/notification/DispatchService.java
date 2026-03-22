@@ -76,7 +76,7 @@ public class DispatchService {
                 .orElseThrow(() -> new IllegalStateException("notification not found"));
 
         NotificationPreferences prefs = preferencesRepository.findByUserId(notification.getUserId())
-                .orElseGet(() -> NotificationPreferences.defaults(notification.getUserId(), clock));
+                .orElseGet(() -> NotificationPreferences.defaults(notification.getUserId()));
 
         if (channel == NotificationChannel.IN_APP) {
             // Persisted notification already guarantees in-app availability.
