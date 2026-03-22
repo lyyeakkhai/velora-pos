@@ -222,8 +222,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 13: validateProfitMargin Throws When finalPrice <= costPrice** — any `finalPrice.compareTo(costPrice) <= 0` must throw `DomainException`
     - **Validates: Requirements 12.2, 12.3, 25.5**
 
-- [ ] ABS-07 — Abstract `AbstractNotificationDispatcher`
-  - [ ] ABS-07.1 Create `src/main/java/com/velora/app/common/AbstractNotificationDispatcher.java`
+- [x] ABS-07 — Abstract `AbstractNotificationDispatcher`
+  - [x] ABS-07.1 Create `src/main/java/com/velora/app/common/AbstractNotificationDispatcher.java`
     - Abstract method: `abstract void send(Notification notification)`
     - Concrete method: `boolean shouldSend(Notification n, NotificationPreferences prefs)` — billingAlerts always true, others check prefs
     - Template method: `final void dispatch(Notification n, NotificationPreferences prefs)` — calls `shouldSend()` → `send()` if true
