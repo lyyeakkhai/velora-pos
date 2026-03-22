@@ -23,7 +23,7 @@ public class InventoryEventTesting {
     public void product_validCreation_normalizesAndEnforcesProfit() {
         Product product = new Product(UUID.randomUUID(), UUID.randomUUID(), "  Green Tea  ", "green-tea",
                 new BigDecimal("10"), new BigDecimal("2"));
-        assertNotNull(product.getProductId());
+        assertNotNull(product.getId());
         assertEquals("Green Tea", product.getName());
         assertEquals(new BigDecimal("10.00"), product.getBasePrice());
         assertEquals(new BigDecimal("2.00"), product.getCostPrice());
@@ -108,12 +108,12 @@ public class InventoryEventTesting {
                 new ProductService.VariantDraft("SKU-ABC_1", 10, UUID.randomUUID(), "M", "Green"),
                 new ProductService.VariantDraft("SKU-ABC_2", 0, UUID.randomUUID(), "L", "Green"));
 
-        Product created = service.createProductAtomic(Role.RoleName.MANAGER, shopId, category.getCategoryId(), "Tea",
+        Product created = service.createProductAtomic(Role.RoleName.MANAGER, shopId, category.getId(), "Tea",
                 "tea", new BigDecimal("10"), new BigDecimal("2"), drafts);
 
-        assertNotNull(created.getProductId());
+        assertNotNull(created.getId());
         assertEquals(2, variantStore.saved.size());
-        assertEquals(created.getProductId(), variantStore.saved.get(0).getProductId());
+        assertEquals(created.getId(), variantStore.saved.get(0).getProductId());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -140,7 +140,7 @@ public class InventoryEventTesting {
 
         @Override
         public Category save(Category category) {
-            byId.put(category.getCategoryId(), category);
+            byId.put(category.getId(), category);
             return category;
         }
 
@@ -175,7 +175,7 @@ public class InventoryEventTesting {
 
         @Override
         public Product save(Product product) {
-            byId.put(product.getProductId(), product);
+            byId.put(product.getId(), product);
             return product;
         }
 
@@ -198,8 +198,8 @@ public class InventoryEventTesting {
         @Override
         public List<ProductVariant> saveAll(List<ProductVariant> variants) {
             for (ProductVariant v : variants) {
-                byId.put(v.getVariantId(), v);
-                bySku.put(v.getSku(), v.getVariantId());
+                byId.put(v.getId(), v);
+                bySku.put(v.getSku(), v.getId());
                 saved.add(v);
             }
             return variants;
@@ -216,7 +216,7 @@ public class InventoryEventTesting {
 
         @Override
         public EventType save(EventType eventType) {
-            byId.put(eventType.getEventId(), eventType);
+            byId.put(eventType.getId(), eventType);
             return eventType;
         }
 
@@ -237,7 +237,7 @@ public class InventoryEventTesting {
 
         @Override
         public EventProduct save(EventProduct eventProduct) {
-            byId.put(eventProduct.getEventProductId(), eventProduct);
+            byId.put(eventProduct.getId(), eventProduct);
             byEventProduct.put(eventProduct.getEventId() + ":" + eventProduct.getProductId(), Boolean.TRUE);
             return eventProduct;
         }

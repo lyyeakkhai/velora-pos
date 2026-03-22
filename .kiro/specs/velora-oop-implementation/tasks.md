@@ -160,7 +160,7 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Replace inline null checks with `requireNotNull(...)` calls
     - _Requirements: 8.3, 8.4, 8.5, 8.6_
 
-- [ ] Checkpoint — Phase 1 complete
+- [x] Checkpoint — Phase 1 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 ---

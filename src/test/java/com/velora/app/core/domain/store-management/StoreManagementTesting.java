@@ -17,7 +17,7 @@ public class StoreManagementTesting {
 
         @Override
         public void save(Shop shop) {
-            byId.put(shop.getShopId(), shop);
+            byId.put(shop.getId(), shop);
         }
 
         @Override
@@ -60,7 +60,7 @@ public class StoreManagementTesting {
         Shop shop = service.registerShop(UUID.randomUUID(), "legal-shop", null, null, address);
 
         try {
-            service.updateShopStatus(shop.getShopId(), ShopStatus.ACTIVE, Role.RoleName.OWNER);
+            service.updateShopStatus(shop.getId(), ShopStatus.ACTIVE, Role.RoleName.OWNER);
             fail("Expected exception");
         } catch (IllegalStateException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("active"));
@@ -70,7 +70,7 @@ public class StoreManagementTesting {
         shop.setTaxId("TAX-123456");
         repo.save(shop);
 
-        Shop updated = service.updateShopStatus(shop.getShopId(), ShopStatus.ACTIVE, Role.RoleName.OWNER);
+        Shop updated = service.updateShopStatus(shop.getId(), ShopStatus.ACTIVE, Role.RoleName.OWNER);
         assertEquals(ShopStatus.ACTIVE, updated.getStatus());
     }
 
@@ -81,16 +81,16 @@ public class StoreManagementTesting {
         Address address = new Address("Street 1", "Phnom Penh", "Dangkao", "Phnom Penh");
         Shop shop = service.registerShop(UUID.randomUUID(), "ban-shop", "Legal", "TAX-111", address);
 
-        service.updateShopStatus(shop.getShopId(), ShopStatus.BANNED, Role.RoleName.SUPER_ADMIN);
+        service.updateShopStatus(shop.getId(), ShopStatus.BANNED, Role.RoleName.SUPER_ADMIN);
 
         try {
-            service.updateShopStatus(shop.getShopId(), ShopStatus.ACTIVE, Role.RoleName.OWNER);
+            service.updateShopStatus(shop.getId(), ShopStatus.ACTIVE, Role.RoleName.OWNER);
             fail("Expected exception");
         } catch (IllegalStateException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("admin"));
         }
 
-        Shop updated = service.updateShopStatus(shop.getShopId(), ShopStatus.SUSPENDED, Role.RoleName.SUPER_ADMIN);
+        Shop updated = service.updateShopStatus(shop.getId(), ShopStatus.SUSPENDED, Role.RoleName.SUPER_ADMIN);
         assertEquals(ShopStatus.SUSPENDED, updated.getStatus());
     }
 
@@ -113,7 +113,7 @@ public class StoreManagementTesting {
         shop.getShopSettings().setPlatformFeeRatePercent(new BigDecimal("10.00"));
         repo.save(shop);
 
-        BigDecimal payout = service.payoutCalculation(shop.getShopId(), new BigDecimal("100.00"));
+        BigDecimal payout = service.payoutCalculation(shop.getId(), new BigDecimal("100.00"));
         assertEquals(new BigDecimal("90.00"), payout);
     }
 }

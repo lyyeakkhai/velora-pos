@@ -63,8 +63,8 @@ public class SaleTesting {
     @Test
     public void receipt_generateNumberAndConfirmIdempotent() {
         Receipt receipt = new Receipt(UUID.randomUUID());
-        assertNotNull(receipt.getReceiptId());
-        assertNotNull(receipt.getIssuedAt());
+        assertNotNull(receipt.getId());
+        assertNotNull(receipt.getCreatedAt());
         assertTrue(receipt.getReceiptNumber().matches("^INV-\\d{4}$"));
 
         receipt.confirmPayment("bank_123");
@@ -156,15 +156,15 @@ public class SaleTesting {
         PaymentIntent confirmed = service.verifyPayment(event);
         assertEquals(PaymentIntentStatus.CONFIRMED, confirmed.getStatus());
 
-        Order order = service.finalizeOrderAtomic(intent.getIntentId(), true, "Addr");
+        Order order = service.finalizeOrderAtomic(intent.getId(), true, "Addr");
         assertNotNull(order);
         assertEquals(OrderStatus.PAID, order.getStatus());
         assertEquals(new BigDecimal("5.50"), order.getTotalPrice());
 
         assertTrue(intentStore.findByBankRefId("bankRef_1").isEmpty());
-        assertNotNull(orderStore.findById(order.getOrderId()).orElseThrow());
-        assertNotNull(receiptStore.findByOrderId(order.getOrderId()).orElseThrow());
-        assertNotNull(deliveryStore.findByOrderId(order.getOrderId()).orElseThrow());
+        assertNotNull(orderStore.findById(order.getId()).orElseThrow());
+        assertNotNull(receiptStore.findByOrderId(order.getId()).orElseThrow());
+        assertNotNull(deliveryStore.findByOrderId(order.getId()).orElseThrow());
 
         Map<UUID, Integer> deducted = inventoryService.lastHardDeduct;
         assertEquals(Integer.valueOf(2), deducted.get(p1));
@@ -210,8 +210,8 @@ public class SaleTesting {
 
         @Override
         public PaymentIntent save(PaymentIntent intent) {
-            byId.put(intent.getIntentId(), intent);
-            byBankRef.put(intent.getBankRefId(), intent.getIntentId());
+            byId.put(intent.getId(), intent);
+            byBankRef.put(intent.getBankRefId(), intent.getId());
             return intent;
         }
 
@@ -243,7 +243,7 @@ public class SaleTesting {
 
         @Override
         public Order save(Order order) {
-            byId.put(order.getOrderId(), order);
+            byId.put(order.getId(), order);
             return order;
         }
 

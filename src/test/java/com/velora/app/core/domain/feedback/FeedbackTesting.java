@@ -21,7 +21,7 @@ public class FeedbackTesting {
 
         @Override
         public void save(FeatureSuggestion suggestion) {
-            byId.put(suggestion.getSuggestionId(), suggestion);
+            byId.put(suggestion.getId(), suggestion);
         }
 
         @Override
@@ -56,7 +56,7 @@ public class FeedbackTesting {
     public void submitSuggestion_defaultsToNew_andSetsCreatedAt() {
         InMemorySuggestionRepo repo = new InMemorySuggestionRepo();
         Clock fixed = Clock.fixed(Instant.parse("2026-03-01T00:00:00Z"), ZoneOffset.UTC);
-        FeedbackService service = new FeedbackService(repo, fixed);
+        FeedbackService service = new FeedbackService(repo);
         UUID userId = UUID.randomUUID();
 
         FeatureSuggestion suggestion = service.submitSuggestion(userId, SuggestionCategory.UI, "Problem", "Solution");
@@ -70,26 +70,26 @@ public class FeedbackTesting {
     @Test
     public void editSuggestion_onlyOwner_andOnlyWhenNew() {
         InMemorySuggestionRepo repo = new InMemorySuggestionRepo();
-        FeedbackService service = new FeedbackService(repo, Clock.systemUTC());
+        FeedbackService service = new FeedbackService(repo);
         UUID userId = UUID.randomUUID();
         FeatureSuggestion suggestion = service.submitSuggestion(userId, SuggestionCategory.INVENTORY, "P", null);
 
-        FeatureSuggestion edited = service.editSuggestion(userId, suggestion.getSuggestionId(), SuggestionCategory.STAFF,
+        FeatureSuggestion edited = service.editSuggestion(userId, suggestion.getId(), SuggestionCategory.STAFF,
                 "P2", "S2");
         assertEquals(SuggestionCategory.STAFF, edited.getCategory());
         assertEquals("P2", edited.getProblemText());
 
-        service.adminUpdateStatus(suggestion.getSuggestionId(), SuggestionStatus.IN_REVIEW, "note", Role.RoleName.SUPER_ADMIN);
+        service.adminUpdateStatus(suggestion.getId(), SuggestionStatus.IN_REVIEW, "note", Role.RoleName.SUPER_ADMIN);
 
         try {
-            service.editSuggestion(userId, suggestion.getSuggestionId(), SuggestionCategory.UI, "P3", null);
+            service.editSuggestion(userId, suggestion.getId(), SuggestionCategory.UI, "P3", null);
             fail("Expected exception");
         } catch (IllegalStateException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("only be edited"));
         }
 
         try {
-            service.editSuggestion(UUID.randomUUID(), suggestion.getSuggestionId(), SuggestionCategory.UI, "P3", null);
+            service.editSuggestion(UUID.randomUUID(), suggestion.getId(), SuggestionCategory.UI, "P3", null);
             fail("Expected exception");
         } catch (IllegalStateException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("owner"));
@@ -99,22 +99,22 @@ public class FeedbackTesting {
     @Test
     public void adminUpdateStatus_requiresSuperAdmin_andPreventsShippedRevert() {
         InMemorySuggestionRepo repo = new InMemorySuggestionRepo();
-        FeedbackService service = new FeedbackService(repo, Clock.systemUTC());
+        FeedbackService service = new FeedbackService(repo);
         UUID userId = UUID.randomUUID();
         FeatureSuggestion suggestion = service.submitSuggestion(userId, SuggestionCategory.FINANCE, "P", null);
 
         try {
-            service.adminUpdateStatus(suggestion.getSuggestionId(), SuggestionStatus.IN_REVIEW, null, Role.RoleName.OWNER);
+            service.adminUpdateStatus(suggestion.getId(), SuggestionStatus.IN_REVIEW, null, Role.RoleName.OWNER);
             fail("Expected exception");
         } catch (IllegalStateException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("super_admin"));
         }
 
-        service.adminUpdateStatus(suggestion.getSuggestionId(), SuggestionStatus.IN_REVIEW, "n1", Role.RoleName.SUPER_ADMIN);
-        service.adminUpdateStatus(suggestion.getSuggestionId(), SuggestionStatus.SHIPPED, "done", Role.RoleName.SUPER_ADMIN);
+        service.adminUpdateStatus(suggestion.getId(), SuggestionStatus.IN_REVIEW, "n1", Role.RoleName.SUPER_ADMIN);
+        service.adminUpdateStatus(suggestion.getId(), SuggestionStatus.SHIPPED, "done", Role.RoleName.SUPER_ADMIN);
 
         try {
-            service.adminUpdateStatus(suggestion.getSuggestionId(), SuggestionStatus.BACKLOG, "no", Role.RoleName.SUPER_ADMIN);
+            service.adminUpdateStatus(suggestion.getId(), SuggestionStatus.BACKLOG, "no", Role.RoleName.SUPER_ADMIN);
             fail("Expected exception");
         } catch (IllegalStateException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("cannot revert"));
@@ -124,7 +124,7 @@ public class FeedbackTesting {
     @Test
     public void adminListByStatus_requiresSuperAdmin() {
         InMemorySuggestionRepo repo = new InMemorySuggestionRepo();
-        FeedbackService service = new FeedbackService(repo, Clock.systemUTC());
+        FeedbackService service = new FeedbackService(repo);
         UUID userId = UUID.randomUUID();
         service.submitSuggestion(userId, SuggestionCategory.OTHER, "P", null);
 

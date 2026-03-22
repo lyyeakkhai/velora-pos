@@ -38,11 +38,11 @@ public class DiscountService {
         if (!event.getShopId().equals(product.getShopId())) {
             throw new IllegalStateException("Cross-shop attachment rejected");
         }
-        if (eventProductStore.existsByEventIdAndProductId(event.getEventId(), product.getProductId())) {
+        if (eventProductStore.existsByEventIdAndProductId(event.getId(), product.getId())) {
             throw new IllegalStateException("Product already attached to event");
         }
-        EventProduct ep = new EventProduct(product.getShopId(), product.getProductId(), product.getCategoryId(),
-                event.getEventId(), sortOrder, initialStatus);
+        EventProduct ep = new EventProduct(product.getShopId(), product.getId(), product.getCategoryId(),
+                event.getId(), sortOrder, initialStatus);
         return eventProductStore.save(ep);
     }
 

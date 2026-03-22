@@ -100,8 +100,8 @@ public class ReportAnalyticsTesting {
         LocalDate date = LocalDate.of(2026, 3, 1);
 
         InMemoryDailySnapshotRepo dailySnaps = new InMemoryDailySnapshotRepo();
-        dailySnaps.save(new DailySnapshot(UUID.randomUUID(), date, orgId, shopId, new BigDecimal("0"),
-                new BigDecimal("0"), 0, LocalDateTime.now(ZoneOffset.UTC)));
+        dailySnaps.save(new DailySnapshot(UUID.randomUUID(), date, shopId, orgId, new BigDecimal("0"),
+                new BigDecimal("0"), 0));
 
         AnalyticsAggregationService svc = new AnalyticsAggregationService(work -> work.run(), new InMemoryLockStore(),
                 new InMemoryRunStore(), new InMemoryLogStore(), new InMemoryConfirmedOrderRepo(List.of()),
@@ -130,8 +130,7 @@ public class ReportAnalyticsTesting {
         InMemoryDailyProductSnapshotRepo productSnaps = new InMemoryDailyProductSnapshotRepo();
         productSnaps
                 .saveAll(List.of(new DailyProductSnapshot(UUID.randomUUID(), end, UUID.randomUUID(), UUID.randomUUID(),
-                        seller, UUID.randomUUID(), shopId, 1, new BigDecimal("2"), new BigDecimal("5"), 10,
-                        LocalDateTime.now(ZoneOffset.UTC))));
+                        seller, UUID.randomUUID(), shopId, 1, new BigDecimal("2"), new BigDecimal("5"), 10)));
 
         SellerAnalyticsService svc = new SellerAnalyticsService(productSnaps);
         SellerPerformanceDTO perf = svc.getSellerPerformance(Role.RoleName.SELLER, seller, seller, shopId, start, end);
@@ -179,12 +178,12 @@ public class ReportAnalyticsTesting {
         UUID orgId = UUID.randomUUID();
 
         InMemoryDailySnapshotRepo dailyRepo = new InMemoryDailySnapshotRepo();
-        dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 20), orgId, shopId,
-                new BigDecimal("100"), new BigDecimal("20"), 1, LocalDateTime.now(ZoneOffset.UTC)));
-        dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 21), orgId, shopId,
-                new BigDecimal("100"), new BigDecimal("20"), 1, LocalDateTime.now(ZoneOffset.UTC)));
-        dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 27), orgId, shopId,
-                new BigDecimal("50"), new BigDecimal("10"), 1, LocalDateTime.now(ZoneOffset.UTC)));
+        dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 20), shopId, orgId,
+                new BigDecimal("100"), new BigDecimal("20"), 1));
+        dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 21), shopId, orgId,
+                new BigDecimal("100"), new BigDecimal("20"), 1));
+        dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 27), shopId, orgId,
+                new BigDecimal("50"), new BigDecimal("10"), 1));
 
         ForecastService forecast = new ForecastService(new InMemoryDailyProductSnapshotRepo(), dailyRepo);
         AnalyticsInsightDTO insight = forecast.detectRevenueDrop(Role.RoleName.MANAGER, shopId,
