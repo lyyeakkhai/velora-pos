@@ -1,72 +1,58 @@
 package com.velora.app.core.domain.auth;
 
+import com.velora.app.common.AbstractEntity;
 import com.velora.app.core.utils.ValidationUtils;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Represents a system role for permission classification.
- * 
- * This entity defines the available roles within the Velora system,
- * providing a foundation for role-based access control.
- * 
+ *
+ * Extends AbstractEntity to inherit UUID-based identity, equals, and hashCode.
+ * The roleId is used as the entity id.
+ *
  * @author Velora Development Team
  * @version 1.0
  * @since 1.0
  */
-
-public class Role {
+public class Role extends AbstractEntity {
 
     /**
      * Available role types in the system
      */
     public enum RoleName {
         SUPER_ADMIN, // Full access across all shops and system settings
-        OWNER, // Full system access and shop ownership
-        MANAGER, // Administrative access within shop
-        SELLER // Standard point-of-sale access
+        OWNER,       // Full system access and shop ownership
+        MANAGER,     // Administrative access within shop
+        SELLER       // Standard point-of-sale access
     }
 
-    private UUID roleId;
     private RoleName roleName;
 
     /**
      * Creates a new Role with validation.
-     * 
+     *
      * @param roleId   The unique identifier for this role (cannot be null)
      * @param roleName The name/type of this role (cannot be null)
      * @throws IllegalArgumentException if validation fails
      */
     public Role(UUID roleId, RoleName roleName) {
-        setRoleId(roleId);
+        super(roleId);
         setRoleName(roleName);
     }
 
     /**
      * Gets the unique identifier for this role.
-     * 
-     * @return A copy of the role ID
+     * Delegates to getId() inherited from AbstractEntity.
+     *
+     * @return The role ID
      */
     public UUID getRoleId() {
-        return roleId;
+        return getId();
     }
-
-    /**
-     * Sets the role ID with validation.
-     * 
-     * @param roleId The new role ID (cannot be null)
-     * @throws IllegalArgumentException if roleId is null
-     */
-    private void setRoleId(UUID roleId) {
-        ValidationUtils.validateUUID(roleId, "Role ID");
-        this.roleId = roleId;
-    }
-
-
 
     /**
      * Gets the name/type of this role.
-     * 
+     *
      * @return The role name
      */
     public RoleName getRoleName() {
@@ -75,7 +61,7 @@ public class Role {
 
     /**
      * Sets the role name with validation.
-     * 
+     *
      * @param roleName The new role name (cannot be null)
      * @throws IllegalArgumentException if roleName is null
      */
@@ -84,12 +70,10 @@ public class Role {
         this.roleName = roleName;
     }
 
-
-
     /**
      * Checks if this role has administrative privileges.
-     * 
-     * @return true if role is OWNER or MANAGER, false otherwise
+     *
+     * @return true if role is SUPER_ADMIN, OWNER, or MANAGER, false otherwise
      */
     public boolean isAdministrative() {
         return roleName == RoleName.SUPER_ADMIN || roleName == RoleName.OWNER || roleName == RoleName.MANAGER;
@@ -97,7 +81,7 @@ public class Role {
 
     /**
      * Checks if this role can manage other users.
-     * 
+     *
      * @return true if role is OWNER, false otherwise
      */
     public boolean canManageUsers() {
@@ -106,31 +90,5 @@ public class Role {
 
     public boolean isSuperAdmin() {
         return roleName == RoleName.SUPER_ADMIN;
-    }
-
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-
-        Role role = (Role) obj;
-        return Objects.equals(roleId, role.roleId) &&
-                roleName == role.roleName;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(roleId, roleName);
-    }
-
-    @Override
-    public String toString() {
-        return "Role{" +
-                "roleId=" + roleId +
-                ", roleName=" + roleName +
-                '}';
     }
 }

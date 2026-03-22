@@ -25,7 +25,7 @@ public class PreferenceService {
         NotificationAccessPolicy.requireUserScope(actorUserId, userId);
 
         return repository.findByUserId(userId).orElseGet(() -> {
-            NotificationPreferences created = NotificationPreferences.defaults(userId, clock);
+            NotificationPreferences created = NotificationPreferences.defaults(userId);
             repository.save(created);
             return created;
         });
@@ -37,9 +37,9 @@ public class PreferenceService {
         NotificationAccessPolicy.requireUserScope(actorUserId, userId);
 
         NotificationPreferences preferences = repository.findByUserId(userId)
-                .orElse(NotificationPreferences.defaults(userId, clock));
-        preferences.setEmailEnabled(emailEnabled, clock);
-        preferences.setMarketingAlerts(marketingAlerts, clock);
+                .orElse(NotificationPreferences.defaults(userId));
+        preferences.setEmailEnabled(emailEnabled);
+        preferences.setMarketingAlerts(marketingAlerts);
         // billingAlerts is immutable and always TRUE by invariant.
         repository.save(preferences);
         return preferences;
@@ -50,7 +50,7 @@ public class PreferenceService {
         NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
         NotificationAccessPolicy.requireUserScope(actorUserId, userId);
 
-        NotificationPreferences preferences = NotificationPreferences.defaults(userId, clock);
+        NotificationPreferences preferences = NotificationPreferences.defaults(userId);
         repository.save(preferences);
         return preferences;
     }

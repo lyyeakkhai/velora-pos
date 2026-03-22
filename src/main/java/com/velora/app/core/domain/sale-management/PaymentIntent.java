@@ -2,19 +2,21 @@ package com.velora.app.core.domain.salemanagement;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Temporary payment intent that contains an immutable cart snapshot.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class PaymentIntent {
+public class PaymentIntent extends AbstractAuditableEntity {
 
     private static final Duration DEFAULT_TTL = Duration.ofMinutes(15);
 
@@ -26,34 +28,28 @@ public class PaymentIntent {
         }
     }
 
-    private UUID intentId;
     private String bankRefId;
     private UUID shopId;
     private UUID customerId;
     private BigDecimal totalAmount;
     private String cartSnapshot;
     private PaymentIntentStatus status;
-    private LocalDateTime createdAt;
     private final List<CartItemSnapshot> snapshotItems;
 
     /**
      * Creates a new payment intent (CREATED) with an immutable snapshot.
+     * id and createdAt are managed by the base class.
      */
     public PaymentIntent(String bankRefId, UUID shopId, UUID customerId, List<CartItemSnapshot> snapshotItems,
             String cartSnapshot) {
-        setIntentId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setBankRefId(bankRefId);
         setShopId(shopId);
         setCustomerId(customerId);
         this.snapshotItems = freezeSnapshot(snapshotItems);
         setCartSnapshot(cartSnapshot);
-        setCreatedAt(LocalDateTime.now());
         setStatus(PaymentIntentStatus.CREATED);
         setTotalAmount(sumSnapshot(this.snapshotItems));
-    }
-
-    public UUID getIntentId() {
-        return intentId;
     }
 
     public String getBankRefId() {
@@ -80,10 +76,6 @@ public class PaymentIntent {
         return status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public List<CartItemSnapshot> getSnapshotItems() {
         return snapshotItems;
     }
@@ -99,6 +91,7 @@ public class PaymentIntent {
             throw new IllegalStateException("Intent is not valid");
         }
         setStatus(PaymentIntentStatus.CONFIRMED);
+        touch();
     }
 
     /**
@@ -109,6 +102,7 @@ public class PaymentIntent {
             throw new IllegalStateException("Illegal intent transition from " + status);
         }
         setStatus(PaymentIntentStatus.EXPIRED);
+        touch();
     }
 
     /**
@@ -118,8 +112,7 @@ public class PaymentIntent {
         if (status != PaymentIntentStatus.CREATED) {
             return false;
         }
-        LocalDateTime now = LocalDateTime.now();
-        return createdAt.plus(DEFAULT_TTL).isAfter(now);
+        return getCreatedAt().plus(DEFAULT_TTL).isAfter(java.time.LocalDateTime.now());
     }
 
     private static List<CartItemSnapshot> freezeSnapshot(List<CartItemSnapshot> items) {
@@ -144,14 +137,9 @@ public class PaymentIntent {
         return ValidationUtils.normalizeMoney(sum, "totalAmount");
     }
 
-    private void setIntentId(UUID intentId) {
-        ValidationUtils.validateUUID(intentId, "intentId");
-        this.intentId = intentId;
-    }
-
     private void setBankRefId(String bankRefId) {
         ValidationUtils.validateNotBlank(bankRefId, "bankRefId");
-        this.bankRefId = bankRefId.toString().trim();
+        this.bankRefId = bankRefId.trim();
     }
 
     private void setShopId(UUID shopId) {
@@ -182,35 +170,12 @@ public class PaymentIntent {
         this.status = status;
     }
 
-    private void setCreatedAt(LocalDateTime createdAt) {
-        ValidationUtils.validateNotBlank(createdAt, "createdAt");
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PaymentIntent)) {
-            return false;
-        }
-        PaymentIntent that = (PaymentIntent) o;
-        return Objects.equals(intentId, that.intentId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(intentId);
-    }
-
     @Override
     public String toString() {
-        return "PaymentIntent{" +
-                "intentId=" + intentId +
+        return "PaymentIntent{id=" + getId() +
                 ", bankRefId='" + bankRefId + '\'' +
                 ", status=" + status +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + getCreatedAt() +
                 '}';
     }
 }

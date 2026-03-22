@@ -1,21 +1,21 @@
 package com.velora.app.core.domain.inventoryeventmanagement;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Junction record attaching a product to a discount event.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class EventProduct {
+public class EventProduct extends AbstractAuditableEntity {
 
-    private UUID eventProductId;
     private Integer sortOrder;
     private EventProductStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
     private UUID shopId;
     private UUID productId;
@@ -24,21 +24,14 @@ public class EventProduct {
 
     public EventProduct(UUID shopId, UUID productId, UUID categoryId, UUID eventId, Integer sortOrder,
             EventProductStatus initialStatus) {
-        setEventProductId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setShopId(shopId);
         setProductId(productId);
         setCategoryId(categoryId);
         setEventId(eventId);
         setSortOrder(sortOrder);
         setStatus(initialStatus);
-        LocalDateTime now = LocalDateTime.now();
-        setCreatedAt(now);
-        setUpdatedAt(now);
-        setDeletedAt(null);
-    }
-
-    public UUID getEventProductId() {
-        return eventProductId;
+        this.deletedAt = null;
     }
 
     public Integer getSortOrder() {
@@ -47,14 +40,6 @@ public class EventProduct {
 
     public EventProductStatus getStatus() {
         return status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     public LocalDateTime getDeletedAt() {
@@ -104,7 +89,7 @@ public class EventProduct {
         if (deletedAt != null) {
             return;
         }
-        setDeletedAt(LocalDateTime.now());
+        this.deletedAt = LocalDateTime.now();
         touch();
     }
 
@@ -112,15 +97,6 @@ public class EventProduct {
         ValidationUtils.validateNonNegativeInteger(sortOrder, "sortOrder");
         this.sortOrder = sortOrder;
         touch();
-    }
-
-    private void touch() {
-        setUpdatedAt(LocalDateTime.now());
-    }
-
-    private void setEventProductId(UUID eventProductId) {
-        ValidationUtils.validateUUID(eventProductId, "eventProductId");
-        this.eventProductId = eventProductId;
     }
 
     private void setSortOrder(Integer sortOrder) {
@@ -131,20 +107,6 @@ public class EventProduct {
     private void setStatus(EventProductStatus status) {
         ValidationUtils.validateNotBlank(status, "status");
         this.status = status;
-    }
-
-    private void setCreatedAt(LocalDateTime createdAt) {
-        ValidationUtils.validateNotBlank(createdAt, "createdAt");
-        this.createdAt = createdAt;
-    }
-
-    private void setUpdatedAt(LocalDateTime updatedAt) {
-        ValidationUtils.validateNotBlank(updatedAt, "updatedAt");
-        this.updatedAt = updatedAt;
-    }
-
-    private void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
     }
 
     private void setShopId(UUID shopId) {
@@ -168,26 +130,8 @@ public class EventProduct {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof EventProduct)) {
-            return false;
-        }
-        EventProduct that = (EventProduct) o;
-        return Objects.equals(eventProductId, that.eventProductId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(eventProductId);
-    }
-
-    @Override
     public String toString() {
-        return "EventProduct{" +
-                "eventProductId=" + eventProductId +
+        return "EventProduct{id=" + getId() +
                 ", status=" + status +
                 ", sortOrder=" + sortOrder +
                 '}';

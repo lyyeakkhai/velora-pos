@@ -3,9 +3,9 @@ package com.velora.app.core.domain.payment;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.common.DomainException;
 import com.velora.app.core.utils.ValidationUtils;
 
@@ -14,9 +14,8 @@ import com.velora.app.core.utils.ValidationUtils;
  * <p>
  * Maps to TRANSACTIONS.
  */
-public class Transaction {
+public class Transaction extends AbstractAuditableEntity {
 
-    private UUID transactionId;
     private BigDecimal amount;
     private Currency currency;
     private PayerType payerType;
@@ -24,26 +23,24 @@ public class Transaction {
     private UUID planId;
     private String gatewayRef;
     private TransactionStatus status;
-    private LocalDateTime createdAt;
     private LocalDateTime paidAt;
 
     /**
      * Creates a transaction with mandatory fields. Status defaults to PENDING and
-     * createdAt is auto-set.
+     * createdAt is auto-set via AbstractAuditableEntity.
      */
     public Transaction(BigDecimal amount, Currency currency, PayerType payerType, UUID payerId) {
-        setTransactionId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setAmount(amount);
         setCurrency(currency);
         setPayerType(payerType);
         setPayerId(payerId);
         setStatus(TransactionStatus.PENDING);
-        setCreatedAt(LocalDateTime.now());
-        setPaidAt(null);
+        this.paidAt = null;
     }
 
     public UUID getTransactionId() {
-        return transactionId;
+        return getId();
     }
 
     public BigDecimal getAmount() {
@@ -97,10 +94,6 @@ public class Transaction {
         return status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public LocalDateTime getPaidAt() {
         return paidAt;
     }
@@ -111,7 +104,7 @@ public class Transaction {
     public void markPaid() {
         requireStatus(TransactionStatus.PENDING);
         setStatus(TransactionStatus.PAID);
-        setPaidAt(LocalDateTime.now());
+        this.paidAt = LocalDateTime.now();
     }
 
     /**
@@ -120,18 +113,13 @@ public class Transaction {
     public void markFailed() {
         requireStatus(TransactionStatus.PENDING);
         setStatus(TransactionStatus.FAILED);
-        setPaidAt(null);
+        this.paidAt = null;
     }
 
     private void requireStatus(TransactionStatus expected) {
         if (status != expected) {
             throw new DomainException("Illegal transaction transition from " + status);
         }
-    }
-
-    private void setTransactionId(UUID transactionId) {
-        ValidationUtils.validateUUID(transactionId, "transactionId");
-        this.transactionId = transactionId;
     }
 
     private void setAmount(BigDecimal amount) {
@@ -158,36 +146,10 @@ public class Transaction {
         this.status = status;
     }
 
-    private void setCreatedAt(LocalDateTime createdAt) {
-        ValidationUtils.validateNotBlank(createdAt, "createdAt");
-        this.createdAt = createdAt;
-    }
-
-    private void setPaidAt(LocalDateTime paidAt) {
-        this.paidAt = paidAt;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Transaction)) {
-            return false;
-        }
-        Transaction that = (Transaction) o;
-        return Objects.equals(transactionId, that.transactionId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(transactionId);
-    }
-
     @Override
     public String toString() {
         return "Transaction{" +
-                "transactionId=" + transactionId +
+                "transactionId=" + getId() +
                 ", amount=" + amount +
                 ", currency=" + currency +
                 ", payerType=" + payerType +
@@ -195,7 +157,7 @@ public class Transaction {
                 ", planId=" + planId +
                 ", gatewayRef='" + gatewayRef + '\'' +
                 ", status=" + status +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + getCreatedAt() +
                 ", paidAt=" + paidAt +
                 '}';
     }

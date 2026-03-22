@@ -116,7 +116,7 @@ public class OrderService {
 
             inventoryService.hardDeductStock(intent.getShopId(), toProductQuantities(intent.getSnapshotItems()));
 
-            Receipt receipt = new Receipt(order.getOrderId());
+            Receipt receipt = new Receipt(order.getId());
             receipt.confirmPayment(intent.getBankRefId());
 
             order.markPaid();
@@ -125,11 +125,11 @@ public class OrderService {
             receiptStore.save(receipt);
 
             if (deliveryNeeded) {
-                Delivery delivery = new Delivery(order.getOrderId(), deliveryAddress);
+                Delivery delivery = new Delivery(order.getId(), deliveryAddress);
                 deliveryStore.save(delivery);
             }
 
-            intentStore.delete(intent.getIntentId());
+            intentStore.delete(intent.getId());
             resultHolder[0] = order;
         });
 

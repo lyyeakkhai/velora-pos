@@ -63,7 +63,7 @@ public class ProductService {
                 if (variantStore.existsBySku(draft.sku().trim())) {
                     throw new IllegalStateException("SKU must be unique");
                 }
-                toSave.add(new ProductVariant(product.getProductId(), shopId, categoryId, draft.sku(),
+                toSave.add(new ProductVariant(product.getId(), shopId, categoryId, draft.sku(),
                         draft.stockQuantity(), draft.imageId(), draft.size(), draft.color()));
             }
             variantStore.saveAll(toSave);
@@ -102,7 +102,7 @@ public class ProductService {
             if (variantStore.existsBySku(draft.sku().trim())) {
                 throw new IllegalStateException("SKU must be unique");
             }
-            variants.add(new ProductVariant(product.getProductId(), product.getShopId(), product.getCategoryId(),
+            variants.add(new ProductVariant(product.getId(), product.getShopId(), product.getCategoryId(),
                     draft.sku(), draft.stockQuantity(), draft.imageId(), draft.size(), draft.color()));
         }
         return variantStore.saveAll(variants);

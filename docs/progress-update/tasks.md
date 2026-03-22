@@ -647,3 +647,76 @@ Update status as you complete each task.
 - **Status:** [ ] Not started
 
 ---
+
+## PHASE 4 — POLYMORPHISM
+
+> Goal: Allow the same operation to behave differently depending on the runtime type. Uses strategy pattern, method overriding, and runtime dispatch.
+> Demonstrates: `interface` + multiple implementations, runtime type dispatch, strategy pattern.
+
+---
+
+### POLY-01 — `NotificationSender` Strategy (Notification Dispatch)
+- **Domain:** notification
+- **Files:**
+  - `src/main/java/com/velora/app/core/domain/notification/NotificationSender.java` (new interface)
+  - `src/main/java/com/velora/app/core/domain/notification/InAppNotificationSender.java` (new)
+  - `src/main/java/com/velora/app/core/domain/notification/EmailNotificationSender.java` (new)
+  - `src/main/java/com/velora/app/core/domain/notification/DispatchService.java` (update)
+- **What to implement:**
+  - Interface `NotificationSender`:
+    - `NotificationChannel getChannel()`
+    - `boolean canSend(Notification n, NotificationPreferences prefs)`
+    - `void send(Notification n)`
+  - `InAppNotificationSender` — `canSend()` always returns true; `send()` creates a `NotificationDispatchRecord`
+  - `EmailNotificationSender` — `canSend()` returns true only if `priority == HIGH && prefs.emailEnabled`; `send()` calls `EmailGateway.send()`
+  - `DispatchService` — accepts `List<NotificationSender>`, iterates and calls each polymorphically
+- **Status:** [ ] Not started
+
+---
+
+### POLY-02 — `DiscountStrategy` Strategy (Discount Calculation)
+- **Domain:** inventory-event-management
+- **Files:**
+  - `src/main/java/com/velora/app/core/domain/inventory-event-menagement/DiscountStrategy.java` (new interface)
+  - `src/main/java/com/velora/app/core/domain/inventory-event-menagement/PercentageDiscountStrategy.java` (new)
+  - `src/main/java/com/velora/app/core/domain/inventory-event-menagement/FixedDiscountStrategy.java` (new)
+  - `src/main/java/com/velora/app/core/domain/inventory-event-menagement/DiscountService.java` (update)
+- **What to implement:**
+  - Interface `DiscountStrategy`:
+    - `DiscountType getType()`
+    - `BigDecimal apply(BigDecimal basePrice, BigDecimal discountValue)`
+    - `void validate(BigDecimal discountValue)`
+  - `PercentageDiscountStrategy` — `apply()` returns `basePrice * (1 - discountValue/100)`; `validate()` checks 0 ≤ value ≤ 100
+  - `FixedDiscountStrategy` — `apply()` returns `basePrice - discountValue`; `validate()` checks `discountValue ≤ basePrice`
+  - `DiscountService.calculateFinalPrice()` — look up strategy by `DiscountType`, call `strategy.validate()` then `strategy.apply()`
+- **Status:** [ ] Not started
+
+---
+
+### POLY-03 — `SubscriptionAccount` Interface + Router
+- **Domain:** plan_subscription
+- **Files:**
+  - `src/main/java/com/velora/app/core/domain/plan_subscription/SubscriptionAccount.java` (new interface)
+  - `src/main/java/com/velora/app/core/domain/plan_subscription/SubscriptionActivationRouter.java` (new)
+  - `src/main/java/com/velora/app/core/domain/plan_subscription/UserAccount.java` (add `implements SubscriptionAccount`)
+  - `src/main/java/com/velora/app/core/domain/plan_subscription/ShopAccount.java` (add `implements SubscriptionAccount`)
+  - `src/main/java/com/velora/app/core/domain/plan_subscription/PlanSubscriptionEngine.java` (update)
+- **What to implement:**
+  - Interface `SubscriptionAccount`:
+    - `UUID getSubscriptionId()`, `UUID getPlanId()`, `UUID getRegistryId()`
+    - `void activatePlan(SubscriptionPlan plan)`, `void expire()`, `void cancel()`
+    - `boolean isActive()`, `void markExpiredIfNeeded()`
+  - `SubscriptionActivationRouter` — `route(TargetType, UserAccount, ShopAccount)` returns the correct `SubscriptionAccount` based on `TargetType`
+  - `PlanSubscriptionEngine` — uses `SubscriptionActivationRouter` to get the right account, calls methods on `SubscriptionAccount` interface
+- **Status:** [ ] Not started
+
+---
+
+### POLY-04 — `SnapshotAggregator` Strategy (Analytics Aggregation)
+- **Domain:** report-and-analytic
+- **Files:**
+  - `src/main/java/com/velora/app/core/domain/report-and-analytic/SnapshotAggregator.java` (new interface)
+  - `src/main/java/com/velora/app/core/domain/report-and-analytic/ProductSnapshotAggregator.java` (new)
+  - `src/main/java/com/velora/app/core/domain/report-and-analytic/CategorySnapshotAggregator.java` (new)
+  - `src/main/java/com/velora/app/core/domain/report-and-analytic/DailySnapshotAggregator.java` (new)
+  - `src/main/java/com/velora/app/core/domain/report-and-analytic/AnalyticsAggregationServi

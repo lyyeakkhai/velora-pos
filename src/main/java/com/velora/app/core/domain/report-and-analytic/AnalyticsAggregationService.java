@@ -14,13 +14,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractDomainService;
 import com.velora.app.core.domain.salemanagement.TransactionRunner;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Aggregates transactional read models into immutable analytics snapshots.
  */
-public class AnalyticsAggregationService {
+public class AnalyticsAggregationService extends AbstractDomainService {
 
     private final TransactionRunner transactionRunner;
     private final AnalyticsJobLockStore lockStore;
@@ -41,17 +42,28 @@ public class AnalyticsAggregationService {
             DailyProductSnapshotRepository productSnapshotRepository,
             DailyCategorySnapshotRepository categorySnapshotRepository, DailySnapshotRepository dailySnapshotRepository,
             Clock clock) {
-        this.transactionRunner = require(transactionRunner, "transactionRunner");
-        this.lockStore = require(lockStore, "lockStore");
-        this.runStore = require(runStore, "runStore");
-        this.logStore = require(logStore, "logStore");
-        this.orderReadRepository = require(orderReadRepository, "orderReadRepository");
-        this.orderItemReadRepository = require(orderItemReadRepository, "orderItemReadRepository");
-        this.inventoryReadRepository = require(inventoryReadRepository, "inventoryReadRepository");
-        this.productSnapshotRepository = require(productSnapshotRepository, "productSnapshotRepository");
-        this.categorySnapshotRepository = require(categorySnapshotRepository, "categorySnapshotRepository");
-        this.dailySnapshotRepository = require(dailySnapshotRepository, "dailySnapshotRepository");
-        this.clock = require(clock, "clock");
+        requireNotNull(transactionRunner, "transactionRunner");
+        this.transactionRunner = transactionRunner;
+        requireNotNull(lockStore, "lockStore");
+        this.lockStore = lockStore;
+        requireNotNull(runStore, "runStore");
+        this.runStore = runStore;
+        requireNotNull(logStore, "logStore");
+        this.logStore = logStore;
+        requireNotNull(orderReadRepository, "orderReadRepository");
+        this.orderReadRepository = orderReadRepository;
+        requireNotNull(orderItemReadRepository, "orderItemReadRepository");
+        this.orderItemReadRepository = orderItemReadRepository;
+        requireNotNull(inventoryReadRepository, "inventoryReadRepository");
+        this.inventoryReadRepository = inventoryReadRepository;
+        requireNotNull(productSnapshotRepository, "productSnapshotRepository");
+        this.productSnapshotRepository = productSnapshotRepository;
+        requireNotNull(categorySnapshotRepository, "categorySnapshotRepository");
+        this.categorySnapshotRepository = categorySnapshotRepository;
+        requireNotNull(dailySnapshotRepository, "dailySnapshotRepository");
+        this.dailySnapshotRepository = dailySnapshotRepository;
+        requireNotNull(clock, "clock");
+        this.clock = clock;
     }
 
     /**
@@ -129,7 +141,7 @@ public class AnalyticsAggregationService {
     }
 
     public void persistSnapshots(Aggregates aggregates) {
-        ValidationUtils.validateNotBlank(aggregates, "aggregates");
+        requireNotNull(aggregates, "aggregates");
         productSnapshotRepository.saveAll(aggregates.productSnapshots);
         categorySnapshotRepository.saveAll(aggregates.categorySnapshots);
         dailySnapshotRepository.save(aggregates.dailySnapshot);
@@ -138,7 +150,6 @@ public class AnalyticsAggregationService {
     private Aggregates computeAggregates(UUID shopId, UUID orgId, LocalDate snapshotDate, List<OrderItemFact> items,
             Map<UUID, Integer> stockByVariant, int orderCount, boolean allowVerifiedLossProfitNegative) {
 
-        LocalDateTime createdAt = LocalDateTime.now(clock).atOffset(ZoneOffset.UTC).toLocalDateTime();
 
         Map<ProductKey, ProductAccumulator> productAcc = new HashMap<>();
         for (OrderItemFact item : items) {
@@ -164,9 +175,9 @@ public class AnalyticsAggregationService {
                     : acc.costPriceSum.divide(new BigDecimal(acc.lines), 2, RoundingMode.HALF_UP);
 
             int stockAtMidnight = stockByVariant.getOrDefault(key.variantId, 0);
-            DailyProductSnapshot snapshot = new DailyProductSnapshot(UUID.randomUUID(), snapshotDate, key.productId,
-                    key.variantId, key.sellerId, key.categoryId, shopId, acc.qtySold, baseCostPrice, unitSalePrice,
-                    stockAtMidnight, createdAt);
+            DailyProductSnapshot snapshot = new DailyProductSnapshot(UUID.randomUUID(), snapshotDate, shopId,
+                    key.productId, key.variantId, key.sellerId, key.categoryId, acc.qtySold, baseCostPrice, unitSalePrice,
+                    stockAtMidnight);
             productSnapshots.add(snapshot);
 
             BigDecimal gross = unitSalePrice.multiply(new BigDecimal(acc.qtySold)).setScale(2, RoundingMode.HALF_UP);
@@ -195,22 +206,22 @@ public class AnalyticsAggregationService {
             CategoryAccumulator acc = entry.getValue();
             BigDecimal gross = AnalyticsMoney.normalizeNonNegative(acc.gross, "catGrossRevenue");
             BigDecimal profit = AnalyticsMoney.normalizeSigned(acc.profit, "catNetProfit");
-            DailyCategorySnapshot snap = new DailyCategorySnapshot(UUID.randomUUID(), snapshotDate, categoryId, shopId,
-                    gross, profit, acc.itemsSold, createdAt);
+            DailyCategorySnapshot snap = new DailyCategorySnapshot(UUID.randomUUID(), snapshotDate, shopId, categoryId,
+                    gross, profit, acc.itemsSold);
             categorySnapshots.add(snap);
             totalGross = totalGross.add(gross);
             totalProfit = totalProfit.add(profit);
         }
 
-        DailySnapshot dailySnapshot = new DailySnapshot(UUID.randomUUID(), snapshotDate, orgId, shopId,
+        DailySnapshot dailySnapshot = new DailySnapshot(UUID.randomUUID(), snapshotDate, shopId, orgId,
                 AnalyticsMoney.normalizeNonNegative(totalGross, "totalGross"),
-                AnalyticsMoney.normalizeSigned(totalProfit, "totalProfit"), orderCount, createdAt);
+                AnalyticsMoney.normalizeSigned(totalProfit, "totalProfit"), orderCount);
 
         return new Aggregates(productSnapshots, categorySnapshots, dailySnapshot);
     }
 
-    private static <T> T require(T value, String fieldName) {
-        ValidationUtils.validateNotBlank(value, fieldName);
+    private static <T> T requireStatic(T value, String fieldName) {
+        if (value == null) throw new com.velora.app.common.DomainException(fieldName + " must not be null");
         return value;
     }
 
@@ -221,9 +232,9 @@ public class AnalyticsAggregationService {
 
         public Aggregates(List<DailyProductSnapshot> productSnapshots, List<DailyCategorySnapshot> categorySnapshots,
                 DailySnapshot dailySnapshot) {
-            this.productSnapshots = require(productSnapshots, "productSnapshots");
-            this.categorySnapshots = require(categorySnapshots, "categorySnapshots");
-            this.dailySnapshot = require(dailySnapshot, "dailySnapshot");
+            this.productSnapshots = requireStatic(productSnapshots, "productSnapshots");
+            this.categorySnapshots = requireStatic(categorySnapshots, "categorySnapshots");
+            this.dailySnapshot = requireStatic(dailySnapshot, "dailySnapshot");
         }
     }
 

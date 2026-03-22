@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.notification;
 
+import com.velora.app.common.AbstractDomainService;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.time.Clock;
@@ -10,7 +11,7 @@ import java.util.UUID;
 /**
  * Business service for in-app notification inbox.
  */
-public class NotificationService {
+public class NotificationService extends AbstractDomainService {
 
     private final NotificationRepository notificationRepository;
     private final NotificationDispatchRepository dispatchRepository;
@@ -19,8 +20,8 @@ public class NotificationService {
     public NotificationService(NotificationRepository notificationRepository,
             NotificationDispatchRepository dispatchRepository,
             Clock clock) {
-        ValidationUtils.validateNotBlank(notificationRepository, "notificationRepository");
-        ValidationUtils.validateNotBlank(dispatchRepository, "dispatchRepository");
+        requireNotNull(notificationRepository, "notificationRepository");
+        requireNotNull(dispatchRepository, "dispatchRepository");
         this.notificationRepository = notificationRepository;
         this.dispatchRepository = dispatchRepository;
         this.clock = clock == null ? Clock.systemUTC() : clock;
