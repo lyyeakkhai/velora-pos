@@ -53,8 +53,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `Role extends AbstractEntity` — remove duplicate `roleId`, `equals()`, `hashCode()`
     - _Requirements: 3.4_
 
-- [ ] INH-04 — Apply Inheritance to Store Domain
-  - [ ] INH-04.1 Refactor `src/main/java/com/velora/app/core/domain/store-management/Shop.java`
+- [x] INH-04 — Apply Inheritance to Store Domain
+  - [x] INH-04.1 Refactor `src/main/java/com/velora/app/core/domain/store-management/Shop.java`
     - `Shop extends AbstractAuditableEntity` — remove duplicate `id`, `createdAt`, `updatedAt`
     - Call `touch()` inside `transitionStatus()` and `updateAddress()`
     - _Requirements: 4.1_

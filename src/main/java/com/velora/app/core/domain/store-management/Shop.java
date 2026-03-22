@@ -1,14 +1,17 @@
 package com.velora.app.core.domain.storemanagement;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 import java.util.UUID;
 
 /**
  * Aggregate root for store/vendor shop lifecycle.
+ *
+ * Extends AbstractAuditableEntity to inherit UUID-based identity,
+ * equals/hashCode, and createdAt/updatedAt audit timestamps.
  */
-public class Shop {
+public class Shop extends AbstractAuditableEntity {
 
-    private final UUID shopId;
     private final UUID ownerId;
     private String legalName;
     private String taxId;
@@ -18,19 +21,14 @@ public class Shop {
     private ShopAccount shopAccount;
     private ShopSettings shopSettings;
 
-    public Shop(UUID shopId, UUID ownerId, String slug, Address physicalAddress) {
-        ValidationUtils.validateUUID(shopId, "shopId");
+    public Shop(UUID id, UUID ownerId, String slug, Address physicalAddress) {
+        super(id);
         ValidationUtils.validateUUID(ownerId, "ownerId");
         setSlug(slug);
         setPhysicalAddress(physicalAddress);
-        this.shopId = shopId;
         this.ownerId = ownerId;
         this.status = ShopStatus.PENDING;
         this.shopSettings = ShopSettings.defaultSettings();
-    }
-
-    public UUID getShopId() {
-        return shopId;
     }
 
     public UUID getOwnerId() {
@@ -78,6 +76,7 @@ public class Shop {
             requireLegalIdentityForActivation();
         }
         this.status = newStatus;
+        touch();
     }
 
     private void requireLegalIdentityForActivation() {
@@ -93,6 +92,12 @@ public class Shop {
         return physicalAddress;
     }
 
+    public void updateAddress(Address newAddress) {
+        ValidationUtils.validateNotBlank(newAddress, "physicalAddress");
+        this.physicalAddress = newAddress;
+        touch();
+    }
+
     public void setPhysicalAddress(Address physicalAddress) {
         ValidationUtils.validateNotBlank(physicalAddress, "physicalAddress");
         this.physicalAddress = physicalAddress;
@@ -104,7 +109,7 @@ public class Shop {
 
     public void setShopAccount(ShopAccount shopAccount) {
         ValidationUtils.validateNotBlank(shopAccount, "shopAccount");
-        if (!shopAccount.getShopId().equals(shopId)) {
+        if (!shopAccount.getShopId().equals(getId())) {
             throw new IllegalArgumentException("shopAccount.shopId must match shopId");
         }
         this.shopAccount = shopAccount;
