@@ -72,8 +72,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - _Requirements: 4.3_
 
-- [ ] INH-07 — Apply Inheritance to Payment Domain
-  - [ ] INH-07.1 Refactor `Transaction.java`, `Invoice.java`, `PaymentMethod.java` in `payment`
+- [x] INH-07 — Apply Inheritance to Payment Domain
+  - [x] INH-07.1 Refactor `Transaction.java`, `Invoice.java`, `PaymentMethod.java` in `payment`
     - All three extend `AbstractAuditableEntity`
     - Remove duplicate `id`, `createdAt`, `updatedAt` from each
     - _Requirements: 4.4_

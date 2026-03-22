@@ -1,9 +1,9 @@
 package com.velora.app.core.domain.payment;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.common.DomainException;
 import com.velora.app.core.utils.ValidationUtils;
 
@@ -12,9 +12,8 @@ import com.velora.app.core.utils.ValidationUtils;
  * <p>
  * Maps to INVOICES.
  */
-public class Invoice {
+public class Invoice extends AbstractAuditableEntity {
 
-    private UUID invoiceId;
     private String invoiceNo;
     private UUID transactionId;
     private InvoiceStatus status;
@@ -25,7 +24,7 @@ public class Invoice {
 
     public Invoice(String invoiceNo, UUID transactionId, BigDecimal subTotal, BigDecimal taxAmount,
             BigDecimal totalAmount) {
-        setInvoiceId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setInvoiceNo(invoiceNo);
         setTransactionId(transactionId);
         setSubTotal(subTotal);
@@ -37,7 +36,7 @@ public class Invoice {
     }
 
     public UUID getInvoiceId() {
-        return invoiceId;
+        return getId();
     }
 
     public String getInvoiceNo() {
@@ -122,37 +121,15 @@ public class Invoice {
         setStatus(InvoiceStatus.CANCELLED);
     }
 
-    private void setInvoiceId(UUID invoiceId) {
-        ValidationUtils.validateUUID(invoiceId, "invoiceId");
-        this.invoiceId = invoiceId;
-    }
-
     private void setStatus(InvoiceStatus status) {
         ValidationUtils.validateNotBlank(status, "status");
         this.status = status;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Invoice)) {
-            return false;
-        }
-        Invoice that = (Invoice) o;
-        return Objects.equals(invoiceId, that.invoiceId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(invoiceId);
-    }
-
-    @Override
     public String toString() {
         return "Invoice{" +
-                "invoiceId=" + invoiceId +
+                "invoiceId=" + getId() +
                 ", invoiceNo='" + invoiceNo + '\'' +
                 ", transactionId=" + transactionId +
                 ", status=" + status +

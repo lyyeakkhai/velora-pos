@@ -1,9 +1,9 @@
 package com.velora.app.core.domain.payment;
 
 import java.time.LocalDate;
-import java.util.Objects;
 import java.util.UUID;
 
+import com.velora.app.common.AbstractAuditableEntity;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
@@ -11,9 +11,8 @@ import com.velora.app.core.utils.ValidationUtils;
  * <p>
  * Maps to PAYMENT_METHODS.
  */
-public class PaymentMethod {
+public class PaymentMethod extends AbstractAuditableEntity {
 
-    private UUID methodId;
     private String gatewayToken;
     private CardType cardType;
     private String lastFour;
@@ -23,14 +22,14 @@ public class PaymentMethod {
      * Creates a payment method with mandatory fields.
      */
     public PaymentMethod(CardType cardType, String lastFour, LocalDate expiryDate) {
-        setMethodId(UUID.randomUUID());
+        super(UUID.randomUUID());
         setCardType(cardType);
         setLastFour(lastFour);
         setExpiryDate(expiryDate);
     }
 
     public UUID getMethodId() {
-        return methodId;
+        return getId();
     }
 
     public String getGatewayToken() {
@@ -79,32 +78,10 @@ public class PaymentMethod {
         this.expiryDate = expiryDate;
     }
 
-    private void setMethodId(UUID methodId) {
-        ValidationUtils.validateUUID(methodId, "methodId");
-        this.methodId = methodId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof PaymentMethod)) {
-            return false;
-        }
-        PaymentMethod that = (PaymentMethod) o;
-        return Objects.equals(methodId, that.methodId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(methodId);
-    }
-
     @Override
     public String toString() {
         return "PaymentMethod{" +
-                "methodId=" + methodId +
+                "methodId=" + getId() +
                 ", cardType=" + cardType +
                 ", lastFour='" + lastFour + '\'' +
                 ", expiryDate=" + expiryDate +
