@@ -170,8 +170,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Hide implementation details behind abstract classes with abstract methods. Force subclasses to provide domain-specific behavior while sharing common logic.
 > Demonstrates: `abstract class`, `abstract` methods, template method pattern.
 
-- [ ] ABS-01 — Abstract `AbstractAccessPolicy`
-  - [ ] ABS-01.1 Create `src/main/java/com/velora/app/common/AbstractAccessPolicy.java`
+- [x] ABS-01 — Abstract `AbstractAccessPolicy`
+  - [x] ABS-01.1 Create `src/main/java/com/velora/app/common/AbstractAccessPolicy.java`
     - Abstract method: `abstract void check(Role.RoleName actorRole, String operation)`
     - Concrete method: `void requireAdmin(Role.RoleName actorRole)` — delegates to `check(actorRole, "ADMIN_ONLY")`
     - _Requirements: 9.1, 9.2_
