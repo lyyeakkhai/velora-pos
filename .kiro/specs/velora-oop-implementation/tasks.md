@@ -213,8 +213,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 12: AbstractReportPeriod Date Range Coverage** — `buildReport()` must query the repository using exactly the `DateRange` returned by `getDateRange(endDate)`
     - **Validates: Requirement 11.3**
 
-- [ ] ABS-06 — Abstract `AbstractDiscountCalculator`
-  - [ ] ABS-06.1 Create `src/main/java/com/velora/app/common/AbstractDiscountCalculator.java`
+- [x] ABS-06 — Abstract `AbstractDiscountCalculator`
+  - [x] ABS-06.1 Create `src/main/java/com/velora/app/common/AbstractDiscountCalculator.java`
     - Abstract method: `abstract BigDecimal apply(BigDecimal basePrice, BigDecimal discountValue)`
     - Concrete method: `void validateProfitMargin(BigDecimal finalPrice, BigDecimal costPrice)` — throws `DomainException` if `finalPrice <= costPrice`
     - _Requirements: 12.1, 12.2, 12.3, 25.5_
