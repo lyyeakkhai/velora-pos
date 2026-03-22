@@ -122,8 +122,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* INH-12.2 Write unit test for `AbstractSubscriptionRecord` — `markRefunded()` sets status to REFUNDED
     - **Validates: Requirement 6.2**
 
-- [ ] INH-13 — Apply `AbstractSubscriptionRecord` to Subscription Records
-  - [ ] INH-13.1 Refactor `UserSubscription.java` and `ShopSubscription.java` in `plan_subscription`
+- [x] INH-13 — Apply `AbstractSubscriptionRecord` to Subscription Records
+  - [x] INH-13.1 Refactor `UserSubscription.java` and `ShopSubscription.java` in `plan_subscription`
     - Both extend `AbstractSubscriptionRecord`
     - Remove duplicate shared fields
     - _Requirements: 6.3, 6.4_
