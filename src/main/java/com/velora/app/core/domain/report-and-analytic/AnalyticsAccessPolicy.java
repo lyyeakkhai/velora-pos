@@ -1,6 +1,7 @@
 package com.velora.app.core.domain.reportandanalytic;
 
 import com.velora.app.common.AbstractAccessPolicy;
+import com.velora.app.common.AccessPolicy;
 import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
@@ -11,7 +12,7 @@ import java.util.UUID;
  * Extends AbstractAccessPolicy; implements check() with analytics-specific role rules.
  * Requirements: 9.6
  */
-public class AnalyticsAccessPolicy extends AbstractAccessPolicy {
+public class AnalyticsAccessPolicy extends AbstractAccessPolicy implements AccessPolicy {
 
     @Override
     public void check(Role.RoleName actorRole, String operation) {

@@ -6,8 +6,10 @@ import com.velora.app.core.domain.payment.CardType;
 import com.velora.app.core.domain.payment.Invoice;
 import com.velora.app.core.domain.payment.InvoiceRepository;
 import com.velora.app.core.domain.payment.PayerType;
+import com.velora.app.core.domain.payment.PaymentIntent;
 import com.velora.app.core.domain.payment.PaymentMethod;
 import com.velora.app.core.domain.payment.PaymentMethodRepository;
+import com.velora.app.core.domain.payment.PaymentProcessor;
 import com.velora.app.core.domain.payment.PlatformRevenueSnapshot;
 import com.velora.app.core.domain.payment.PlatformRevenueSnapshotRepository;
 import com.velora.app.core.domain.payment.Transaction;
@@ -17,6 +19,8 @@ import com.velora.app.core.service.IPaymentService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -25,7 +29,7 @@ import java.util.UUID;
  * <p>Extends {@link AbstractDomainService} to reuse {@code requireNotNull} guard methods.
  * Delegates domain logic to the payment domain entities.
  *
- * <p>Requirements: 16.7
+ * <p>Requirements: 16.7, 22.4, 22.5
  */
 public class PaymentService extends AbstractDomainService implements IPaymentService {
 
@@ -33,16 +37,19 @@ public class PaymentService extends AbstractDomainService implements IPaymentSer
     private final InvoiceRepository invoiceRepository;
     private final PaymentMethodRepository paymentMethodRepository;
     private final PlatformRevenueSnapshotRepository platformRevenueSnapshotRepository;
+    private final List<PaymentProcessor> processors;
 
     public PaymentService(
             TransactionRepository transactionRepository,
             InvoiceRepository invoiceRepository,
             PaymentMethodRepository paymentMethodRepository,
-            PlatformRevenueSnapshotRepository platformRevenueSnapshotRepository) {
+            PlatformRevenueSnapshotRepository platformRevenueSnapshotRepository,
+            List<PaymentProcessor> processors) {
         this.transactionRepository = transactionRepository;
         this.invoiceRepository = invoiceRepository;
         this.paymentMethodRepository = paymentMethodRepository;
         this.platformRevenueSnapshotRepository = platformRevenueSnapshotRepository;
+        this.processors = processors != null ? processors : List.of();
     }
 
     /**
@@ -165,6 +172,38 @@ public class PaymentService extends AbstractDomainService implements IPaymentSer
 
         PaymentMethod paymentMethod = new PaymentMethod(cardType, lastFour, expiryDate);
         return paymentMethodRepository.save(paymentMethod);
+    }
+
+    /**
+     * Looks up the correct {@link PaymentProcessor} by card type (null = QR code),
+     * creates a {@link PaymentIntent}, and verifies it.
+     *
+     * <p>If {@link PaymentProcessor#verify} returns {@code false}, a {@link DomainException}
+     * is thrown.
+     *
+     * @param transaction the transaction to process
+     * @param cardType    the card type of the payment method, or {@code null} for QR code
+     * @param gatewayRef  the gateway reference to verify
+     * @return the created and verified {@link PaymentIntent}
+     * @throws DomainException if no processor is found or verification fails
+     */
+    public PaymentIntent processPayment(Transaction transaction, CardType cardType, String gatewayRef) {
+        requireNotNull(transaction, "transaction");
+        requireNotNull(gatewayRef, "gatewayRef");
+
+        PaymentProcessor processor = processors.stream()
+                .filter(p -> Objects.equals(p.getSupportedCardType(), cardType))
+                .findFirst()
+                .orElseThrow(() -> new DomainException(
+                        "No PaymentProcessor found for card type: " + cardType));
+
+        PaymentIntent intent = processor.createIntent(transaction);
+
+        if (!processor.verify(gatewayRef, transaction.getAmount())) {
+            throw new DomainException("Payment verification failed for gatewayRef: " + gatewayRef);
+        }
+
+        return intent;
     }
 
     /**

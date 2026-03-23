@@ -439,8 +439,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Allow the same operation to behave differently depending on the runtime type. Uses strategy pattern, method overriding, and runtime dispatch.
 > Demonstrates: `interface` + multiple implementations, runtime type dispatch, strategy pattern.
 
-- [ ] POLY-01 — `NotificationSender` Strategy (Notification Dispatch)
-  - [ ] POLY-01.1 Create `NotificationSender.java` interface and implementations in `notification`
+- [x] POLY-01 — `NotificationSender` Strategy (Notification Dispatch)
+  - [x] POLY-01.1 Create `NotificationSender.java` interface and implementations in `notification`
     - Interface `NotificationSender`: `getChannel()`, `canSend(Notification, NotificationPreferences)`, `send(Notification)`
     - `InAppNotificationSender` — `canSend()` always returns true; `send()` creates a `NotificationDispatchRecord`
     - `EmailNotificationSender` — `canSend()` returns true only if `priority == HIGH && prefs.emailEnabled`; `send()` calls `EmailGateway.send()`
@@ -452,8 +452,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-01.3 Write unit test for `DispatchService` — iterates all senders without modification when new sender added
     - **Validates: Requirement 17.5**
 
-- [ ] POLY-02 — `DiscountStrategy` Strategy (Discount Calculation)
-  - [ ] POLY-02.1 Create `DiscountStrategy.java` interface and implementations in `inventory-event-menagement`
+- [x] POLY-02 — `DiscountStrategy` Strategy (Discount Calculation)
+  - [x] POLY-02.1 Create `DiscountStrategy.java` interface and implementations in `inventory-event-menagement`
     - Interface `DiscountStrategy`: `getType()`, `apply(BigDecimal, BigDecimal)`, `validate(BigDecimal)`
     - `PercentageDiscountStrategy` — `apply()` returns `basePrice * (1 - discountValue/100)` with HALF_UP; `validate()` checks 0 ≤ value ≤ 100
     - `FixedDiscountStrategy` — `apply()` returns `basePrice - discountValue`; `validate()` checks `discountValue ≤ basePrice`
@@ -463,8 +463,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 17: DiscountStrategy Apply Formulas** — `PercentageDiscountStrategy.apply()` must return `basePrice * (1 - discountValue/100)` with HALF_UP; `FixedDiscountStrategy.apply()` must return `basePrice - discountValue`; both must produce result > costPrice after `validateProfitMargin()`
     - **Validates: Requirements 18.2, 18.3, 18.6**
 
-- [ ] POLY-03 — `SubscriptionAccount` Interface + Router
-  - [ ] POLY-03.1 Create `SubscriptionAccount.java` interface and `SubscriptionActivationRouter.java` in `plan_subscription`
+- [x] POLY-03 — `SubscriptionAccount` Interface + Router
+  - [x] POLY-03.1 Create `SubscriptionAccount.java` interface and `SubscriptionActivationRouter.java` in `plan_subscription`
     - Interface `SubscriptionAccount`: `getSubscriptionId()`, `getPlanId()`, `getRegistryId()`, `activatePlan(SubscriptionPlan)`, `expire()`, `cancel()`, `isActive()`, `markExpiredIfNeeded()`
     - `UserAccount` and `ShopAccount` add `implements SubscriptionAccount`
     - `SubscriptionActivationRouter.route(TargetType, UserAccount, ShopAccount)` — returns correct `SubscriptionAccount`; unknown `TargetType` throws `DomainException`
@@ -473,8 +473,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-03.2 Write unit test for `SubscriptionActivationRouter` — unknown `TargetType` throws `DomainException`
     - **Validates: Requirement 19.5**
 
-- [ ] POLY-04 — `SnapshotAggregator` Strategy (Analytics Aggregation)
-  - [ ] POLY-04.1 Create `SnapshotAggregator.java` interface and implementations in `report-and-analytic`
+- [x] POLY-04 — `SnapshotAggregator` Strategy (Analytics Aggregation)
+  - [x] POLY-04.1 Create `SnapshotAggregator.java` interface and implementations in `report-and-analytic`
     - Interface `SnapshotAggregator<T>`: `getAggregatorName()`, `alreadyExists(UUID, LocalDate)`, `aggregate(UUID, LocalDate)`, `persist(T)`
     - `ProductSnapshotAggregator` — aggregates from order items + inventory data
     - `CategorySnapshotAggregator` — aggregates from product snapshots
@@ -485,8 +485,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 18: SnapshotAggregator Idempotency via Interface** — if `alreadyExists(shopId, date)` returns true, calling the aggregation pipeline must produce no side effects
     - **Validates: Requirement 20.6**
 
-- [ ] POLY-05 — `ReportPeriodStrategy` Strategy (Report Period Date Ranges)
-  - [ ] POLY-05.1 Create `ReportPeriodStrategy.java` interface and implementations in `report-and-analytic`
+- [x] POLY-05 — `ReportPeriodStrategy` Strategy (Report Period Date Ranges)
+  - [x] POLY-05.1 Create `ReportPeriodStrategy.java` interface and implementations in `report-and-analytic`
     - Interface `ReportPeriodStrategy`: `getDateRange(LocalDate)`, `getPeriodName()`, `requiresOwnerRole()`
     - `DailyReportStrategy` — single-day range, `requiresOwnerRole()` false
     - `WeeklyReportStrategy` — range from `endDate - 6 days` to `endDate`, `requiresOwnerRole()` false
@@ -498,8 +498,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 19: ReportPeriodStrategy Date Range Correctness** — `WeeklyReportStrategy.getDateRange()` must return range from `endDate.minusDays(6)` to `endDate`; `AnnualReportStrategy.getDateRange()` must return range from first day of year to `endDate`
     - **Validates: Requirements 21.3, 21.5**
 
-- [ ] POLY-06 — `PaymentProcessor` Strategy (Payment Method Processing)
-  - [ ] POLY-06.1 Create `PaymentProcessor.java` interface and implementations in `payment`
+- [x] POLY-06 — `PaymentProcessor` Strategy (Payment Method Processing)
+  - [x] POLY-06.1 Create `PaymentProcessor.java` interface and implementations in `payment`
     - Interface `PaymentProcessor`: `getSupportedCardType()`, `createIntent(Transaction)`, `verify(String, BigDecimal)`
     - `CardPaymentProcessor` — handles VISA, MASTERCARD, AMEX
     - `QrCodePaymentProcessor` — returns null from `getSupportedCardType()`; handles QR code generation and verification
@@ -508,8 +508,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-06.2 Write unit test for `PaymentProcessor` — `verify()` returning false causes `PaymentService` to throw `DomainException`
     - **Validates: Requirement 22.5**
 
-- [ ] POLY-07 — `ForecastStrategy` Strategy (Out-of-Stock Prediction)
-  - [ ] POLY-07.1 Create `ForecastStrategy.java` interface and implementations in `report-and-analytic`
+- [x] POLY-07 — `ForecastStrategy` Strategy (Out-of-Stock Prediction)
+  - [x] POLY-07.1 Create `ForecastStrategy.java` interface and implementations in `report-and-analytic`
     - Interface `ForecastStrategy`: `getForecastType()`, `predict(List<DailyProductSnapshot>)`
     - `LinearTrendForecastStrategy` — simple linear regression on `qtySold`
     - `MovingAverageForecastStrategy` — 7-day moving average on `qtySold`
@@ -518,8 +518,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-07.2 Write unit test for `ForecastStrategy` — empty snapshot list returns empty list without throwing
     - **Validates: Requirement 23.5**
 
-- [ ] POLY-08 — `AccessPolicy` Interface (Role-Based Access Polymorphism)
-  - [ ] POLY-08.1 Create `AccessPolicy.java` interface in `common` and refactor all policy classes
+- [x] POLY-08 — `AccessPolicy` Interface (Role-Based Access Polymorphism)
+  - [x] POLY-08.1 Create `AccessPolicy.java` interface in `common` and refactor all policy classes
     - Interface `AccessPolicy`: `void check(Role.RoleName actorRole, String operation)`
     - `AnalyticsAccessPolicy`, `FeedbackAccessPolicy`, `NotificationAccessPolicy`, `RolePolicy` all implement `AccessPolicy`
     - Each extends `AbstractAccessPolicy` (from ABS-02) and implements `AccessPolicy`
@@ -528,7 +528,7 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 20: AccessPolicy SUPER_ADMIN Always Passes** — for any `AccessPolicy` implementation, `check(SUPER_ADMIN, operation)` must not throw for any operation
     - **Validates: Requirement 24.7**
 
-- [ ] Checkpoint — Phase 4 complete
+- [x] Checkpoint — Phase 4 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 ---

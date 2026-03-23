@@ -15,7 +15,7 @@ import com.velora.app.core.utils.ValidationUtils;
  *
  * <p>Requirements: 5.8
  */
-public class UserAccount extends AbstractSubscriptionAccount {
+public class UserAccount extends AbstractSubscriptionAccount implements SubscriptionAccount {
 
     private UUID userId;
     private UUID transactionId;

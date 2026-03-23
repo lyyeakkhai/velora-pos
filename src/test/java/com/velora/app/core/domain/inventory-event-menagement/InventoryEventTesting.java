@@ -79,7 +79,7 @@ public class InventoryEventTesting {
         discountService.validateDiscount(Role.RoleName.OWNER, event, new BigDecimal("100"), new BigDecimal("20"), 0);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = com.velora.app.common.DomainException.class)
     public void discountService_rejectsBelowCost() {
         InMemoryEventTypeStore eventStore = new InMemoryEventTypeStore();
         DiscountService discountService = new DiscountService(eventStore, new InMemoryEventProductStore());
