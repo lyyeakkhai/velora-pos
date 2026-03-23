@@ -393,8 +393,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `submitSuggestion`, `editSuggestion`, `updateStatus`, `listMySuggestions`, `adminListByStatus`
     - _Requirements: 16.9_
 
-- [ ] INT-20 — Implement `AnalyticsService`
-  - [ ] INT-20.1 Create `src/main/java/com/velora/app/core/service/analytics/AnalyticsService.java`
+- [x] INT-20 — Implement `AnalyticsService`
+  - [x] INT-20.1 Create `src/main/java/com/velora/app/core/service/analytics/AnalyticsService.java`
     - `AnalyticsService implements IAnalyticsService`
     - `runDailyAggregation`, `getDailyReport`, `getWeeklyReport`, `getMonthlyReport`, `getAnnualReport`, `rankSellers`, `getCategoryTrends`, `predictOutOfStock`
     - _Requirements: 16.10_
