@@ -344,8 +344,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `updateUserStatus(actorId, userId, newStatus)` — admin only, update User status
     - _Requirements: 16.2_
 
-- [ ] INT-13 — Implement `SubscriptionService`
-  - [ ] INT-13.1 Create `src/main/java/com/velora/app/core/service/subscription/SubscriptionService.java`
+- [x] INT-13 — Implement `SubscriptionService`
+  - [x] INT-13.1 Create `src/main/java/com/velora/app/core/service/subscription/SubscriptionService.java`
     - `SubscriptionService implements ISubscriptionService`
     - `onboardUser(userId, basicPlanId)` — create PlatformRegistry, create UserAccount, activate free plan
     - `activateUserPlan(userId, planId, transactionId)` — load UserAccount, call `activatePlan(plan)`
