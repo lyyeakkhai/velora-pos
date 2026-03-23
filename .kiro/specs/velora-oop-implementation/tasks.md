@@ -268,8 +268,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `save(Shop)`, `findById(UUID)`, `findBySlug(String)`, `findByOwnerId(UUID)`, `existsBySlug(String)`
     - _Requirements: 14.3_
 
-- [ ] INT-04 — Inventory Store Interfaces
-  - [ ] INT-04.1 Verify `ProductStore.java`, `ProductVariantStore.java`, `CategoryStore.java`, `EventTypeStore.java`, `EventProductStore.java` in `inventory-event-menagement`
+- [x] INT-04 — Inventory Store Interfaces
+  - [x] INT-04.1 Verify `ProductStore.java`, `ProductVariantStore.java`, `CategoryStore.java`, `EventTypeStore.java`, `EventProductStore.java` in `inventory-event-menagement`
     - `ProductStore` — `save(Product)`, `findById(UUID)`, `findByShopId(UUID)`
     - `ProductVariantStore` — `save(ProductVariant)`, `findByProductId(UUID)`, `findBySku(String)`
     - `CategoryStore` — `save(Category)`, `findByShopId(UUID)`
