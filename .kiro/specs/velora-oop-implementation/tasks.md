@@ -429,7 +429,7 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `PostgresDailySnapshotRepository implements DailySnapshotRepository`
     - _Requirements: 14.1–14.11_
 
-- [ ] Checkpoint — Phase 3 complete
+- [x] Checkpoint — Phase 3 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 ---

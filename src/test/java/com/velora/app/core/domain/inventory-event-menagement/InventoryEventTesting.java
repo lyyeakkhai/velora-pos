@@ -149,6 +149,15 @@ public class InventoryEventTesting {
         public Optional<Category> findById(UUID categoryId) {
             return Optional.ofNullable(byId.get(categoryId));
         }
+
+        @Override
+        public List<Category> findByShopId(UUID shopId) {
+            List<Category> result = new ArrayList<>();
+            for (Category c : byId.values()) {
+                if (c.getShopId().equals(shopId)) result.add(c);
+            }
+            return result;
+        }
     }
 
     private static class InMemoryProductStore implements ProductStore {
@@ -184,6 +193,15 @@ public class InventoryEventTesting {
         public Optional<Product> findById(UUID productId) {
             return Optional.ofNullable(byId.get(productId));
         }
+
+        @Override
+        public List<Product> findByShopId(UUID shopId) {
+            List<Product> result = new ArrayList<>();
+            for (Product p : byId.values()) {
+                if (p.getShopId().equals(shopId)) result.add(p);
+            }
+            return result;
+        }
     }
 
     private static class InMemoryVariantStore implements ProductVariantStore {
@@ -194,6 +212,14 @@ public class InventoryEventTesting {
         @Override
         public boolean existsBySku(String sku) {
             return bySku.containsKey(sku);
+        }
+
+        @Override
+        public ProductVariant save(ProductVariant variant) {
+            byId.put(variant.getId(), variant);
+            bySku.put(variant.getSku(), variant.getId());
+            saved.add(variant);
+            return variant;
         }
 
         @Override
@@ -210,6 +236,21 @@ public class InventoryEventTesting {
         public Optional<ProductVariant> findById(UUID variantId) {
             return Optional.ofNullable(byId.get(variantId));
         }
+
+        @Override
+        public List<ProductVariant> findByProductId(UUID productId) {
+            List<ProductVariant> result = new ArrayList<>();
+            for (ProductVariant v : byId.values()) {
+                if (v.getProductId().equals(productId)) result.add(v);
+            }
+            return result;
+        }
+
+        @Override
+        public Optional<ProductVariant> findBySku(String sku) {
+            UUID id = bySku.get(sku);
+            return id == null ? Optional.empty() : Optional.ofNullable(byId.get(id));
+        }
     }
 
     private static class InMemoryEventTypeStore implements EventTypeStore {
@@ -224,6 +265,15 @@ public class InventoryEventTesting {
         @Override
         public Optional<EventType> findById(UUID eventId) {
             return Optional.ofNullable(byId.get(eventId));
+        }
+
+        @Override
+        public List<EventType> findByShopId(UUID shopId) {
+            List<EventType> result = new ArrayList<>();
+            for (EventType e : byId.values()) {
+                if (e.getShopId().equals(shopId)) result.add(e);
+            }
+            return result;
         }
     }
 
@@ -246,6 +296,24 @@ public class InventoryEventTesting {
         @Override
         public Optional<EventProduct> findById(UUID eventProductId) {
             return Optional.ofNullable(byId.get(eventProductId));
+        }
+
+        @Override
+        public List<EventProduct> findByEventId(UUID eventId) {
+            List<EventProduct> result = new ArrayList<>();
+            for (EventProduct ep : byId.values()) {
+                if (ep.getEventId().equals(eventId)) result.add(ep);
+            }
+            return result;
+        }
+
+        @Override
+        public List<EventProduct> findByProductId(UUID productId) {
+            List<EventProduct> result = new ArrayList<>();
+            for (EventProduct ep : byId.values()) {
+                if (ep.getProductId().equals(productId)) result.add(ep);
+            }
+            return result;
         }
     }
 }
