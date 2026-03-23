@@ -452,8 +452,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-01.3 Write unit test for `DispatchService` — iterates all senders without modification when new sender added
     - **Validates: Requirement 17.5**
 
-- [ ] POLY-02 — `DiscountStrategy` Strategy (Discount Calculation)
-  - [ ] POLY-02.1 Create `DiscountStrategy.java` interface and implementations in `inventory-event-menagement`
+- [x] POLY-02 — `DiscountStrategy` Strategy (Discount Calculation)
+  - [x] POLY-02.1 Create `DiscountStrategy.java` interface and implementations in `inventory-event-menagement`
     - Interface `DiscountStrategy`: `getType()`, `apply(BigDecimal, BigDecimal)`, `validate(BigDecimal)`
     - `PercentageDiscountStrategy` — `apply()` returns `basePrice * (1 - discountValue/100)` with HALF_UP; `validate()` checks 0 ≤ value ≤ 100
     - `FixedDiscountStrategy` — `apply()` returns `basePrice - discountValue`; `validate()` checks `discountValue ≤ basePrice`
