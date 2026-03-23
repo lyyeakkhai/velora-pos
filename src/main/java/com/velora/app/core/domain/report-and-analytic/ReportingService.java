@@ -12,6 +12,11 @@ import com.velora.app.core.utils.ValidationUtils;
 
 /**
  * Snapshot-only reporting service.
+ *
+ * <p>Period reports delegate date-range calculation to a {@link ReportPeriodStrategy},
+ * keeping this service free of period-specific branching logic.
+ *
+ * <p>Requirements: 21.6
  */
 public class ReportingService extends AbstractDomainService {
 
@@ -34,28 +39,49 @@ public class ReportingService extends AbstractDomainService {
         return new DailyReportDTO(snapshotDate, snap.getTotalGross(), snap.getTotalProfit(), snap.getOrderCount());
     }
 
+    /**
+     * Build a period report using the provided {@link ReportPeriodStrategy}.
+     *
+     * <p>If the strategy requires owner role, the actor must hold OWNER; otherwise
+     * MANAGER or OWNER is sufficient.
+     *
+     * @param strategy  the period strategy that determines the date range
+     * @param actorRole the role of the requesting actor
+     * @param shopId    the shop to report on
+     * @param endDate   the inclusive end date of the report period
+     * @return the assembled period report
+     */
+    public PeriodReportDTO getPeriodReport(ReportPeriodStrategy strategy,
+            Role.RoleName actorRole, UUID shopId, LocalDate endDate) {
+        requireNotNull(strategy, "strategy");
+        ValidationUtils.validateUUID(shopId, "shopId");
+        ValidationUtils.validateNotBlank(endDate, "endDate");
+
+        if (strategy.requiresOwnerRole()) {
+            policy.requireOwner(actorRole);
+        } else {
+            policy.requireManagerOrOwner(actorRole);
+        }
+
+        DateRange range = strategy.getDateRange(endDate);
+        return buildPeriodReport(shopId, range);
+    }
+
     public PeriodReportDTO getWeeklyReport(Role.RoleName actorRole, UUID shopId, LocalDate endDateInclusive) {
-        policy.requireManagerOrOwner(actorRole);
-        return getPeriodReport(shopId, new DateRange(endDateInclusive.minusDays(6), endDateInclusive));
+        return getPeriodReport(new WeeklyReportStrategy(), actorRole, shopId, endDateInclusive);
     }
 
     public PeriodReportDTO getMonthlyReport(Role.RoleName actorRole, UUID shopId, LocalDate endDateInclusive) {
-        policy.requireManagerOrOwner(actorRole);
-        LocalDate start = endDateInclusive.withDayOfMonth(1);
-        return getPeriodReport(shopId, new DateRange(start, endDateInclusive));
+        return getPeriodReport(new MonthlyReportStrategy(), actorRole, shopId, endDateInclusive);
     }
 
     public PeriodReportDTO getAnnualReport(Role.RoleName actorRole, UUID shopId, LocalDate endDateInclusive) {
-        policy.requireOwner(actorRole);
-        LocalDate start = endDateInclusive.withDayOfYear(1);
-        return getPeriodReport(shopId, new DateRange(start, endDateInclusive));
+        return getPeriodReport(new AnnualReportStrategy(), actorRole, shopId, endDateInclusive);
     }
 
-    private PeriodReportDTO getPeriodReport(UUID shopId, DateRange range) {
-        ValidationUtils.validateUUID(shopId, "shopId");
-        ValidationUtils.validateNotBlank(range, "range");
-        List<DailySnapshot> snaps = dailySnapshotRepository.findByShopAndDateRange(shopId, range.startInclusive(),
-                range.endInclusive());
+    private PeriodReportDTO buildPeriodReport(UUID shopId, DateRange range) {
+        List<DailySnapshot> snaps = dailySnapshotRepository.findByShopAndDateRange(
+                shopId, range.startInclusive(), range.endInclusive());
 
         BigDecimal totalGross = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         BigDecimal totalProfit = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
@@ -68,5 +94,4 @@ public class ReportingService extends AbstractDomainService {
         BigDecimal avgProfit = totalProfit.divide(new BigDecimal(days), 2, RoundingMode.HALF_UP);
         return new PeriodReportDTO(range, totalGross, totalProfit, avgGross, avgProfit, days);
     }
-
 }

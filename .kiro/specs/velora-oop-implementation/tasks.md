@@ -485,8 +485,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 18: SnapshotAggregator Idempotency via Interface** — if `alreadyExists(shopId, date)` returns true, calling the aggregation pipeline must produce no side effects
     - **Validates: Requirement 20.6**
 
-- [ ] POLY-05 — `ReportPeriodStrategy` Strategy (Report Period Date Ranges)
-  - [ ] POLY-05.1 Create `ReportPeriodStrategy.java` interface and implementations in `report-and-analytic`
+- [x] POLY-05 — `ReportPeriodStrategy` Strategy (Report Period Date Ranges)
+  - [x] POLY-05.1 Create `ReportPeriodStrategy.java` interface and implementations in `report-and-analytic`
     - Interface `ReportPeriodStrategy`: `getDateRange(LocalDate)`, `getPeriodName()`, `requiresOwnerRole()`
     - `DailyReportStrategy` — single-day range, `requiresOwnerRole()` false
     - `WeeklyReportStrategy` — range from `endDate - 6 days` to `endDate`, `requiresOwnerRole()` false
