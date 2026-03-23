@@ -369,8 +369,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `createProductAtomic`, `updateProduct`, `bulkInsertVariants`, `createEvent`, `attachProductToEvent`, `calculateFinalPrice`, `createCategory`
     - _Requirements: 16.5_
 
-- [ ] INT-16 — Implement `SaleOrchestrationService`
-  - [ ] INT-16.1 Create `src/main/java/com/velora/app/core/service/sale/SaleOrchestrationService.java`
+- [x] INT-16 — Implement `SaleOrchestrationService`
+  - [x] INT-16.1 Create `src/main/java/com/velora/app/core/service/sale/SaleOrchestrationService.java`
     - `SaleOrchestrationService implements ISaleOrchestrationService`
     - `createPaymentIntent`, `handlePaymentWebhook`, `finalizeOrder`, `expireStaleIntents`, `cancelUnpaidOrders`
     - _Requirements: 16.6_
