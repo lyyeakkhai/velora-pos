@@ -16,14 +16,16 @@ import com.velora.app.core.utils.ValidationUtils;
 public class ReportingService extends AbstractDomainService {
 
     private final DailySnapshotRepository dailySnapshotRepository;
+    private final AnalyticsAccessPolicy policy;
 
     public ReportingService(DailySnapshotRepository dailySnapshotRepository) {
         requireNotNull(dailySnapshotRepository, "dailySnapshotRepository");
         this.dailySnapshotRepository = dailySnapshotRepository;
+        this.policy = new AnalyticsAccessPolicy();
     }
 
     public DailyReportDTO getDailyReport(Role.RoleName actorRole, UUID shopId, LocalDate snapshotDate) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         ValidationUtils.validateNotBlank(snapshotDate, "snapshotDate");
 
@@ -33,18 +35,18 @@ public class ReportingService extends AbstractDomainService {
     }
 
     public PeriodReportDTO getWeeklyReport(Role.RoleName actorRole, UUID shopId, LocalDate endDateInclusive) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         return getPeriodReport(shopId, new DateRange(endDateInclusive.minusDays(6), endDateInclusive));
     }
 
     public PeriodReportDTO getMonthlyReport(Role.RoleName actorRole, UUID shopId, LocalDate endDateInclusive) {
-        AnalyticsAccessPolicy.requireManagerOrOwner(actorRole);
+        policy.requireManagerOrOwner(actorRole);
         LocalDate start = endDateInclusive.withDayOfMonth(1);
         return getPeriodReport(shopId, new DateRange(start, endDateInclusive));
     }
 
     public PeriodReportDTO getAnnualReport(Role.RoleName actorRole, UUID shopId, LocalDate endDateInclusive) {
-        AnalyticsAccessPolicy.requireOwner(actorRole);
+        policy.requireOwner(actorRole);
         LocalDate start = endDateInclusive.withDayOfYear(1);
         return getPeriodReport(shopId, new DateRange(start, endDateInclusive));
     }

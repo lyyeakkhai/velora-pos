@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.inventoryeventmanagement;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,4 +13,8 @@ public interface EventProductStore {
     EventProduct save(EventProduct eventProduct);
 
     Optional<EventProduct> findById(UUID eventProductId);
+
+    List<EventProduct> findByEventId(UUID eventId);
+
+    List<EventProduct> findByProductId(UUID productId);
 }

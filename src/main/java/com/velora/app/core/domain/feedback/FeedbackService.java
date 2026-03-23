@@ -12,10 +12,12 @@ import java.util.UUID;
 public class FeedbackService extends AbstractDomainService {
 
     private final FeatureSuggestionRepository repository;
+    private final FeedbackAccessPolicy policy;
 
     public FeedbackService(FeatureSuggestionRepository repository) {
         requireNotNull(repository, "repository");
         this.repository = repository;
+        this.policy = new FeedbackAccessPolicy();
     }
 
     public FeatureSuggestion submitSuggestion(UUID userId, SuggestionCategory category, String problemText,
@@ -39,7 +41,7 @@ public class FeedbackService extends AbstractDomainService {
         FeatureSuggestion suggestion = repository.findById(suggestionId)
                 .orElseThrow(() -> new IllegalStateException("suggestion not found"));
 
-        FeedbackAccessPolicy.requireOwner(actorUserId, suggestion.getUserId());
+        policy.requireOwner(actorUserId, suggestion.getUserId());
         if (suggestion.getStatus() != SuggestionStatus.NEW) {
             throw new IllegalStateException("Suggestion can only be edited while NEW");
         }
@@ -53,7 +55,7 @@ public class FeedbackService extends AbstractDomainService {
             Role.RoleName actorRole) {
         ValidationUtils.validateUUID(suggestionId, "suggestionId");
         ValidationUtils.validateNotBlank(newStatus, "newStatus");
-        FeedbackAccessPolicy.requireAdmin(actorRole);
+        policy.requireAdmin(actorRole);
 
         FeatureSuggestion suggestion = repository.findById(suggestionId)
                 .orElseThrow(() -> new IllegalStateException("suggestion not found"));
@@ -70,7 +72,7 @@ public class FeedbackService extends AbstractDomainService {
 
     public List<FeatureSuggestion> adminListByStatus(SuggestionStatus status, Role.RoleName actorRole) {
         ValidationUtils.validateNotBlank(status, "status");
-        FeedbackAccessPolicy.requireAdmin(actorRole);
+        policy.requireAdmin(actorRole);
         return repository.findByStatus(status);
     }
 }

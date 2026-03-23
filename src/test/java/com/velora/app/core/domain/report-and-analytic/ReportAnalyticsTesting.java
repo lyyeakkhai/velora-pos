@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.domain.salemanagement.TransactionRunner;
 
@@ -113,7 +114,7 @@ public class ReportAnalyticsTesting {
                 svc.runDailyAggregation(shopId, orgId, date, false));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = DomainException.class)
     public void reporting_deniesSellerShopReports() {
         ReportingService svc = new ReportingService(new InMemoryDailySnapshotRepo());
         svc.getDailyReport(Role.RoleName.SELLER, UUID.randomUUID(), LocalDate.of(2026, 3, 1));
@@ -139,7 +140,7 @@ public class ReportAnalyticsTesting {
         try {
             svc.getSellerPerformance(Role.RoleName.SELLER, seller, otherSeller, shopId, start, end);
             throw new AssertionError("Expected exception");
-        } catch (IllegalStateException expected) {
+        } catch (DomainException expected) {
             // ok
         }
     }
@@ -209,9 +210,26 @@ public class ReportAnalyticsTesting {
         }
 
         @Override
+        public DailyProductSnapshot save(DailyProductSnapshot snapshot) {
+            saved.add(snapshot);
+            return snapshot;
+        }
+
+        @Override
         public List<DailyProductSnapshot> saveAll(List<DailyProductSnapshot> snapshots) {
             saved.addAll(snapshots);
             return snapshots;
+        }
+
+        @Override
+        public List<DailyProductSnapshot> findByShopAndDate(UUID shopId, LocalDate snapshotDate) {
+            List<DailyProductSnapshot> out = new ArrayList<>();
+            for (DailyProductSnapshot s : saved) {
+                if (s.getShopId().equals(shopId) && s.getSnapshotDate().equals(snapshotDate)) {
+                    out.add(s);
+                }
+            }
+            return out;
         }
 
         @Override
@@ -254,9 +272,26 @@ public class ReportAnalyticsTesting {
         }
 
         @Override
+        public DailyCategorySnapshot save(DailyCategorySnapshot snapshot) {
+            saved.add(snapshot);
+            return snapshot;
+        }
+
+        @Override
         public List<DailyCategorySnapshot> saveAll(List<DailyCategorySnapshot> snapshots) {
             saved.addAll(snapshots);
             return snapshots;
+        }
+
+        @Override
+        public List<DailyCategorySnapshot> findByShopAndDate(UUID shopId, LocalDate snapshotDate) {
+            List<DailyCategorySnapshot> out = new ArrayList<>();
+            for (DailyCategorySnapshot s : saved) {
+                if (s.getShopId().equals(shopId) && s.getSnapshotDate().equals(snapshotDate)) {
+                    out.add(s);
+                }
+            }
+            return out;
         }
 
         @Override

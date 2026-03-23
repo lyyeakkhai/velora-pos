@@ -16,13 +16,28 @@ public class StoreManagementTesting {
         private final Map<UUID, Shop> byId = new HashMap<>();
 
         @Override
-        public void save(Shop shop) {
+        public Shop save(Shop shop) {
             byId.put(shop.getId(), shop);
+            return shop;
         }
 
         @Override
         public Optional<Shop> findById(UUID shopId) {
             return Optional.ofNullable(byId.get(shopId));
+        }
+
+        @Override
+        public Optional<Shop> findBySlug(String slug) {
+            return byId.values().stream().filter(s -> s.getSlug().equals(slug)).findFirst();
+        }
+
+        @Override
+        public java.util.List<Shop> findByOwnerId(UUID ownerId) {
+            java.util.List<Shop> result = new java.util.ArrayList<>();
+            for (Shop shop : byId.values()) {
+                if (shop.getOwnerId().equals(ownerId)) result.add(shop);
+            }
+            return result;
         }
 
         @Override

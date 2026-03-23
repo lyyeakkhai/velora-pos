@@ -14,16 +14,18 @@ public class DiscountService {
 
     private final EventTypeStore eventTypeStore;
     private final EventProductStore eventProductStore;
+    private final RolePolicy policy;
 
     public DiscountService(EventTypeStore eventTypeStore, EventProductStore eventProductStore) {
         this.eventTypeStore = require(eventTypeStore, "eventTypeStore");
         this.eventProductStore = require(eventProductStore, "eventProductStore");
+        this.policy = new RolePolicy();
     }
 
     public EventType createEvent(Role.RoleName actorRole, UUID shopId, String name, BigDecimal discountValue,
             DiscountType discountType, boolean available, LocalDateTime startDate, LocalDateTime endDate,
             BigDecimal minAmount, Integer usageLimit) {
-        RolePolicy.requireOwner(actorRole);
+        policy.requireOwner(actorRole);
         ValidationUtils.validateUUID(shopId, "shopId");
         EventType event = new EventType(shopId, name, discountValue, discountType, available, startDate, endDate,
                 minAmount, usageLimit);
@@ -32,7 +34,7 @@ public class DiscountService {
 
     public EventProduct attachProductToEvent(Role.RoleName actorRole, EventType event, Product product, int sortOrder,
             EventProductStatus initialStatus) {
-        RolePolicy.requireCatalogWrite(actorRole);
+        policy.requireCatalogWrite(actorRole);
         ValidationUtils.validateNotBlank(event, "event");
         ValidationUtils.validateNotBlank(product, "product");
         if (!event.getShopId().equals(product.getShopId())) {
@@ -52,7 +54,7 @@ public class DiscountService {
      */
     public void validateDiscount(Role.RoleName actorRole, EventType event, BigDecimal salePrice, BigDecimal costPrice,
             int currentUsageCount) {
-        RolePolicy.requireOwner(actorRole);
+        policy.requireOwner(actorRole);
         ValidationUtils.validateNotBlank(event, "event");
         BigDecimal sale = ValidationUtils.normalizeMoney(salePrice, "salePrice");
         BigDecimal cost = ValidationUtils.normalizeMoney(costPrice, "costPrice");

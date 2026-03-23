@@ -251,6 +251,15 @@ public class SaleTesting {
         public Optional<Order> findById(UUID orderId) {
             return Optional.ofNullable(byId.get(orderId));
         }
+
+        @Override
+        public List<Order> findByShopId(UUID shopId) {
+            List<Order> result = new ArrayList<>();
+            for (Order o : byId.values()) {
+                if (o.getShopId().equals(shopId)) result.add(o);
+            }
+            return result;
+        }
     }
 
     private static class InMemoryReceiptStore implements ReceiptStore {

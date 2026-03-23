@@ -170,31 +170,31 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Hide implementation details behind abstract classes with abstract methods. Force subclasses to provide domain-specific behavior while sharing common logic.
 > Demonstrates: `abstract class`, `abstract` methods, template method pattern.
 
-- [ ] ABS-01 — Abstract `AbstractAccessPolicy`
-  - [ ] ABS-01.1 Create `src/main/java/com/velora/app/common/AbstractAccessPolicy.java`
+- [x] ABS-01 — Abstract `AbstractAccessPolicy`
+  - [x] ABS-01.1 Create `src/main/java/com/velora/app/common/AbstractAccessPolicy.java`
     - Abstract method: `abstract void check(Role.RoleName actorRole, String operation)`
     - Concrete method: `void requireAdmin(Role.RoleName actorRole)` — delegates to `check(actorRole, "ADMIN_ONLY")`
     - _Requirements: 9.1, 9.2_
   - [ ]* ABS-01.2 Write unit test for `AbstractAccessPolicy` — `requireAdmin()` with non-admin role throws `DomainException`
     - **Validates: Requirement 9.7**
 
-- [ ] ABS-02 — Apply `AbstractAccessPolicy` to Domain Policies
-  - [ ] ABS-02.1 Refactor `NotificationAccessPolicy.java`, `FeedbackAccessPolicy.java`, `RolePolicy.java`, `AnalyticsAccessPolicy.java`
+- [x] ABS-02 — Apply `AbstractAccessPolicy` to Domain Policies
+  - [x] ABS-02.1 Refactor `NotificationAccessPolicy.java`, `FeedbackAccessPolicy.java`, `RolePolicy.java`, `AnalyticsAccessPolicy.java`
     - All four extend `AbstractAccessPolicy`
     - Each implements `check()` with domain-specific role rules
     - Use inherited `requireAdmin()` where applicable
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
 
-- [ ] ABS-03 — Abstract `AbstractSubscriptionAccount` Lifecycle Methods
-  - [ ] ABS-03.1 Update `AbstractSubscriptionAccount.java` and refactor `UserAccount.java`, `ShopAccount.java`
+- [x] ABS-03 — Abstract `AbstractSubscriptionAccount` Lifecycle Methods
+  - [x] ABS-03.1 Update `AbstractSubscriptionAccount.java` and refactor `UserAccount.java`, `ShopAccount.java`
     - `activatePlan(SubscriptionPlan plan)` and `cancel()` are declared abstract in `AbstractSubscriptionAccount`
     - `UserAccount.activatePlan()` — sets user-specific fields, calls `calculateEndDate()`, sets `refundDeadline` via `calculateRefundDeadline()`
     - `ShopAccount.activatePlan()` — same pattern with shop-specific fields and `autoRenew` handling
     - Both implement `cancel()` with their own cancellation state transitions
     - _Requirements: 5.6, 5.7, 5.8, 5.9_
 
-- [ ] ABS-04 — Abstract `AbstractSnapshotAggregator`
-  - [ ] ABS-04.1 Create `src/main/java/com/velora/app/common/AbstractSnapshotAggregator.java`
+- [x] ABS-04 — Abstract `AbstractSnapshotAggregator`
+  - [x] ABS-04.1 Create `src/main/java/com/velora/app/common/AbstractSnapshotAggregator.java`
     - Generic class: `AbstractSnapshotAggregator<T>`
     - Abstract methods: `abstract T aggregate(UUID shopId, LocalDate date)`, `abstract void persist(T snapshot)`
     - Concrete method: `boolean alreadyExists(UUID shopId, LocalDate date)` — queries repository
@@ -204,8 +204,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 11: AbstractSnapshotAggregator Idempotency** — when `alreadyExists()` returns true, `run()` must not invoke `aggregate()` or `persist()`
     - **Validates: Requirements 10.5, 10.6, 20.6**
 
-- [ ] ABS-05 — Abstract `AbstractReportPeriod`
-  - [ ] ABS-05.1 Create `src/main/java/com/velora/app/common/AbstractReportPeriod.java`
+- [x] ABS-05 — Abstract `AbstractReportPeriod`
+  - [x] ABS-05.1 Create `src/main/java/com/velora/app/common/AbstractReportPeriod.java`
     - Abstract methods: `abstract DateRange getDateRange(LocalDate endDate)`, `abstract String getPeriodName()`
     - Concrete method: `PeriodReportDTO buildReport(UUID shopId, LocalDate endDate, DailySnapshotRepository repo)` — calls `getDateRange()` then queries repo
     - _Requirements: 11.1, 11.2, 11.3_
@@ -213,8 +213,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 12: AbstractReportPeriod Date Range Coverage** — `buildReport()` must query the repository using exactly the `DateRange` returned by `getDateRange(endDate)`
     - **Validates: Requirement 11.3**
 
-- [ ] ABS-06 — Abstract `AbstractDiscountCalculator`
-  - [ ] ABS-06.1 Create `src/main/java/com/velora/app/common/AbstractDiscountCalculator.java`
+- [x] ABS-06 — Abstract `AbstractDiscountCalculator`
+  - [x] ABS-06.1 Create `src/main/java/com/velora/app/common/AbstractDiscountCalculator.java`
     - Abstract method: `abstract BigDecimal apply(BigDecimal basePrice, BigDecimal discountValue)`
     - Concrete method: `void validateProfitMargin(BigDecimal finalPrice, BigDecimal costPrice)` — throws `DomainException` if `finalPrice <= costPrice`
     - _Requirements: 12.1, 12.2, 12.3, 25.5_
@@ -222,8 +222,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 13: validateProfitMargin Throws When finalPrice <= costPrice** — any `finalPrice.compareTo(costPrice) <= 0` must throw `DomainException`
     - **Validates: Requirements 12.2, 12.3, 25.5**
 
-- [ ] ABS-07 — Abstract `AbstractNotificationDispatcher`
-  - [ ] ABS-07.1 Create `src/main/java/com/velora/app/common/AbstractNotificationDispatcher.java`
+- [x] ABS-07 — Abstract `AbstractNotificationDispatcher`
+  - [x] ABS-07.1 Create `src/main/java/com/velora/app/common/AbstractNotificationDispatcher.java`
     - Abstract method: `abstract void send(Notification notification)`
     - Concrete method: `boolean shouldSend(Notification n, NotificationPreferences prefs)` — billingAlerts always true, others check prefs
     - Template method: `final void dispatch(Notification n, NotificationPreferences prefs)` — calls `shouldSend()` → `send()` if true
@@ -232,7 +232,7 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 14: billingAlerts Always Dispatched** — for any `BILLING_ALERT` notification and any preferences, `shouldSend()` must return true
     - **Validates: Requirements 13.2, 13.4, 25.7**
 
-- [ ] Checkpoint — Phase 2 complete
+- [x] Checkpoint — Phase 2 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 ---
@@ -242,8 +242,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Define contracts for all repositories, gateways, and services. Domain depends only on interfaces, not implementations.
 > Demonstrates: `interface` keyword, dependency inversion, loose coupling.
 
-- [ ] INT-01 — Auth Repository Interfaces
-  - [ ] INT-01.1 Create `UserRepository.java`, `UserAuthRepository.java`, `MembershipRepository.java` in `com.velora.app.core.domain.auth`
+- [x] INT-01 — Auth Repository Interfaces
+  - [x] INT-01.1 Create `UserRepository.java`, `UserAuthRepository.java`, `MembershipRepository.java` in `com.velora.app.core.domain.auth`
     - `UserRepository` — `save(User)`, `findById(UUID)`, `findByUsername(String)`, `existsByUsername(String)`
     - `UserAuthRepository` — `save(UserAuth)`, `findByEmail(String)`, `findByUserId(UUID)`, `existsByEmail(String)`
     - `MembershipRepository` — `save(Membership)`, `findByUserId(UUID)`, `findByShopId(UUID)`, `findByUserAndShop(UUID, UUID)`
@@ -253,8 +253,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 15: Repository Returns Empty Optional for Missing IDs** — `findById(id)` for non-existent id must return `Optional.empty()`
     - **Validates: Requirement 14.11**
 
-- [ ] INT-02 — Subscription Repository Interfaces
-  - [ ] INT-02.1 Create repository interfaces in `com.velora.app.core.domain.plan_subscription`
+- [x] INT-02 — Subscription Repository Interfaces
+  - [x] INT-02.1 Create repository interfaces in `com.velora.app.core.domain.plan_subscription`
     - `SubscriptionPlanRepository` — `save`, `findById`, `findBySlug`, `findAllActive`
     - `PlatformRegistryRepository` — `save`, `findById`, `findByOwnerId`
     - `UserAccountRepository` — `save`, `findByUserId`, `findAllActive`
@@ -263,13 +263,13 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `ShopSubscriptionRepository` — `save`, `findByShopId`
     - _Requirements: 14.2_
 
-- [ ] INT-03 — Store Repository Interface
-  - [ ] INT-03.1 Verify/create `ShopRepository.java` in `com.velora.app.core.domain.store-management`
+- [x] INT-03 — Store Repository Interface
+  - [x] INT-03.1 Verify/create `ShopRepository.java` in `com.velora.app.core.domain.store-management`
     - `save(Shop)`, `findById(UUID)`, `findBySlug(String)`, `findByOwnerId(UUID)`, `existsBySlug(String)`
     - _Requirements: 14.3_
 
-- [ ] INT-04 — Inventory Store Interfaces
-  - [ ] INT-04.1 Verify `ProductStore.java`, `ProductVariantStore.java`, `CategoryStore.java`, `EventTypeStore.java`, `EventProductStore.java` in `inventory-event-menagement`
+- [x] INT-04 — Inventory Store Interfaces
+  - [x] INT-04.1 Verify `ProductStore.java`, `ProductVariantStore.java`, `CategoryStore.java`, `EventTypeStore.java`, `EventProductStore.java` in `inventory-event-menagement`
     - `ProductStore` — `save(Product)`, `findById(UUID)`, `findByShopId(UUID)`
     - `ProductVariantStore` — `save(ProductVariant)`, `findByProductId(UUID)`, `findBySku(String)`
     - `CategoryStore` — `save(Category)`, `findByShopId(UUID)`
@@ -277,36 +277,36 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `EventProductStore` — `save(EventProduct)`, `findByEventId(UUID)`, `findByProductId(UUID)`
     - _Requirements: 14.4_
 
-- [ ] INT-05 — Sale Store Interfaces
-  - [ ] INT-05.1 Verify `OrderStore.java`, `ReceiptStore.java`, `DeliveryStore.java`, `PaymentIntentStore.java` in `sale-management`
+- [x] INT-05 — Sale Store Interfaces
+  - [x] INT-05.1 Verify `OrderStore.java`, `ReceiptStore.java`, `DeliveryStore.java`, `PaymentIntentStore.java` in `sale-management`
     - `OrderStore` — `save(Order)`, `findById(UUID)`, `findByShopId(UUID)`
     - `ReceiptStore` — `save(Receipt)`, `findByOrderId(UUID)`
     - `DeliveryStore` — `save(Delivery)`, `findByOrderId(UUID)`
     - `PaymentIntentStore` — `save(PaymentIntent)`, `findByBankRefId(String)`, `getForUpdate(UUID)`, `existsByBankRefId(String)`, `delete(UUID)`
     - _Requirements: 14.5_
 
-- [ ] INT-06 — Payment Repository Interfaces
-  - [ ] INT-06.1 Create `TransactionRepository.java`, `InvoiceRepository.java`, `PaymentMethodRepository.java`, `PlatformRevenueSnapshotRepository.java` in `com.velora.app.core.domain.payment`
+- [x] INT-06 — Payment Repository Interfaces
+  - [x] INT-06.1 Create `TransactionRepository.java`, `InvoiceRepository.java`, `PaymentMethodRepository.java`, `PlatformRevenueSnapshotRepository.java` in `com.velora.app.core.domain.payment`
     - `TransactionRepository` — `save(Transaction)`, `findById(UUID)`, `findByGatewayRef(String)`
     - `InvoiceRepository` — `save(Invoice)`, `findById(UUID)`, `findByTransactionId(UUID)`
     - `PaymentMethodRepository` — `save(PaymentMethod)`, `findById(UUID)`
     - `PlatformRevenueSnapshotRepository` — `save(PlatformRevenueSnapshot)`, `findByDate(LocalDate)`
     - _Requirements: 14.6_
 
-- [ ] INT-07 — Notification Repository Interfaces
-  - [ ] INT-07.1 Verify `NotificationRepository.java`, `NotificationDispatchRepository.java`, `NotificationPreferencesRepository.java` in `notification`
+- [x] INT-07 — Notification Repository Interfaces
+  - [x] INT-07.1 Verify `NotificationRepository.java`, `NotificationDispatchRepository.java`, `NotificationPreferencesRepository.java` in `notification`
     - `NotificationRepository` — `append`, `markRead`, `markAllRead`, `countUnread`, `findUserNotifications`
     - `NotificationDispatchRepository` — `createIfAbsent`, `findPending`, `save`
     - `NotificationPreferencesRepository` — `save`, `findByUserId`
     - _Requirements: 14.7_
 
-- [ ] INT-08 — Feedback Repository Interface
-  - [ ] INT-08.1 Verify `FeatureSuggestionRepository.java` in `feedback`
+- [x] INT-08 — Feedback Repository Interface
+  - [x] INT-08.1 Verify `FeatureSuggestionRepository.java` in `feedback`
     - `save(FeatureSuggestion)`, `findById(UUID)`, `findByUserId(UUID)`, `findByStatus(SuggestionStatus)`
     - _Requirements: 14.8_
 
-- [ ] INT-09 — Analytics Repository Interfaces
-  - [ ] INT-09.1 Verify/create analytics repository interfaces in `report-and-analytic`
+- [x] INT-09 — Analytics Repository Interfaces
+  - [x] INT-09.1 Verify/create analytics repository interfaces in `report-and-analytic`
     - `DailySnapshotRepository` — `save`, `findByShopAndDate`, `findByShopAndDateRange`
     - `DailyProductSnapshotRepository` — `save`, `findByShopAndDate`
     - `DailyCategorySnapshotRepository` — `save`, `findByShopAndDate`
@@ -316,8 +316,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `OrderItemReadRepository` — `findOrderItemsByDate(LocalDate)`
     - _Requirements: 14.9, 14.10_
 
-- [ ] INT-10 — Gateway Interfaces
-  - [ ] INT-10.1 Verify/create `EmailGateway.java` in `notification`, `WebhookSecurity.java` and `TransactionRunner.java` in `sale-management`
+- [x] INT-10 — Gateway Interfaces
+  - [x] INT-10.1 Verify/create `EmailGateway.java` in `notification`, `WebhookSecurity.java` and `TransactionRunner.java` in `sale-management`
     - `EmailGateway` — `send(String to, String subject, String body)`
     - `WebhookSecurity` — `verifySignature(String payload, String signature)`, `verifyNotReplayed(String nonce)` — both throw `DomainException` on failure
     - `TransactionRunner` — `runInTransaction(Runnable task)`
@@ -325,16 +325,16 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* INT-10.2 Write unit test for `WebhookSecurity` — `verifySignature()` failure throws `DomainException`
     - **Validates: Requirement 15.4**
 
-- [ ] INT-11 — Service Interfaces (Application Layer)
-  - [ ] INT-11.1 Create service interfaces in `com.velora.app.core.service`
+- [x] INT-11 — Service Interfaces (Application Layer)
+  - [x] INT-11.1 Create service interfaces in `com.velora.app.core.service`
     - `IAuthService`, `ISubscriptionService`, `IStoreService`, `IInventoryManagementService`
     - `ISaleOrchestrationService`, `IPaymentService`, `INotificationOrchestrationService`
     - `IFeedbackOrchestrationService`, `IAnalyticsService`, `IRevenueService`, `IAdminService`
     - Each interface declares all public methods from the corresponding service
     - _Requirements: 16.1_
 
-- [ ] INT-12 — Implement `AuthService`
-  - [ ] INT-12.1 Create `src/main/java/com/velora/app/core/service/auth/AuthService.java`
+- [x] INT-12 — Implement `AuthService`
+  - [x] INT-12.1 Create `src/main/java/com/velora/app/core/service/auth/AuthService.java`
     - `AuthService implements IAuthService`
     - `registerUser(username, email, rawPassword)` — hash password, validate uniqueness, create User + UserAuth
     - `registerOAuth(username, email, provider, providerUid)` — create User + UserAuth with OAuth provider
@@ -344,8 +344,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `updateUserStatus(actorId, userId, newStatus)` — admin only, update User status
     - _Requirements: 16.2_
 
-- [ ] INT-13 — Implement `SubscriptionService`
-  - [ ] INT-13.1 Create `src/main/java/com/velora/app/core/service/subscription/SubscriptionService.java`
+- [x] INT-13 — Implement `SubscriptionService`
+  - [x] INT-13.1 Create `src/main/java/com/velora/app/core/service/subscription/SubscriptionService.java`
     - `SubscriptionService implements ISubscriptionService`
     - `onboardUser(userId, basicPlanId)` — create PlatformRegistry, create UserAccount, activate free plan
     - `activateUserPlan(userId, planId, transactionId)` — load UserAccount, call `activatePlan(plan)`
@@ -357,62 +357,62 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `banRegistry(actorId, registryId, reason)` — admin only, call `PlatformRegistry.ban(reason)`
     - _Requirements: 16.3_
 
-- [ ] INT-14 — Implement `StoreService`
-  - [ ] INT-14.1 Create `src/main/java/com/velora/app/core/service/store/StoreService.java`
+- [x] INT-14 — Implement `StoreService`
+  - [x] INT-14.1 Create `src/main/java/com/velora/app/core/service/store/StoreService.java`
     - `StoreService implements IStoreService`
     - `registerShop`, `verifyShop`, `activateShop`, `suspendShop`, `banShop`, `unbanShop`, `updateAddress`, `calculatePayout`
     - _Requirements: 16.4_
 
-- [ ] INT-15 — Implement `InventoryManagementService`
-  - [ ] INT-15.1 Create `src/main/java/com/velora/app/core/service/inventory/InventoryManagementService.java`
+- [x] INT-15 — Implement `InventoryManagementService`
+  - [x] INT-15.1 Create `src/main/java/com/velora/app/core/service/inventory/InventoryManagementService.java`
     - `InventoryManagementService implements IInventoryManagementService`
     - `createProductAtomic`, `updateProduct`, `bulkInsertVariants`, `createEvent`, `attachProductToEvent`, `calculateFinalPrice`, `createCategory`
     - _Requirements: 16.5_
 
-- [ ] INT-16 — Implement `SaleOrchestrationService`
-  - [ ] INT-16.1 Create `src/main/java/com/velora/app/core/service/sale/SaleOrchestrationService.java`
+- [x] INT-16 — Implement `SaleOrchestrationService`
+  - [x] INT-16.1 Create `src/main/java/com/velora/app/core/service/sale/SaleOrchestrationService.java`
     - `SaleOrchestrationService implements ISaleOrchestrationService`
     - `createPaymentIntent`, `handlePaymentWebhook`, `finalizeOrder`, `expireStaleIntents`, `cancelUnpaidOrders`
     - _Requirements: 16.6_
 
-- [ ] INT-17 — Implement `PaymentService`
-  - [ ] INT-17.1 Create `src/main/java/com/velora/app/core/service/payment/PaymentService.java`
+- [x] INT-17 — Implement `PaymentService`
+  - [x] INT-17.1 Create `src/main/java/com/velora/app/core/service/payment/PaymentService.java`
     - `PaymentService implements IPaymentService`
     - `createTransaction`, `markTransactionPaid`, `markTransactionFailed`, `issueInvoice`, `cancelInvoice`, `registerPaymentMethod`, `generateDailySnapshot`
     - _Requirements: 16.7_
 
-- [ ] INT-18 — Implement `NotificationOrchestrationService`
-  - [ ] INT-18.1 Create `src/main/java/com/velora/app/core/service/notification/NotificationOrchestrationService.java`
+- [x] INT-18 — Implement `NotificationOrchestrationService`
+  - [x] INT-18.1 Create `src/main/java/com/velora/app/core/service/notification/NotificationOrchestrationService.java`
     - `NotificationOrchestrationService implements INotificationOrchestrationService`
     - `sendNotification`, `markRead`, `markAllRead`, `getUnreadCount`, `getNotifications`, `updatePreferences`, `retryFailedDispatches`
     - _Requirements: 16.8_
 
-- [ ] INT-19 — Implement `FeedbackOrchestrationService`
-  - [ ] INT-19.1 Create `src/main/java/com/velora/app/core/service/feedback/FeedbackOrchestrationService.java`
+- [x] INT-19 — Implement `FeedbackOrchestrationService`
+  - [x] INT-19.1 Create `src/main/java/com/velora/app/core/service/feedback/FeedbackOrchestrationService.java`
     - `FeedbackOrchestrationService implements IFeedbackOrchestrationService`
     - `submitSuggestion`, `editSuggestion`, `updateStatus`, `listMySuggestions`, `adminListByStatus`
     - _Requirements: 16.9_
 
-- [ ] INT-20 — Implement `AnalyticsService`
-  - [ ] INT-20.1 Create `src/main/java/com/velora/app/core/service/analytics/AnalyticsService.java`
+- [x] INT-20 — Implement `AnalyticsService`
+  - [x] INT-20.1 Create `src/main/java/com/velora/app/core/service/analytics/AnalyticsService.java`
     - `AnalyticsService implements IAnalyticsService`
     - `runDailyAggregation`, `getDailyReport`, `getWeeklyReport`, `getMonthlyReport`, `getAnnualReport`, `rankSellers`, `getCategoryTrends`, `predictOutOfStock`
     - _Requirements: 16.10_
 
-- [ ] INT-21 — Implement `RevenueService`
-  - [ ] INT-21.1 Create `src/main/java/com/velora/app/core/service/revenue/RevenueService.java`
+- [x] INT-21 — Implement `RevenueService`
+  - [x] INT-21.1 Create `src/main/java/com/velora/app/core/service/revenue/RevenueService.java`
     - `RevenueService implements IRevenueService`
     - `generateDailySnapshot`, `getRangeSummary`, `getYearlyReport`, `finalizeSnapshot`, `lockSnapshot`
     - _Requirements: 16.11_
 
-- [ ] INT-22 — Implement `AdminService`
-  - [ ] INT-22.1 Create `src/main/java/com/velora/app/core/service/admin/AdminService.java`
+- [x] INT-22 — Implement `AdminService`
+  - [x] INT-22.1 Create `src/main/java/com/velora/app/core/service/admin/AdminService.java`
     - `AdminService implements IAdminService`
     - `banUser`, `revokeUserSessions`, `banShop`, `unbanShop`, `viewRevenueSnapshots`, `changePermissions`
     - _Requirements: 16.1_
 
-- [ ] INT-23 — Implement Infrastructure Repositories (PostgreSQL)
-  - [ ] INT-23.1 Create `Postgres*` implementations in `com.velora.app.infrastructure.db`
+- [x] INT-23 — Implement Infrastructure Repositories (PostgreSQL)
+  - [x] INT-23.1 Create `Postgres*` implementations in `com.velora.app.infrastructure.db`
     - `PostgresUserRepository implements UserRepository`
     - `PostgresUserAuthRepository implements UserAuthRepository`
     - `PostgresMembershipRepository implements MembershipRepository`
@@ -429,7 +429,7 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `PostgresDailySnapshotRepository implements DailySnapshotRepository`
     - _Requirements: 14.1–14.11_
 
-- [ ] Checkpoint — Phase 3 complete
+- [x] Checkpoint — Phase 3 complete
   - Ensure all tests pass, ask the user if questions arise.
 
 ---

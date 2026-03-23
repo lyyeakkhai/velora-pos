@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.feedback;
 
+import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import java.time.Clock;
 import java.time.Instant;
@@ -91,7 +92,7 @@ public class FeedbackTesting {
         try {
             service.editSuggestion(UUID.randomUUID(), suggestion.getId(), SuggestionCategory.UI, "P3", null);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("owner"));
         }
     }
@@ -106,7 +107,7 @@ public class FeedbackTesting {
         try {
             service.adminUpdateStatus(suggestion.getId(), SuggestionStatus.IN_REVIEW, null, Role.RoleName.OWNER);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("super_admin"));
         }
 
@@ -131,7 +132,7 @@ public class FeedbackTesting {
         try {
             service.adminListByStatus(SuggestionStatus.NEW, Role.RoleName.MANAGER);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("super_admin"));
         }
 

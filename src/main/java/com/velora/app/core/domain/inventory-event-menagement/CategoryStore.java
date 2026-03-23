@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.inventoryeventmanagement;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,4 +13,6 @@ public interface CategoryStore {
     Category save(Category category);
 
     Optional<Category> findById(UUID categoryId);
+
+    List<Category> findByShopId(UUID shopId);
 }

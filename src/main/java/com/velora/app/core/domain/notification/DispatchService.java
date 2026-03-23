@@ -42,7 +42,7 @@ public class DispatchService {
             throw new IllegalArgumentException("limit must be in 1..1000");
         }
         LocalDateTime now = LocalDateTime.now(clock);
-        List<NotificationDispatchRecord> due = dispatchRepository.findDue(now, limit);
+        List<NotificationDispatchRecord> due = dispatchRepository.findPending(now, limit);
         int processed = 0;
         for (NotificationDispatchRecord record : due) {
             dispatchNotification(record.getNotificationId(), record.getChannel());
@@ -81,7 +81,7 @@ public class DispatchService {
         if (channel == NotificationChannel.IN_APP) {
             // Persisted notification already guarantees in-app availability.
             record.markSent(clock);
-            dispatchRepository.saveRecord(record);
+            dispatchRepository.save(record);
             dispatchRepository.appendLog(new NotificationDispatchLog(UUID.randomUUID(), notificationId, channel, true,
                     null, clock));
             return;
@@ -90,7 +90,7 @@ public class DispatchService {
         // EMAIL channel
         if (notification.getPriority() != NotificationPriority.HIGH) {
             record.markSkipped("priority not HIGH", clock);
-            dispatchRepository.saveRecord(record);
+            dispatchRepository.save(record);
             dispatchRepository.appendLog(new NotificationDispatchLog(UUID.randomUUID(), notificationId, channel, true,
                     null, clock));
             return;
@@ -98,23 +98,23 @@ public class DispatchService {
 
         if (!prefs.isEmailEnabled()) {
             record.markSkipped("email disabled", clock);
-            dispatchRepository.saveRecord(record);
+            dispatchRepository.save(record);
             dispatchRepository.appendLog(new NotificationDispatchLog(UUID.randomUUID(), notificationId, channel, true,
                     null, clock));
             return;
         }
 
         try {
-            emailGateway.sendHighPriorityEmail(notification.getUserId(), notification.getTitle(),
-                    notification.getContent(), notification.getLinkUrl());
+            emailGateway.send(notification.getUserId().toString(), notification.getTitle(),
+                    notification.getContent());
             record.markSent(clock);
-            dispatchRepository.saveRecord(record);
+            dispatchRepository.save(record);
             dispatchRepository.appendLog(new NotificationDispatchLog(UUID.randomUUID(), notificationId, channel, true,
                     null, clock));
         } catch (RuntimeException ex) {
             LocalDateTime next = computeNextAttempt(clock, record.getRetryCount());
             record.markFailed(ex.getMessage() == null ? "dispatch failure" : ex.getMessage(), next, clock);
-            dispatchRepository.saveRecord(record);
+            dispatchRepository.save(record);
             dispatchRepository.appendLog(new NotificationDispatchLog(UUID.randomUUID(), notificationId, channel, false,
                     ex.getMessage() == null ? "dispatch failure" : ex.getMessage(), clock));
         }

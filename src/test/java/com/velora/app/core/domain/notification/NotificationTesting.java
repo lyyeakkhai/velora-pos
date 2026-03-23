@@ -1,5 +1,6 @@
 package com.velora.app.core.domain.notification;
 
+import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import java.time.Clock;
 import java.time.Instant;
@@ -122,7 +123,7 @@ public class NotificationTesting {
         }
 
         @Override
-        public void saveRecord(NotificationDispatchRecord record) {
+        public void save(NotificationDispatchRecord record) {
             records.put(key(record.getNotificationId(), record.getChannel()), record);
         }
 
@@ -132,7 +133,7 @@ public class NotificationTesting {
         }
 
         @Override
-        public List<NotificationDispatchRecord> findDue(LocalDateTime nowInclusive, int limit) {
+        public List<NotificationDispatchRecord> findPending(LocalDateTime nowInclusive, int limit) {
             List<NotificationDispatchRecord> out = new ArrayList<>();
             for (NotificationDispatchRecord record : records.values()) {
                 if (record.isTerminal()) {
@@ -173,11 +174,11 @@ public class NotificationTesting {
         private boolean fail;
 
         @Override
-        public void sendHighPriorityEmail(UUID userId, String title, String content, String linkUrl) {
+        public void send(String to, String subject, String body) {
             if (fail) {
                 throw new RuntimeException("SMTP failure");
             }
-            sent.add(userId + ":" + title);
+            sent.add(to + ":" + subject);
         }
 
         int sentCount() {
@@ -223,7 +224,7 @@ public class NotificationTesting {
         try {
             service.getUnreadCount(Role.RoleName.OWNER, false, UUID.randomUUID(), userId);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("cross"));
         }
 
@@ -231,7 +232,7 @@ public class NotificationTesting {
         try {
             service.getUnreadCount(Role.RoleName.SUPER_ADMIN, false, userId, userId);
             fail("Expected exception");
-        } catch (IllegalStateException ex) {
+        } catch (DomainException ex) {
             assertTrue(ex.getMessage().toLowerCase().contains("admin"));
         }
 

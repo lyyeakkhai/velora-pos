@@ -155,10 +155,14 @@ public class UserAuth extends AbstractAuditableEntity {
     /**
      * Sets the password hash with validation.
      *
-     * @param passwordHash The new password hash (must meet requirements)
+     * @param passwordHash The new password hash (must meet requirements, or null for OAuth)
      * @throws IllegalArgumentException if validation fails
      */
     public void setPasswordHash(String passwordHash) {
+        if (passwordHash == null) {
+            this.passwordHash = null;
+            return;
+        }
         ValidationUtils.validateBcryptHash(passwordHash, "Password Hash");
         this.passwordHash = passwordHash;
     }

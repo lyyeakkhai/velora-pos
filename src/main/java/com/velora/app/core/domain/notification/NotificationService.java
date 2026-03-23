@@ -16,6 +16,7 @@ public class NotificationService extends AbstractDomainService {
     private final NotificationRepository notificationRepository;
     private final NotificationDispatchRepository dispatchRepository;
     private final Clock clock;
+    private final NotificationAccessPolicy policy;
 
     public NotificationService(NotificationRepository notificationRepository,
             NotificationDispatchRepository dispatchRepository,
@@ -25,6 +26,7 @@ public class NotificationService extends AbstractDomainService {
         this.notificationRepository = notificationRepository;
         this.dispatchRepository = dispatchRepository;
         this.clock = clock == null ? Clock.systemUTC() : clock;
+        this.policy = new NotificationAccessPolicy();
     }
 
     /**
@@ -32,7 +34,7 @@ public class NotificationService extends AbstractDomainService {
      */
     public Notification createNotification(Role.RoleName actorRole, boolean systemActor, UUID userId,
             NotificationType type, NotificationPriority priority, String title, String content, String linkUrl) {
-        NotificationAccessPolicy.requireCanCreate(actorRole, systemActor, type);
+        policy.requireCanCreate(actorRole, systemActor, type);
         NotificationValidation.validateUserId(userId);
         NotificationValidation.validateType(type);
         NotificationValidation.validatePriority(priority);
@@ -58,21 +60,21 @@ public class NotificationService extends AbstractDomainService {
 
     public void markAsRead(Role.RoleName actorRole, boolean systemActor, UUID actorUserId, UUID userId,
             UUID notificationId) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
         ValidationUtils.validateUUID(notificationId, "notificationId");
         notificationRepository.markRead(userId, notificationId);
     }
 
     public int markAllAsRead(Role.RoleName actorRole, boolean systemActor, UUID actorUserId, UUID userId) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
         return notificationRepository.markAllRead(userId);
     }
 
     public long getUnreadCount(Role.RoleName actorRole, boolean systemActor, UUID actorUserId, UUID userId) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
         return notificationRepository.countUnread(userId);
     }
 
@@ -81,8 +83,8 @@ public class NotificationService extends AbstractDomainService {
      */
     public List<Notification> getUserNotifications(Role.RoleName actorRole, boolean systemActor, UUID actorUserId,
             UUID userId, int limit, LocalDateTime beforeCreatedAtExclusive) {
-        NotificationAccessPolicy.requireReadableInbox(actorRole, systemActor);
-        NotificationAccessPolicy.requireUserScope(actorUserId, userId);
+        policy.requireReadableInbox(actorRole, systemActor);
+        policy.requireUserScope(actorUserId, userId);
 
         if (limit <= 0 || limit > 200) {
             throw new IllegalArgumentException("limit must be in 1..200");

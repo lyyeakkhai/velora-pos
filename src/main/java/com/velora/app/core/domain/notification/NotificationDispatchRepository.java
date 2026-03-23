@@ -14,11 +14,31 @@ public interface NotificationDispatchRepository {
      */
     NotificationDispatchRecord createIfAbsent(NotificationDispatchRecord record);
 
-    void saveRecord(NotificationDispatchRecord record);
+    /** Persists an updated dispatch record. */
+    void save(NotificationDispatchRecord record);
+
+    /**
+     * @deprecated Use {@link #save(NotificationDispatchRecord)} instead.
+     */
+    @Deprecated
+    default void saveRecord(NotificationDispatchRecord record) {
+        save(record);
+    }
 
     void appendLog(NotificationDispatchLog log);
 
-    List<NotificationDispatchRecord> findDue(LocalDateTime nowInclusive, int limit);
+    /**
+     * Returns records that are pending dispatch (due by {@code nowInclusive}).
+     */
+    List<NotificationDispatchRecord> findPending(LocalDateTime nowInclusive, int limit);
+
+    /**
+     * @deprecated Use {@link #findPending(LocalDateTime, int)} instead.
+     */
+    @Deprecated
+    default List<NotificationDispatchRecord> findDue(LocalDateTime nowInclusive, int limit) {
+        return findPending(nowInclusive, limit);
+    }
 
     List<NotificationDispatchRecord> findFailed(int limit);
 }
