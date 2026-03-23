@@ -1,39 +1,39 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.storemanagement.Shop;
-import com.velora.app.core.domain.storemanagement.ShopRepository;
+import com.velora.app.core.domain.inventoryeventmanagement.Product;
+import com.velora.app.core.domain.inventoryeventmanagement.ProductStore;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * PostgreSQL implementation of ShopRepository.
- * Requirements: 14.3
+ * PostgreSQL implementation of ProductStore.
+ * Requirements: 14.4
  */
-public class PostgresShopRepository implements ShopRepository {
+public class PostgresProductStore implements ProductStore {
 
     @Override
-    public Shop save(Shop shop) {
+    public Product save(Product product) {
         // TODO: implement JDBC insert/update
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public Optional<Shop> findById(UUID id) {
+    public Optional<Product> findById(UUID productId) {
         // TODO: implement JDBC select by id
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public Optional<Shop> findBySlug(String slug) {
-        // TODO: implement JDBC select by slug
+    public List<Product> findByShopId(UUID shopId) {
+        // TODO: implement JDBC select by shopId
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public List<Shop> findByOwnerId(UUID ownerId) {
-        // TODO: implement JDBC select by ownerId
+    public boolean existsByShopIdAndName(UUID shopId, String name) {
+        // TODO: implement JDBC existence check
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

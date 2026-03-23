@@ -411,8 +411,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `banUser`, `revokeUserSessions`, `banShop`, `unbanShop`, `viewRevenueSnapshots`, `changePermissions`
     - _Requirements: 16.1_
 
-- [ ] INT-23 — Implement Infrastructure Repositories (PostgreSQL)
-  - [ ] INT-23.1 Create `Postgres*` implementations in `com.velora.app.infrastructure.db`
+- [x] INT-23 — Implement Infrastructure Repositories (PostgreSQL)
+  - [x] INT-23.1 Create `Postgres*` implementations in `com.velora.app.infrastructure.db`
     - `PostgresUserRepository implements UserRepository`
     - `PostgresUserAuthRepository implements UserAuthRepository`
     - `PostgresMembershipRepository implements MembershipRepository`
