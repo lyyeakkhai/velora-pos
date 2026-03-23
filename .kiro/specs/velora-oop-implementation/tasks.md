@@ -381,8 +381,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `createTransaction`, `markTransactionPaid`, `markTransactionFailed`, `issueInvoice`, `cancelInvoice`, `registerPaymentMethod`, `generateDailySnapshot`
     - _Requirements: 16.7_
 
-- [ ] INT-18 — Implement `NotificationOrchestrationService`
-  - [ ] INT-18.1 Create `src/main/java/com/velora/app/core/service/notification/NotificationOrchestrationService.java`
+- [x] INT-18 — Implement `NotificationOrchestrationService`
+  - [x] INT-18.1 Create `src/main/java/com/velora/app/core/service/notification/NotificationOrchestrationService.java`
     - `NotificationOrchestrationService implements INotificationOrchestrationService`
     - `sendNotification`, `markRead`, `markAllRead`, `getUnreadCount`, `getNotifications`, `updatePreferences`, `retryFailedDispatches`
     - _Requirements: 16.8_
