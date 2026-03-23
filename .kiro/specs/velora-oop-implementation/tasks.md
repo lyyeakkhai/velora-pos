@@ -263,8 +263,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `ShopSubscriptionRepository` — `save`, `findByShopId`
     - _Requirements: 14.2_
 
-- [ ] INT-03 — Store Repository Interface
-  - [ ] INT-03.1 Verify/create `ShopRepository.java` in `com.velora.app.core.domain.store-management`
+- [x] INT-03 — Store Repository Interface
+  - [x] INT-03.1 Verify/create `ShopRepository.java` in `com.velora.app.core.domain.store-management`
     - `save(Shop)`, `findById(UUID)`, `findBySlug(String)`, `findByOwnerId(UUID)`, `existsBySlug(String)`
     - _Requirements: 14.3_
 
