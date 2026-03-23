@@ -405,8 +405,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `generateDailySnapshot`, `getRangeSummary`, `getYearlyReport`, `finalizeSnapshot`, `lockSnapshot`
     - _Requirements: 16.11_
 
-- [ ] INT-22 — Implement `AdminService`
-  - [ ] INT-22.1 Create `src/main/java/com/velora/app/core/service/admin/AdminService.java`
+- [x] INT-22 — Implement `AdminService`
+  - [x] INT-22.1 Create `src/main/java/com/velora/app/core/service/admin/AdminService.java`
     - `AdminService implements IAdminService`
     - `banUser`, `revokeUserSessions`, `banShop`, `unbanShop`, `viewRevenueSnapshots`, `changePermissions`
     - _Requirements: 16.1_
