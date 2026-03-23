@@ -325,8 +325,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* INT-10.2 Write unit test for `WebhookSecurity` — `verifySignature()` failure throws `DomainException`
     - **Validates: Requirement 15.4**
 
-- [ ] INT-11 — Service Interfaces (Application Layer)
-  - [ ] INT-11.1 Create service interfaces in `com.velora.app.core.service`
+- [x] INT-11 — Service Interfaces (Application Layer)
+  - [x] INT-11.1 Create service interfaces in `com.velora.app.core.service`
     - `IAuthService`, `ISubscriptionService`, `IStoreService`, `IInventoryManagementService`
     - `ISaleOrchestrationService`, `IPaymentService`, `INotificationOrchestrationService`
     - `IFeedbackOrchestrationService`, `IAnalyticsService`, `IRevenueService`, `IAdminService`
