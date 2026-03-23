@@ -357,8 +357,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `banRegistry(actorId, registryId, reason)` — admin only, call `PlatformRegistry.ban(reason)`
     - _Requirements: 16.3_
 
-- [ ] INT-14 — Implement `StoreService`
-  - [ ] INT-14.1 Create `src/main/java/com/velora/app/core/service/store/StoreService.java`
+- [x] INT-14 — Implement `StoreService`
+  - [x] INT-14.1 Create `src/main/java/com/velora/app/core/service/store/StoreService.java`
     - `StoreService implements IStoreService`
     - `registerShop`, `verifyShop`, `activateShop`, `suspendShop`, `banShop`, `unbanShop`, `updateAddress`, `calculatePayout`
     - _Requirements: 16.4_
