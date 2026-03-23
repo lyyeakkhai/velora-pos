@@ -9,6 +9,7 @@ import java.util.UUID;
 
 /**
  * Dispatch orchestration service.
+ * Requirements: 17.4, 17.5
  */
 public class DispatchService {
 
@@ -16,12 +17,23 @@ public class DispatchService {
     private final NotificationPreferencesRepository preferencesRepository;
     private final NotificationDispatchRepository dispatchRepository;
     private final EmailGateway emailGateway;
+    private final List<NotificationSender> senders;
     private final Clock clock;
 
     public DispatchService(NotificationRepository notificationRepository,
             NotificationPreferencesRepository preferencesRepository,
             NotificationDispatchRepository dispatchRepository,
             EmailGateway emailGateway,
+            Clock clock) {
+        this(notificationRepository, preferencesRepository, dispatchRepository, emailGateway,
+                List.of(), clock);
+    }
+
+    public DispatchService(NotificationRepository notificationRepository,
+            NotificationPreferencesRepository preferencesRepository,
+            NotificationDispatchRepository dispatchRepository,
+            EmailGateway emailGateway,
+            List<NotificationSender> senders,
             Clock clock) {
         ValidationUtils.validateNotBlank(notificationRepository, "notificationRepository");
         ValidationUtils.validateNotBlank(preferencesRepository, "preferencesRepository");
@@ -31,7 +43,22 @@ public class DispatchService {
         this.preferencesRepository = preferencesRepository;
         this.dispatchRepository = dispatchRepository;
         this.emailGateway = emailGateway;
+        this.senders = senders == null ? List.of() : List.copyOf(senders);
         this.clock = clock == null ? Clock.systemUTC() : clock;
+    }
+
+    /**
+     * Dispatches a notification to all eligible senders polymorphically.
+     * Requirements: 17.4, 17.5
+     */
+    public void dispatchToSenders(Notification notification, NotificationPreferences preferences) {
+        ValidationUtils.validateNotBlank(notification, "notification");
+        ValidationUtils.validateNotBlank(preferences, "preferences");
+        for (NotificationSender sender : senders) {
+            if (sender.canSend(notification, preferences)) {
+                sender.send(notification);
+            }
+        }
     }
 
     /**

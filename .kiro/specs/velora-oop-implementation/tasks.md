@@ -439,8 +439,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Allow the same operation to behave differently depending on the runtime type. Uses strategy pattern, method overriding, and runtime dispatch.
 > Demonstrates: `interface` + multiple implementations, runtime type dispatch, strategy pattern.
 
-- [ ] POLY-01 — `NotificationSender` Strategy (Notification Dispatch)
-  - [ ] POLY-01.1 Create `NotificationSender.java` interface and implementations in `notification`
+- [x] POLY-01 — `NotificationSender` Strategy (Notification Dispatch)
+  - [x] POLY-01.1 Create `NotificationSender.java` interface and implementations in `notification`
     - Interface `NotificationSender`: `getChannel()`, `canSend(Notification, NotificationPreferences)`, `send(Notification)`
     - `InAppNotificationSender` — `canSend()` always returns true; `send()` creates a `NotificationDispatchRecord`
     - `EmailNotificationSender` — `canSend()` returns true only if `priority == HIGH && prefs.emailEnabled`; `send()` calls `EmailGateway.send()`
