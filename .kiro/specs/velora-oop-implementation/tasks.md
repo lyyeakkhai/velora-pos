@@ -277,8 +277,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `EventProductStore` — `save(EventProduct)`, `findByEventId(UUID)`, `findByProductId(UUID)`
     - _Requirements: 14.4_
 
-- [ ] INT-05 — Sale Store Interfaces
-  - [ ] INT-05.1 Verify `OrderStore.java`, `ReceiptStore.java`, `DeliveryStore.java`, `PaymentIntentStore.java` in `sale-management`
+- [x] INT-05 — Sale Store Interfaces
+  - [x] INT-05.1 Verify `OrderStore.java`, `ReceiptStore.java`, `DeliveryStore.java`, `PaymentIntentStore.java` in `sale-management`
     - `OrderStore` — `save(Order)`, `findById(UUID)`, `findByShopId(UUID)`
     - `ReceiptStore` — `save(Receipt)`, `findByOrderId(UUID)`
     - `DeliveryStore` — `save(Delivery)`, `findByOrderId(UUID)`
