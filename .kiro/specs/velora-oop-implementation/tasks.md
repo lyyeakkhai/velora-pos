@@ -285,8 +285,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `PaymentIntentStore` — `save(PaymentIntent)`, `findByBankRefId(String)`, `getForUpdate(UUID)`, `existsByBankRefId(String)`, `delete(UUID)`
     - _Requirements: 14.5_
 
-- [ ] INT-06 — Payment Repository Interfaces
-  - [ ] INT-06.1 Create `TransactionRepository.java`, `InvoiceRepository.java`, `PaymentMethodRepository.java`, `PlatformRevenueSnapshotRepository.java` in `com.velora.app.core.domain.payment`
+- [x] INT-06 — Payment Repository Interfaces
+  - [x] INT-06.1 Create `TransactionRepository.java`, `InvoiceRepository.java`, `PaymentMethodRepository.java`, `PlatformRevenueSnapshotRepository.java` in `com.velora.app.core.domain.payment`
     - `TransactionRepository` — `save(Transaction)`, `findById(UUID)`, `findByGatewayRef(String)`
     - `InvoiceRepository` — `save(Invoice)`, `findById(UUID)`, `findByTransactionId(UUID)`
     - `PaymentMethodRepository` — `save(PaymentMethod)`, `findById(UUID)`
