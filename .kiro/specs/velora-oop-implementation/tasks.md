@@ -316,8 +316,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `OrderItemReadRepository` — `findOrderItemsByDate(LocalDate)`
     - _Requirements: 14.9, 14.10_
 
-- [ ] INT-10 — Gateway Interfaces
-  - [ ] INT-10.1 Verify/create `EmailGateway.java` in `notification`, `WebhookSecurity.java` and `TransactionRunner.java` in `sale-management`
+- [x] INT-10 — Gateway Interfaces
+  - [x] INT-10.1 Verify/create `EmailGateway.java` in `notification`, `WebhookSecurity.java` and `TransactionRunner.java` in `sale-management`
     - `EmailGateway` — `send(String to, String subject, String body)`
     - `WebhookSecurity` — `verifySignature(String payload, String signature)`, `verifyNotReplayed(String nonce)` — both throw `DomainException` on failure
     - `TransactionRunner` — `runInTransaction(Runnable task)`

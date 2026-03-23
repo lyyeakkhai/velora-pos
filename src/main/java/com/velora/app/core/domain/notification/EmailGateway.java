@@ -1,11 +1,16 @@
 package com.velora.app.core.domain.notification;
 
-import java.util.UUID;
-
 /**
  * Outbound email gateway abstraction.
  */
 public interface EmailGateway {
 
-    void sendHighPriorityEmail(UUID userId, String title, String content, String linkUrl);
+    /**
+     * Sends an email to the given recipient.
+     *
+     * @param to      recipient email address
+     * @param subject email subject line
+     * @param body    email body content
+     */
+    void send(String to, String subject, String body);
 }

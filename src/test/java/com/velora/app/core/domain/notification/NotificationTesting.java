@@ -174,11 +174,11 @@ public class NotificationTesting {
         private boolean fail;
 
         @Override
-        public void sendHighPriorityEmail(UUID userId, String title, String content, String linkUrl) {
+        public void send(String to, String subject, String body) {
             if (fail) {
                 throw new RuntimeException("SMTP failure");
             }
-            sent.add(userId + ":" + title);
+            sent.add(to + ":" + subject);
         }
 
         int sentCount() {

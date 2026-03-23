@@ -105,8 +105,8 @@ public class DispatchService {
         }
 
         try {
-            emailGateway.sendHighPriorityEmail(notification.getUserId(), notification.getTitle(),
-                    notification.getContent(), notification.getLinkUrl());
+            emailGateway.send(notification.getUserId().toString(), notification.getTitle(),
+                    notification.getContent());
             record.markSent(clock);
             dispatchRepository.save(record);
             dispatchRepository.appendLog(new NotificationDispatchLog(UUID.randomUUID(), notificationId, channel, true,
