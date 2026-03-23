@@ -375,8 +375,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `createPaymentIntent`, `handlePaymentWebhook`, `finalizeOrder`, `expireStaleIntents`, `cancelUnpaidOrders`
     - _Requirements: 16.6_
 
-- [ ] INT-17 — Implement `PaymentService`
-  - [ ] INT-17.1 Create `src/main/java/com/velora/app/core/service/payment/PaymentService.java`
+- [x] INT-17 — Implement `PaymentService`
+  - [x] INT-17.1 Create `src/main/java/com/velora/app/core/service/payment/PaymentService.java`
     - `PaymentService implements IPaymentService`
     - `createTransaction`, `markTransactionPaid`, `markTransactionFailed`, `issueInvoice`, `cancelInvoice`, `registerPaymentMethod`, `generateDailySnapshot`
     - _Requirements: 16.7_
