@@ -399,8 +399,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `runDailyAggregation`, `getDailyReport`, `getWeeklyReport`, `getMonthlyReport`, `getAnnualReport`, `rankSellers`, `getCategoryTrends`, `predictOutOfStock`
     - _Requirements: 16.10_
 
-- [ ] INT-21 — Implement `RevenueService`
-  - [ ] INT-21.1 Create `src/main/java/com/velora/app/core/service/revenue/RevenueService.java`
+- [x] INT-21 — Implement `RevenueService`
+  - [x] INT-21.1 Create `src/main/java/com/velora/app/core/service/revenue/RevenueService.java`
     - `RevenueService implements IRevenueService`
     - `generateDailySnapshot`, `getRangeSummary`, `getYearlyReport`, `finalizeSnapshot`, `lockSnapshot`
     - _Requirements: 16.11_
