@@ -293,8 +293,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `PlatformRevenueSnapshotRepository` — `save(PlatformRevenueSnapshot)`, `findByDate(LocalDate)`
     - _Requirements: 14.6_
 
-- [ ] INT-07 — Notification Repository Interfaces
-  - [ ] INT-07.1 Verify `NotificationRepository.java`, `NotificationDispatchRepository.java`, `NotificationPreferencesRepository.java` in `notification`
+- [x] INT-07 — Notification Repository Interfaces
+  - [x] INT-07.1 Verify `NotificationRepository.java`, `NotificationDispatchRepository.java`, `NotificationPreferencesRepository.java` in `notification`
     - `NotificationRepository` — `append`, `markRead`, `markAllRead`, `countUnread`, `findUserNotifications`
     - `NotificationDispatchRepository` — `createIfAbsent`, `findPending`, `save`
     - `NotificationPreferencesRepository` — `save`, `findByUserId`

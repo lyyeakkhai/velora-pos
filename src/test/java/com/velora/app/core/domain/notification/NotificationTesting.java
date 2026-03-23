@@ -123,7 +123,7 @@ public class NotificationTesting {
         }
 
         @Override
-        public void saveRecord(NotificationDispatchRecord record) {
+        public void save(NotificationDispatchRecord record) {
             records.put(key(record.getNotificationId(), record.getChannel()), record);
         }
 
@@ -133,7 +133,7 @@ public class NotificationTesting {
         }
 
         @Override
-        public List<NotificationDispatchRecord> findDue(LocalDateTime nowInclusive, int limit) {
+        public List<NotificationDispatchRecord> findPending(LocalDateTime nowInclusive, int limit) {
             List<NotificationDispatchRecord> out = new ArrayList<>();
             for (NotificationDispatchRecord record : records.values()) {
                 if (record.isTerminal()) {
