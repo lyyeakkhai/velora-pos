@@ -1,6 +1,7 @@
 package com.velora.app.core.domain.notification;
 
 import com.velora.app.common.AbstractAccessPolicy;
+import com.velora.app.common.AccessPolicy;
 import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
@@ -11,7 +12,7 @@ import java.util.UUID;
  * Extends AbstractAccessPolicy; implements check() with notification-specific role rules.
  * Requirements: 9.3
  */
-public class NotificationAccessPolicy extends AbstractAccessPolicy {
+public class NotificationAccessPolicy extends AbstractAccessPolicy implements AccessPolicy {
 
     @Override
     public void check(Role.RoleName actorRole, String operation) {

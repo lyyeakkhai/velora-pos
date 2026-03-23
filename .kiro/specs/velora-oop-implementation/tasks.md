@@ -508,8 +508,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-06.2 Write unit test for `PaymentProcessor` — `verify()` returning false causes `PaymentService` to throw `DomainException`
     - **Validates: Requirement 22.5**
 
-- [ ] POLY-07 — `ForecastStrategy` Strategy (Out-of-Stock Prediction)
-  - [ ] POLY-07.1 Create `ForecastStrategy.java` interface and implementations in `report-and-analytic`
+- [x] POLY-07 — `ForecastStrategy` Strategy (Out-of-Stock Prediction)
+  - [x] POLY-07.1 Create `ForecastStrategy.java` interface and implementations in `report-and-analytic`
     - Interface `ForecastStrategy`: `getForecastType()`, `predict(List<DailyProductSnapshot>)`
     - `LinearTrendForecastStrategy` — simple linear regression on `qtySold`
     - `MovingAverageForecastStrategy` — 7-day moving average on `qtySold`
@@ -518,8 +518,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-07.2 Write unit test for `ForecastStrategy` — empty snapshot list returns empty list without throwing
     - **Validates: Requirement 23.5**
 
-- [ ] POLY-08 — `AccessPolicy` Interface (Role-Based Access Polymorphism)
-  - [ ] POLY-08.1 Create `AccessPolicy.java` interface in `common` and refactor all policy classes
+- [x] POLY-08 — `AccessPolicy` Interface (Role-Based Access Polymorphism)
+  - [x] POLY-08.1 Create `AccessPolicy.java` interface in `common` and refactor all policy classes
     - Interface `AccessPolicy`: `void check(Role.RoleName actorRole, String operation)`
     - `AnalyticsAccessPolicy`, `FeedbackAccessPolicy`, `NotificationAccessPolicy`, `RolePolicy` all implement `AccessPolicy`
     - Each extends `AbstractAccessPolicy` (from ABS-02) and implements `AccessPolicy`

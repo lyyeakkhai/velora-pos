@@ -1,6 +1,7 @@
 package com.velora.app.core.domain.inventoryeventmanagement;
 
 import com.velora.app.common.AbstractAccessPolicy;
+import com.velora.app.common.AccessPolicy;
 import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
 import com.velora.app.core.utils.ValidationUtils;
@@ -10,7 +11,7 @@ import com.velora.app.core.utils.ValidationUtils;
  * Extends AbstractAccessPolicy; implements check() with inventory-specific role rules.
  * Requirements: 9.5
  */
-public class RolePolicy extends AbstractAccessPolicy {
+public class RolePolicy extends AbstractAccessPolicy implements AccessPolicy {
 
     @Override
     public void check(Role.RoleName actorRole, String operation) {

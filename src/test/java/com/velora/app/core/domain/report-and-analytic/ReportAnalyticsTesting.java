@@ -186,7 +186,8 @@ public class ReportAnalyticsTesting {
         dailyRepo.save(new DailySnapshot(UUID.randomUUID(), LocalDate.of(2026, 2, 27), shopId, orgId,
                 new BigDecimal("50"), new BigDecimal("10"), 1));
 
-        ForecastService forecast = new ForecastService(new InMemoryDailyProductSnapshotRepo(), dailyRepo);
+        ForecastService forecast = new ForecastService(new InMemoryDailyProductSnapshotRepo(), dailyRepo,
+                new MovingAverageForecastStrategy());
         AnalyticsInsightDTO insight = forecast.detectRevenueDrop(Role.RoleName.MANAGER, shopId,
                 new DateRange(LocalDate.of(2026, 2, 27), LocalDate.of(2026, 2, 27)),
                 new DateRange(LocalDate.of(2026, 2, 20), LocalDate.of(2026, 2, 21)));
