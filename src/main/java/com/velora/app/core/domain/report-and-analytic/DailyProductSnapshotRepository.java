@@ -11,7 +11,11 @@ public interface DailyProductSnapshotRepository {
 
     boolean existsForShopAndDate(UUID shopId, LocalDate snapshotDate);
 
+    DailyProductSnapshot save(DailyProductSnapshot snapshot);
+
     List<DailyProductSnapshot> saveAll(List<DailyProductSnapshot> snapshots);
+
+    List<DailyProductSnapshot> findByShopAndDate(UUID shopId, LocalDate snapshotDate);
 
     List<DailyProductSnapshot> findByShopAndDateRange(UUID shopId, LocalDate startInclusive, LocalDate endInclusive);
 }

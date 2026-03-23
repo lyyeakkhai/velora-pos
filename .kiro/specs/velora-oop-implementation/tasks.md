@@ -300,13 +300,13 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `NotificationPreferencesRepository` — `save`, `findByUserId`
     - _Requirements: 14.7_
 
-- [ ] INT-08 — Feedback Repository Interface
-  - [ ] INT-08.1 Verify `FeatureSuggestionRepository.java` in `feedback`
+- [x] INT-08 — Feedback Repository Interface
+  - [x] INT-08.1 Verify `FeatureSuggestionRepository.java` in `feedback`
     - `save(FeatureSuggestion)`, `findById(UUID)`, `findByUserId(UUID)`, `findByStatus(SuggestionStatus)`
     - _Requirements: 14.8_
 
-- [ ] INT-09 — Analytics Repository Interfaces
-  - [ ] INT-09.1 Verify/create analytics repository interfaces in `report-and-analytic`
+- [x] INT-09 — Analytics Repository Interfaces
+  - [x] INT-09.1 Verify/create analytics repository interfaces in `report-and-analytic`
     - `DailySnapshotRepository` — `save`, `findByShopAndDate`, `findByShopAndDateRange`
     - `DailyProductSnapshotRepository` — `save`, `findByShopAndDate`
     - `DailyCategorySnapshotRepository` — `save`, `findByShopAndDate`
