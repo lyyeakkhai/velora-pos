@@ -48,4 +48,19 @@ public interface MembershipRepository {
      * @return An Optional containing the membership, or empty if not found
      */
     Optional<Membership> findByUserAndShop(UUID userId, UUID shopId);
+
+    /**
+     * Finds a membership by its unique identifier.
+     *
+     * @param membershipId The membership UUID
+     * @return An Optional containing the membership, or empty if not found
+     */
+    Optional<Membership> findById(UUID membershipId);
+
+    /**
+     * Removes a membership by its unique identifier.
+     *
+     * @param membershipId The membership UUID to delete
+     */
+    void deleteById(UUID membershipId);
 }

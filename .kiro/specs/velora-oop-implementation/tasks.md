@@ -333,8 +333,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - Each interface declares all public methods from the corresponding service
     - _Requirements: 16.1_
 
-- [ ] INT-12 — Implement `AuthService`
-  - [ ] INT-12.1 Create `src/main/java/com/velora/app/core/service/auth/AuthService.java`
+- [x] INT-12 — Implement `AuthService`
+  - [x] INT-12.1 Create `src/main/java/com/velora/app/core/service/auth/AuthService.java`
     - `AuthService implements IAuthService`
     - `registerUser(username, email, rawPassword)` — hash password, validate uniqueness, create User + UserAuth
     - `registerOAuth(username, email, provider, providerUid)` — create User + UserAuth with OAuth provider
