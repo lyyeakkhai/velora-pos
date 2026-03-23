@@ -33,4 +33,14 @@ public interface SnapshotAggregator<T> {
      * Persists the aggregated snapshot.
      */
     void persist(T snapshot);
+
+    /**
+     * Template method: checks idempotency, aggregates, and persists.
+     * Skips if snapshot already exists.
+     */
+    default void run(UUID shopId, LocalDate date) {
+        if (alreadyExists(shopId, date)) return;
+        T snapshot = aggregate(shopId, date);
+        persist(snapshot);
+    }
 }
