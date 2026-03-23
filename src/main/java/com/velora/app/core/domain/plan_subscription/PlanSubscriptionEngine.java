@@ -66,6 +66,10 @@ public final class PlanSubscriptionEngine {
     /**
      * Payment confirmation: success activates plan; failed keeps registry locked.
      *
+     * <p>Uses {@link SubscriptionActivationRouter} to resolve the correct
+     * {@link SubscriptionAccount} for the SHOP target type, then delegates
+     * activation polymorphically.
+     *
      * Extends existing active subscriptions when present.
      */
     public static void confirmShopPayment(boolean success, UUID transactionId, PlatformRegistry registry,
@@ -89,10 +93,11 @@ public final class PlanSubscriptionEngine {
             registry.activate();
         }
 
-        if (shopAccount.isActive()) {
+        SubscriptionAccount account = SubscriptionActivationRouter.route(TargetType.SHOP, null, shopAccount);
+        if (account.isActive()) {
             shopAccount.extendPlan();
         } else {
-            shopAccount.activatePlan(plan);
+            account.activatePlan(plan);
         }
     }
 }

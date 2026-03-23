@@ -14,7 +14,7 @@ import com.velora.app.core.utils.ValidationUtils;
  *
  * <p>Requirements: 5.9
  */
-public class ShopAccount extends AbstractSubscriptionAccount {
+public class ShopAccount extends AbstractSubscriptionAccount implements SubscriptionAccount {
 
     private UUID shopId;
     private ShopAccountStatus status;

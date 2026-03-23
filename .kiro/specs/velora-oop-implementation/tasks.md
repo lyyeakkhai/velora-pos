@@ -463,8 +463,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 17: DiscountStrategy Apply Formulas** — `PercentageDiscountStrategy.apply()` must return `basePrice * (1 - discountValue/100)` with HALF_UP; `FixedDiscountStrategy.apply()` must return `basePrice - discountValue`; both must produce result > costPrice after `validateProfitMargin()`
     - **Validates: Requirements 18.2, 18.3, 18.6**
 
-- [ ] POLY-03 — `SubscriptionAccount` Interface + Router
-  - [ ] POLY-03.1 Create `SubscriptionAccount.java` interface and `SubscriptionActivationRouter.java` in `plan_subscription`
+- [x] POLY-03 — `SubscriptionAccount` Interface + Router
+  - [x] POLY-03.1 Create `SubscriptionAccount.java` interface and `SubscriptionActivationRouter.java` in `plan_subscription`
     - Interface `SubscriptionAccount`: `getSubscriptionId()`, `getPlanId()`, `getRegistryId()`, `activatePlan(SubscriptionPlan)`, `expire()`, `cancel()`, `isActive()`, `markExpiredIfNeeded()`
     - `UserAccount` and `ShopAccount` add `implements SubscriptionAccount`
     - `SubscriptionActivationRouter.route(TargetType, UserAccount, ShopAccount)` — returns correct `SubscriptionAccount`; unknown `TargetType` throws `DomainException`
