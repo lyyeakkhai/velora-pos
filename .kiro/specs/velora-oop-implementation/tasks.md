@@ -363,8 +363,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - `registerShop`, `verifyShop`, `activateShop`, `suspendShop`, `banShop`, `unbanShop`, `updateAddress`, `calculatePayout`
     - _Requirements: 16.4_
 
-- [ ] INT-15 — Implement `InventoryManagementService`
-  - [ ] INT-15.1 Create `src/main/java/com/velora/app/core/service/inventory/InventoryManagementService.java`
+- [x] INT-15 — Implement `InventoryManagementService`
+  - [x] INT-15.1 Create `src/main/java/com/velora/app/core/service/inventory/InventoryManagementService.java`
     - `InventoryManagementService implements IInventoryManagementService`
     - `createProductAtomic`, `updateProduct`, `bulkInsertVariants`, `createEvent`, `attachProductToEvent`, `calculateFinalPrice`, `createCategory`
     - _Requirements: 16.5_
