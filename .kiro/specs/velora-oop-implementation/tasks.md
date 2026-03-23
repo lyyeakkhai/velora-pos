@@ -242,8 +242,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
 > Goal: Define contracts for all repositories, gateways, and services. Domain depends only on interfaces, not implementations.
 > Demonstrates: `interface` keyword, dependency inversion, loose coupling.
 
-- [ ] INT-01 — Auth Repository Interfaces
-  - [ ] INT-01.1 Create `UserRepository.java`, `UserAuthRepository.java`, `MembershipRepository.java` in `com.velora.app.core.domain.auth`
+- [x] INT-01 — Auth Repository Interfaces
+  - [x] INT-01.1 Create `UserRepository.java`, `UserAuthRepository.java`, `MembershipRepository.java` in `com.velora.app.core.domain.auth`
     - `UserRepository` — `save(User)`, `findById(UUID)`, `findByUsername(String)`, `existsByUsername(String)`
     - `UserAuthRepository` — `save(UserAuth)`, `findByEmail(String)`, `findByUserId(UUID)`, `existsByEmail(String)`
     - `MembershipRepository` — `save(Membership)`, `findByUserId(UUID)`, `findByShopId(UUID)`, `findByUserAndShop(UUID, UUID)`
