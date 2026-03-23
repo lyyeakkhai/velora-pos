@@ -473,8 +473,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
   - [ ]* POLY-03.2 Write unit test for `SubscriptionActivationRouter` — unknown `TargetType` throws `DomainException`
     - **Validates: Requirement 19.5**
 
-- [ ] POLY-04 — `SnapshotAggregator` Strategy (Analytics Aggregation)
-  - [ ] POLY-04.1 Create `SnapshotAggregator.java` interface and implementations in `report-and-analytic`
+- [x] POLY-04 — `SnapshotAggregator` Strategy (Analytics Aggregation)
+  - [x] POLY-04.1 Create `SnapshotAggregator.java` interface and implementations in `report-and-analytic`
     - Interface `SnapshotAggregator<T>`: `getAggregatorName()`, `alreadyExists(UUID, LocalDate)`, `aggregate(UUID, LocalDate)`, `persist(T)`
     - `ProductSnapshotAggregator` — aggregates from order items + inventory data
     - `CategorySnapshotAggregator` — aggregates from product snapshots
