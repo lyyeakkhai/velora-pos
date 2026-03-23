@@ -253,8 +253,8 @@ Apply the four OOP pillars — Inheritance, Abstraction, Interfaces, and Polymor
     - **Property 15: Repository Returns Empty Optional for Missing IDs** — `findById(id)` for non-existent id must return `Optional.empty()`
     - **Validates: Requirement 14.11**
 
-- [ ] INT-02 — Subscription Repository Interfaces
-  - [ ] INT-02.1 Create repository interfaces in `com.velora.app.core.domain.plan_subscription`
+- [x] INT-02 — Subscription Repository Interfaces
+  - [x] INT-02.1 Create repository interfaces in `com.velora.app.core.domain.plan_subscription`
     - `SubscriptionPlanRepository` — `save`, `findById`, `findBySlug`, `findAllActive`
     - `PlatformRegistryRepository` — `save`, `findById`, `findByOwnerId`
     - `UserAccountRepository` — `save`, `findByUserId`, `findAllActive`
