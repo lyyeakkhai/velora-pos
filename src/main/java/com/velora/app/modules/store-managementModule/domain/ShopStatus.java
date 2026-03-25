@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.storemanagement;
+package com.velora.app.modules.store_managementModule.domain;
 
 public enum ShopStatus {
     PENDING,

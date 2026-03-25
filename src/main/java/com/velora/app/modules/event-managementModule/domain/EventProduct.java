@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.event_managementModule.domain;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

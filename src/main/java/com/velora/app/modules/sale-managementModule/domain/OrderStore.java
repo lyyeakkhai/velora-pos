@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.salemanagement;
+package com.velora.app.modules.sale_managementModule.domain;
 
 import java.util.List;
 import java.util.Optional;

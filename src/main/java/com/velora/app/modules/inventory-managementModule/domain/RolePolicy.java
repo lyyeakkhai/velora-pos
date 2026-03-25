@@ -1,9 +1,9 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import com.velora.app.common.AbstractAccessPolicy;
 import com.velora.app.common.AccessPolicy;
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
@@ -40,3 +40,4 @@ public class RolePolicy extends AbstractAccessPolicy implements AccessPolicy {
         if (roleName == Role.RoleName.SELLER) throw new DomainException("Write access denied for SELLER");
     }
 }
+

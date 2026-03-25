@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.plan_subscription;
+package com.velora.app.modules.plan_subscriptionModule.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -111,3 +111,4 @@ public class PlanSubscriptionTesting {
         assertTrue(sub.getRefundDeadline().isAfter(sub.getStartDate()));
     }
 }
+

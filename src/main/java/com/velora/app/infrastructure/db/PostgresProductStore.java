@@ -1,7 +1,7 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.inventoryeventmanagement.Product;
-import com.velora.app.core.domain.inventoryeventmanagement.ProductStore;
+import com.velora.app.modules.inventory.domain.Product;
+import com.velora.app.modules.inventory.domain.ProductStore;
 
 import java.util.List;
 import java.util.Optional;

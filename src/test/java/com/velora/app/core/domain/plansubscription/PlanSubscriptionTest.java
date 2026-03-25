@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.plan_subscription;
+package com.velora.app.modules.plan_subscriptionModule.domain;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures
@@ -8,3 +8,4 @@ package com.velora.app.core.domain.plan_subscription;
 public class PlanSubscriptionTest extends PlanSubscriptionTesting {
     // Intentionally empty.
 }
+

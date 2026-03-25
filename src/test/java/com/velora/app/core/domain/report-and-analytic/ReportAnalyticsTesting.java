@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.reportandanalytic;
+package com.velora.app.modules.report_analyticModule.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,8 +21,8 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.salemanagement.TransactionRunner;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.sale_managementModule.domain.TransactionRunner;
 
 public class ReportAnalyticsTesting {
 

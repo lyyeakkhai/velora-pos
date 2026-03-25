@@ -1,7 +1,7 @@
 package com.velora.app.modules.notificationModule.domain;
 
 import com.velora.app.common.AbstractDomainService;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.time.Clock;
 import java.time.LocalDateTime;

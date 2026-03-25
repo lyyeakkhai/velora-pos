@@ -1,6 +1,6 @@
-package com.velora.app.core.domain.storemanagement;
+package com.velora.app.modules.store_managementModule.domain;
 
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.math.BigDecimal;
 import java.util.UUID;

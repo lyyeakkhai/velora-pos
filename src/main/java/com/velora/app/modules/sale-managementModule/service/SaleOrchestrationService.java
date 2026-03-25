@@ -1,17 +1,16 @@
-package com.velora.app.core.service.sale;
+package com.velora.app.modules.sale_managementModule.service;
 
 import com.velora.app.common.AbstractDomainService;
-import com.velora.app.core.domain.salemanagement.DeliveryStore;
-import com.velora.app.core.domain.salemanagement.InventoryService;
-import com.velora.app.core.domain.salemanagement.Order;
-import com.velora.app.core.domain.salemanagement.OrderService;
-import com.velora.app.core.domain.salemanagement.OrderStore;
-import com.velora.app.core.domain.salemanagement.PaymentIntent;
-import com.velora.app.core.domain.salemanagement.PaymentIntentStore;
-import com.velora.app.core.domain.salemanagement.ReceiptStore;
-import com.velora.app.core.domain.salemanagement.TransactionRunner;
-import com.velora.app.core.domain.salemanagement.WebhookSecurity;
-import com.velora.app.core.service.ISaleOrchestrationService;
+import com.velora.app.modules.sale_managementModule.domain.DeliveryStore;
+import com.velora.app.modules.sale_managementModule.domain.InventoryService;
+import com.velora.app.modules.sale_managementModule.domain.Order;
+import com.velora.app.modules.sale_managementModule.domain.OrderService;
+import com.velora.app.modules.sale_managementModule.domain.OrderStore;
+import com.velora.app.modules.sale_managementModule.domain.PaymentIntent;
+import com.velora.app.modules.sale_managementModule.domain.PaymentIntentStore;
+import com.velora.app.modules.sale_managementModule.domain.ReceiptStore;
+import com.velora.app.modules.sale_managementModule.domain.TransactionRunner;
+import com.velora.app.modules.sale_managementModule.domain.WebhookSecurity;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,10 +19,12 @@ import java.util.UUID;
  * Application-layer service for sale orchestration: payment intents,
  * webhook handling, order finalization, and cleanup jobs.
  *
- * <p>Extends {@link AbstractDomainService} to reuse {@code requireNotNull}
+ * <p>
+ * Extends {@link AbstractDomainService} to reuse {@code requireNotNull}
  * guard methods. Delegates domain logic to {@link OrderService}.
  *
- * <p>Requirements: 16.6
+ * <p>
+ * Requirements: 16.6
  */
 public class SaleOrchestrationService extends AbstractDomainService implements ISaleOrchestrationService {
 
@@ -71,7 +72,8 @@ public class SaleOrchestrationService extends AbstractDomainService implements I
     /**
      * Verifies an incoming payment webhook and confirms the corresponding intent.
      *
-     * @param event the webhook event containing bank reference, amount, and security fields
+     * @param event the webhook event containing bank reference, amount, and
+     *              security fields
      * @return the confirmed {@link PaymentIntent}
      */
     @Override
@@ -86,7 +88,8 @@ public class SaleOrchestrationService extends AbstractDomainService implements I
      *
      * @param intentId        the UUID of the confirmed payment intent
      * @param deliveryNeeded  whether a delivery record should be created
-     * @param deliveryAddress the delivery address (required when deliveryNeeded is true)
+     * @param deliveryAddress the delivery address (required when deliveryNeeded is
+     *                        true)
      * @return the finalized {@link Order}
      */
     @Override

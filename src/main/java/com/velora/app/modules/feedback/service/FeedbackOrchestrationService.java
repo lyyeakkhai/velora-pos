@@ -1,7 +1,7 @@
 package com.velora.app.modules.feedback.service;
 
 import com.velora.app.common.AbstractDomainService;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.modules.feedback.domain.FeatureSuggestion;
 import com.velora.app.modules.feedback.domain.FeedbackService;
 import com.velora.app.modules.feedback.domain.SuggestionCategory;

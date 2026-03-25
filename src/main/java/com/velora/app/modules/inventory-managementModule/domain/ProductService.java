@@ -1,11 +1,11 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.salemanagement.TransactionRunner;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.sale_managementModule.domain.TransactionRunner;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**

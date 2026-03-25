@@ -1,7 +1,7 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.auth.User;
-import com.velora.app.core.domain.auth.UserRepository;
+import com.velora.app.modules.authModule.domain.User;
+import com.velora.app.modules.authModule.Repository.UserRepository;
 
 import java.util.Optional;
 import java.util.UUID;

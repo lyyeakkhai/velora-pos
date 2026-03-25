@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.salemanagement;
+package com.velora.app.modules.sale_managementModule.domain;
 
 /**
  * Abstraction for running a unit of work in a single database transaction.

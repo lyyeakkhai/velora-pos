@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import java.util.UUID;
 
@@ -57,3 +57,4 @@ public class Category extends AbstractAuditableEntity {
                 '}';
     }
 }
+

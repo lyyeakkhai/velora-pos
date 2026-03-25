@@ -1,0 +1,138 @@
+/*
+ * Velora Business Management — JavaFX styles
+ *
+ * Note: JavaFX supports custom properties like -color-primary and var(-color-primary).
+ */
+
+.root {
+	/* Design tokens (from DESIGN.md) */
+	-color-primary: #182034;
+	-color-primary-container: #2e354a;
+	-color-secondary-container: #d5e3fd;
+	-color-on-secondary-container: #57657b;
+	-color-tertiary: #002336;
+	-color-tertiary-fixed-dim: #89ceff;
+	-color-surface: #f7f9fb;
+	-color-surface-dim: #d8dadc;
+	-color-surface-container-lowest: #ffffff;
+	-color-surface-container-low: #f2f4f6;
+	-color-surface-container: #eceef0;
+	-color-surface-container-high: #e6e8ea;
+	-color-surface-container-highest: #e0e3e5;
+	-color-on-surface: #191c1e;
+	-color-on-background: #191c1e;
+	-color-outline-variant: #c4c6cf;
+	-color-secondary-fixed: #d5e3fd;
+	-color-on-secondary-fixed: #0d1c2f;
+
+	-fx-font-family: "Inter";
+	-fx-background-color: -color-surface-container-low;
+}
+
+/* Surface helpers */
+.surface-container-low {
+	-fx-background-color: -color-surface-container-low;
+}
+
+.surface-container-lowest {
+	-fx-background-color: -color-surface-container-lowest;
+}
+
+/* Typography helpers */
+.label-sm {
+	-fx-font-family: "Inter";
+	-fx-font-size: 11px;
+	-fx-font-weight: 500;
+}
+
+.label-md {
+	-fx-font-family: "Inter";
+	-fx-font-size: 12px;
+	-fx-font-weight: 500;
+}
+
+.label-lg {
+	-fx-font-family: "Inter";
+	-fx-font-size: 14px;
+	-fx-font-weight: 500;
+}
+
+.headline-sm {
+	-fx-font-family: "Manrope";
+	-fx-font-size: 20px;
+	-fx-font-weight: 600;
+}
+
+.headline-lg {
+	-fx-font-family: "Manrope";
+	-fx-font-size: 28px;
+	-fx-font-weight: 700;
+}
+
+/* Buttons (from DESIGN.md; values live in CSS, not Java code) */
+.btn-primary {
+	-fx-background-color: linear-gradient(
+		from 0% 0% to 100% 100%,
+		#182034,
+		#2e354a
+	);
+	-fx-text-fill: white;
+	-fx-background-radius: 8;
+	-fx-padding: 10 20 10 20;
+	-fx-font-family: "Inter";
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
+	-fx-cursor: hand;
+}
+
+.btn-primary:hover {
+	-fx-background-color: linear-gradient(
+		from 0% 0% to 100% 100%,
+		#2e354a,
+		#3d4560
+	);
+}
+
+.btn-secondary {
+	-fx-background-color: #f2f4f6;
+	-fx-text-fill: #191c1e;
+	-fx-background-radius: 8;
+	-fx-padding: 10 20 10 20;
+	-fx-font-family: "Inter";
+	-fx-font-size: 14px;
+	-fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+	-fx-background-color: #d8dadc;
+}
+
+/* Chips */
+.chip-blue {
+	-fx-background-color: #d5e3fd;
+	-fx-text-fill: #0d1c2f;
+	-fx-background-radius: 9999;
+	-fx-padding: 3 10 3 10;
+	-fx-font-size: 11px;
+}
+
+.chip-green {
+	-fx-background-color: #e8f5e9;
+	-fx-text-fill: #2e7d32;
+	-fx-background-radius: 9999;
+	-fx-padding: 3 10 3 10;
+}
+
+.chip-orange {
+	-fx-background-color: #fff3e0;
+	-fx-text-fill: #e65100;
+	-fx-background-radius: 9999;
+	-fx-padding: 3 10 3 10;
+}
+
+.chip-grey {
+	-fx-background-color: #e6e8ea;
+	-fx-text-fill: #57657b;
+	-fx-background-radius: 9999;
+	-fx-padding: 3 10 3 10;
+}

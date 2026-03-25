@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.feedback;
+package com.velora.app.modules.feedback.domain;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures FeedbackTesting executes.
@@ -6,3 +6,4 @@ package com.velora.app.core.domain.feedback;
 public class FeedbackTestingTest extends FeedbackTesting {
     // Intentionally empty.
 }
+

@@ -1,7 +1,7 @@
-package com.velora.app.core.domain.feedback;
+package com.velora.app.modules.feedback.domain;
 
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.modules.feedback.domain.FeatureSuggestion;
 import com.velora.app.modules.feedback.domain.FeatureSuggestionRepository;
 import com.velora.app.modules.feedback.domain.FeedbackService;
@@ -145,3 +145,4 @@ public class FeedbackTesting {
         assertEquals(1, service.adminListByStatus(SuggestionStatus.NEW, Role.RoleName.SUPER_ADMIN).size());
     }
 }
+

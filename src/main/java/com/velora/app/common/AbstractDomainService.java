@@ -1,6 +1,6 @@
 package com.velora.app.common;
 
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 
 /**
  * Abstract base class for domain services.
@@ -8,7 +8,8 @@ import com.velora.app.core.domain.auth.Role;
  * Provides shared guard methods for role authorization and null validation,
  * eliminating inline checks duplicated across domain services.
  *
- * Subclasses: NotificationService, FeedbackService, ReportingService, AnalyticsAggregationService
+ * Subclasses: NotificationService, FeedbackService, ReportingService,
+ * AnalyticsAggregationService
  *
  * Requirements: 8.1, 8.2, 8.7, 8.8
  */
@@ -23,7 +24,8 @@ public abstract class AbstractDomainService {
      */
     protected void requireRole(Role.RoleName actual, Role.RoleName... allowed) {
         for (Role.RoleName permitted : allowed) {
-            if (permitted == actual) return;
+            if (permitted == actual)
+                return;
         }
         throw new DomainException("Role " + actual + " is not authorized for this operation");
     }

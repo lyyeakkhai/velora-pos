@@ -1,0 +1,548 @@
+/* ============================================
+   VELORA BUSINESS MANAGEMENT - DESIGN SYSTEM
+   ============================================ */
+
+/* Root CSS Variables */
+.root {
+	/* Color Palette */
+	-color-primary: #182034;
+	-color-primary-container: #2e354a;
+	-color-secondary-container: #d5e3fd;
+	-color-on-secondary-container: #57657b;
+	-color-tertiary: #002336;
+	-color-tertiary-fixed-dim: #89ceff;
+	-color-surface: #f7f9fb;
+	-color-surface-dim: #d8dadc;
+	-color-surface-container-lowest: #ffffff;
+	-color-surface-container-low: #f2f4f6;
+	-color-surface-container: #eceef0;
+	-color-surface-container-high: #e6e8ea;
+	-color-surface-container-highest: #e0e3e5;
+	-color-on-surface: #191c1e;
+	-color-on-background: #191c1e;
+	-color-outline-variant: #c4c6cf;
+	-color-secondary-fixed: #d5e3fd;
+	-color-on-secondary-fixed: #0d1c2f;
+
+	/* Typography Scale */
+	-font-display-lg: "Manrope", 56px, bold;
+	-font-display-sm: "Manrope", 36px, bold;
+	-font-headline-lg: "Manrope", 28px, bold;
+	-font-headline-sm: "Manrope", 20px, semibold;
+	-font-body-lg: "Inter", 16px, normal;
+	-font-body-md: "Inter", 14px, normal;
+	-font-label-lg: "Inter", 14px, medium;
+	-font-label-md: "Inter", 12px, medium;
+	-font-label-sm: "Inter", 11px, medium;
+
+	/* Spacing */
+	-spacing-4: 0.9rem;
+	-spacing-10: 2.25rem;
+	-spacing-16: 3.5rem;
+	-spacing-20: 4.5rem;
+
+	/* Roundedness */
+	-radius-sm: 6px;
+	-radius-md: 8px;
+	-radius-full: 9999px;
+
+	/* Fonts */
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-primary {
+	-fx-background-color: linear-gradient(
+		from 0% 0% to 100% 100%,
+		#182034,
+		#2e354a
+	);
+	-fx-text-fill: white;
+	-fx-background-radius: 8px;
+	-fx-padding: 10px 20px 10px 20px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
+	-fx-cursor: hand;
+	-fx-border: none;
+	-fx-alignment: center;
+}
+
+.btn-primary:hover {
+	-fx-background-color: linear-gradient(
+		from 0% 0% to 100% 100%,
+		#2e354a,
+		#3d4560
+	);
+}
+
+.btn-primary:pressed {
+	-fx-background-color: linear-gradient(
+		from 0% 0% to 100% 100%,
+		#3d4560,
+		#4a5572
+	);
+}
+
+.btn-secondary {
+	-fx-background-color: #f2f4f6;
+	-fx-text-fill: #191c1e;
+	-fx-background-radius: 8px;
+	-fx-padding: 10px 20px 10px 20px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 14px;
+	-fx-cursor: hand;
+	-fx-border: none;
+	-fx-alignment: center;
+}
+
+.btn-secondary:hover {
+	-fx-background-color: #d8dadc;
+}
+
+.btn-secondary:pressed {
+	-fx-background-color: #c8cacb;
+}
+
+.btn-icon {
+	-fx-background-color: transparent;
+	-fx-text-fill: #57657b;
+	-fx-background-radius: 8px;
+	-fx-padding: 8px;
+	-fx-cursor: hand;
+	-fx-border: none;
+}
+
+.btn-icon:hover {
+	-fx-background-color: #f2f4f6;
+}
+
+/* ============================================
+   CHIPS
+   ============================================ */
+
+.chip-blue {
+	-fx-background-color: #d5e3fd;
+	-fx-text-fill: #0d1c2f;
+	-fx-background-radius: 9999px;
+	-fx-padding: 3px 10px 3px 10px;
+	-fx-font-size: 11px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-weight: 500;
+}
+
+.chip-green {
+	-fx-background-color: #e8f5e9;
+	-fx-text-fill: #2e7d32;
+	-fx-background-radius: 9999px;
+	-fx-padding: 3px 10px 3px 10px;
+	-fx-font-size: 11px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-weight: 500;
+}
+
+.chip-orange {
+	-fx-background-color: #fff3e0;
+	-fx-text-fill: #e65100;
+	-fx-background-radius: 9999px;
+	-fx-padding: 3px 10px 3px 10px;
+	-fx-font-size: 11px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-weight: 500;
+}
+
+.chip-grey {
+	-fx-background-color: #e6e8ea;
+	-fx-text-fill: #57657b;
+	-fx-background-radius: 9999px;
+	-fx-padding: 3px 10px 3px 10px;
+	-fx-font-size: 11px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-weight: 500;
+}
+
+.chip-accent {
+	-fx-background-color: #89ceff;
+	-fx-text-fill: #002336;
+	-fx-background-radius: 9999px;
+	-fx-padding: 3px 10px 3px 10px;
+	-fx-font-size: 11px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-weight: 500;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+
+.card {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 8px;
+	-fx-effect: dropshadow(gaussian, rgba(25, 28, 30, 0.06), 32, 0, 0, 12);
+}
+
+.card:hover {
+	-fx-background-color: #f2f4f6;
+}
+
+.card-flat {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 8px;
+}
+
+.card-dark {
+	-fx-background-color: #182034;
+	-fx-background-radius: 8px;
+}
+
+.card-interactive {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 8px;
+	-fx-cursor: hand;
+	-fx-effect: dropshadow(gaussian, rgba(25, 28, 30, 0.06), 32, 0, 0, 12);
+}
+
+.card-interactive:hover {
+	-fx-background-color: #f2f4f6;
+	-fx-effect: dropshadow(gaussian, rgba(25, 28, 30, 0.08), 40, 0, 0, 16);
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+
+.search-field {
+	-fx-background-color: #e0e3e5;
+	-fx-background-radius: 6px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 13px;
+	-fx-padding: 10px 14px 10px 36px;
+	-fx-prompt-text-fill: #c4c6cf;
+	-fx-text-fill: #191c1e;
+	-fx-border: none;
+	-fx-focus-traversable: true;
+}
+
+.search-field:focused {
+	-fx-background-color: #ffffff;
+	-fx-border-color: rgba(24, 32, 52, 0.2);
+	-fx-border-width: 2px;
+	-fx-border-radius: 6px;
+}
+
+.text-field {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 6px;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 14px;
+	-fx-padding: 10px 14px;
+	-fx-text-fill: #191c1e;
+	-fx-border-color: #c4c6cf;
+	-fx-border-width: 1px;
+	-fx-border-radius: 6px;
+}
+
+.text-field:focused {
+	-fx-border-color: rgba(24, 32, 52, 0.4);
+	-fx-border-width: 2px;
+}
+
+.text-field .prompt-text {
+	-fx-text-fill: #c4c6cf;
+}
+
+/* ============================================
+   NAVIGATION SIDEBAR
+   ============================================ */
+
+.sidebar {
+	-fx-background-color: #ffffff;
+	-fx-pref-width: 220px;
+}
+
+.nav-item {
+	-fx-background-color: transparent;
+	-fx-padding: 12px 16px;
+	-fx-cursor: hand;
+	-fx-alignment: CENTER_LEFT;
+}
+
+.nav-item:hover {
+	-fx-background-color: #d8dadc;
+}
+
+.nav-item-active {
+	-fx-background-color: #f2f4f6;
+	-fx-border-width: 0 0 0 3px;
+	-fx-border-color: #89ceff;
+	-fx-padding: 12px 16px;
+	-fx-cursor: hand;
+	-fx-alignment: CENTER_LEFT;
+}
+
+.nav-item-active:hover {
+	-fx-background-color: #f2f4f6;
+}
+
+/* ============================================
+   TOP BAR
+   ============================================ */
+
+.top-bar {
+	-fx-background-color: rgba(255, 255, 255, 0.8);
+	-fx-pref-height: 64px;
+	-fx-padding: 0 24px;
+}
+
+.top-bar-glass {
+	-fx-background-color: rgba(255, 255, 255, 0.8);
+	-fx-background-radius: 0 0 16px 16px;
+}
+
+/* ============================================
+   TYPOGRAPHY CLASSES
+   ============================================ */
+
+.text-display-lg {
+	-fx-font-family: "Manrope", "Segoe UI", sans-serif;
+	-fx-font-size: 56px;
+	-fx-font-weight: bold;
+	-fx-fill: #191c1e;
+}
+
+.text-display-sm {
+	-fx-font-family: "Manrope", "Segoe UI", sans-serif;
+	-fx-font-size: 36px;
+	-fx-font-weight: bold;
+	-fx-fill: #191c1e;
+}
+
+.text-headline-lg {
+	-fx-font-family: "Manrope", "Segoe UI", sans-serif;
+	-fx-font-size: 28px;
+	-fx-font-weight: bold;
+	-fx-fill: #191c1e;
+}
+
+.text-headline-sm {
+	-fx-font-family: "Manrope", "Segoe UI", sans-serif;
+	-fx-font-size: 20px;
+	-fx-font-weight: 600;
+	-fx-fill: #191c1e;
+}
+
+.text-body-lg {
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 16px;
+	-fx-font-weight: normal;
+	-fx-fill: #191c1e;
+}
+
+.text-body-md {
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 14px;
+	-fx-font-weight: normal;
+	-fx-fill: #191c1e;
+}
+
+.text-label-lg {
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 14px;
+	-fx-font-weight: 500;
+	-fx-fill: #191c1e;
+}
+
+.text-label-md {
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 12px;
+	-fx-font-weight: 500;
+	-fx-fill: #191c1e;
+}
+
+.text-label-sm {
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 11px;
+	-fx-font-weight: 500;
+	-fx-fill: #57657b;
+}
+
+.text-accent {
+	-fx-fill: #89ceff;
+}
+
+.text-muted {
+	-fx-fill: #57657b;
+}
+
+.text-white {
+	-fx-fill: #ffffff;
+}
+
+/* ============================================
+   LAYOUT UTILITIES
+   ============================================ */
+
+.gutter-10 {
+	-fx-spacing: 36px; /* 2.25rem */
+}
+
+.gutter-16 {
+	-fx-spacing: 56px; /* 3.5rem */
+}
+
+.gutter-20 {
+	-fx-spacing: 72px; /* 4.5rem */
+}
+
+.section-gap {
+	-fx-spacing: 36px;
+}
+
+.list-item-gap {
+	-fx-spacing: 14px; /* 0.9rem */
+}
+
+/* ============================================
+   CHART STYLING
+   ============================================ */
+
+.chart-bar {
+	-fx-bar-fill: #89ceff;
+	-fx-opacity: 0.6;
+}
+
+.chart-bar-highlight {
+	-fx-bar-fill: #89ceff;
+	-fx-opacity: 1;
+}
+
+.chart-axis {
+	-fx-tick-label-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-tick-label-font-size: 11px;
+	-fx-tick-label-fill: #57657b;
+}
+
+.chart-grid-lines {
+	-fx-stroke: transparent;
+}
+
+.chart-plot-background {
+	-fx-background-color: transparent;
+}
+
+/* ============================================
+   GHOST BORDER (15% opacity)
+   ============================================ */
+
+.ghost-border {
+	-fx-border-width: 0 0 1 0;
+	-fx-border-color: rgba(196, 198, 207, 0.15);
+}
+
+.row-separator {
+	-fx-border-width: 0 0 1 0;
+	-fx-border-color: rgba(196, 198, 207, 0.15);
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+
+.progress-bar {
+	-fx-background-color: #e6e8ea;
+	-fx-background-radius: 9999px;
+	-fx-padding: 0;
+}
+
+.progress-bar > .bar {
+	-fx-background-color: #89ceff;
+	-fx-background-radius: 9999px;
+	-fx-padding: 0;
+}
+
+.progress-bar > .track {
+	-fx-background-color: transparent;
+	-fx-background-radius: 9999px;
+}
+
+/* ============================================
+   DASHED BORDER
+   ============================================ */
+
+.dashed-border {
+	-fx-border-width: 2px;
+	-fx-border-color: rgba(196, 198, 207, 0.4);
+	-fx-border-radius: 8px;
+	-fx-border-style: segments(5, 5);
+	-fx-background-color: #f2f4f6;
+}
+
+/* ============================================
+   AVATAR
+   ============================================ */
+
+.avatar {
+	-fx-background-radius: 9999px;
+	-fx-background-color: #d5e3fd;
+}
+
+/* ============================================
+   SCROLL PANE
+   ============================================ */
+
+.scroll-pane {
+	-fx-background: transparent;
+	-fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+	-fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar {
+	-fx-background-color: transparent;
+}
+
+/* ============================================
+   TABLE VIEW
+   ============================================ */
+
+.table-view {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+}
+
+.table-view .column-header {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+}
+
+.table-view .table-cell {
+	-fx-padding: 12px 16px;
+}
+
+/* ============================================
+   LINK BUTTON
+   ============================================ */
+
+.link-button {
+	-fx-background-color: transparent;
+	-fx-text-fill: #182034;
+	-fx-font-family: "Inter", "Segoe UI", sans-serif;
+	-fx-font-size: 14px;
+	-fx-font-weight: 500;
+	-fx-cursor: hand;
+	-fx-underline: true;
+	-fx-border: none;
+}
+
+.link-button:hover {
+	-fx-text-fill: #89ceff;
+}
+
+.link-button-accent {
+	-fx-text-fill: #89ceff;
+}

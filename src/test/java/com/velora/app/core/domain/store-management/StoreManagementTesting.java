@@ -1,6 +1,6 @@
-package com.velora.app.core.domain.storemanagement;
+package com.velora.app.modules.store_managementModule.domain;
 
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +35,8 @@ public class StoreManagementTesting {
         public java.util.List<Shop> findByOwnerId(UUID ownerId) {
             java.util.List<Shop> result = new java.util.ArrayList<>();
             for (Shop shop : byId.values()) {
-                if (shop.getOwnerId().equals(ownerId)) result.add(shop);
+                if (shop.getOwnerId().equals(ownerId))
+                    result.add(shop);
             }
             return result;
         }

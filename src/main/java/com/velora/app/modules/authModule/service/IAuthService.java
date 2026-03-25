@@ -1,16 +1,17 @@
 package com.velora.app.modules.authModule.service;
 
-import com.velora.app.core.domain.auth.Membership;
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.auth.User;
-import com.velora.app.core.domain.auth.UserAuth;
+import com.velora.app.modules.authModule.domain.Membership;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.authModule.domain.User;
+import com.velora.app.modules.authModule.domain.UserAuth;
 
 import java.util.UUID;
 
 /**
  * Application-layer contract for authentication and identity management.
  *
- * <p>Requirement: 16.1, 16.2
+ * <p>
+ * Requirement: 16.1, 16.2
  */
 public interface IAuthService {
 

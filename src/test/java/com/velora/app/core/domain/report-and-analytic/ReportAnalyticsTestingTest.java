@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.reportandanalytic;
+package com.velora.app.modules.report_analyticModule.domain;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures

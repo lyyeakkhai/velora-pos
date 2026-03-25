@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.payment;
+package com.velora.app.modules.paymentModule.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -150,3 +150,4 @@ public class PaymentTesting {
         assertNotNull(snapshot.getPlatformSnapId());
     }
 }
+

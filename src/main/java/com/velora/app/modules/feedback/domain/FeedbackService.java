@@ -1,7 +1,7 @@
 package com.velora.app.modules.feedback.domain;
 
 import com.velora.app.common.AbstractDomainService;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -7,7 +7,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.event_managementModule.domain.EventProduct;
+import com.velora.app.modules.event_managementModule.domain.EventProductStatus;
+import com.velora.app.modules.event_managementModule.domain.EventProductStore;
+import com.velora.app.modules.event_managementModule.domain.EventType;
+import com.velora.app.modules.event_managementModule.domain.EventTypeStore;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
@@ -95,7 +100,8 @@ public class DiscountService {
      * Calculates final price after applying the event discount.
      * Looks up the {@link DiscountStrategy} by {@link DiscountType}, calls
      * {@code validate()} then {@code apply()}, and delegates profit margin
-     * protection to {@link com.velora.app.common.AbstractDiscountCalculator#validateProfitMargin}.
+     * protection to
+     * {@link com.velora.app.common.AbstractDiscountCalculator#validateProfitMargin}.
      */
     public BigDecimal calculateFinalPrice(BigDecimal salePrice, EventType event) {
         ValidationUtils.validateNotBlank(event, "event");

@@ -1,7 +1,7 @@
-package com.velora.app.core.domain.notification;
+package com.velora.app.modules.notificationModule.domain;
 
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.modules.notificationModule.domain.DispatchService;
 import com.velora.app.modules.notificationModule.domain.DispatchStatus;
 import com.velora.app.modules.notificationModule.domain.EmailGateway;
@@ -320,3 +320,4 @@ public class NotificationTesting {
         assertEquals(1, gateway.sentCount());
     }
 }
+

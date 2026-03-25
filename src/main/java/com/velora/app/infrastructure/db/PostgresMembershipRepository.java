@@ -1,7 +1,7 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.auth.Membership;
-import com.velora.app.core.domain.auth.MembershipRepository;
+import com.velora.app.modules.authModule.domain.Membership;
+import com.velora.app.modules.authModule.Repository.MembershipRepository;
 
 import java.util.List;
 import java.util.Optional;

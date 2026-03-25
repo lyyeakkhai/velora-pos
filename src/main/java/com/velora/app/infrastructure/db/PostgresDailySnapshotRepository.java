@@ -1,7 +1,7 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.reportandanalytic.DailySnapshot;
-import com.velora.app.core.domain.reportandanalytic.DailySnapshotRepository;
+import com.velora.app.modules.report_analyticModule.domain.DailySnapshot;
+import com.velora.app.modules.report_analyticModule.domain.DailySnapshotRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -38,3 +38,4 @@ public class PostgresDailySnapshotRepository implements DailySnapshotRepository 
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }
+

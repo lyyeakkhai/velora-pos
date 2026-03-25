@@ -1,17 +1,19 @@
-package com.velora.app.core.service;
+package com.velora.app.modules.sale_managementModule.service;
 
-import com.velora.app.core.domain.salemanagement.Order;
-import com.velora.app.core.domain.salemanagement.OrderService;
-import com.velora.app.core.domain.salemanagement.PaymentIntent;
+import com.velora.app.modules.sale_managementModule.domain.Order;
+import com.velora.app.modules.sale_managementModule.domain.OrderService;
+import com.velora.app.modules.sale_managementModule.domain.PaymentIntent;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Application-layer contract for sale orchestration: payment intents, webhook handling,
+ * Application-layer contract for sale orchestration: payment intents, webhook
+ * handling,
  * order finalization, and cleanup jobs.
  *
- * <p>Requirement: 16.1, 16.6
+ * <p>
+ * Requirement: 16.1, 16.6
  */
 public interface ISaleOrchestrationService {
 

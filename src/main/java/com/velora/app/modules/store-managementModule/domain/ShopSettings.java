@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.storemanagement;
+package com.velora.app.modules.store_managementModule.domain;
 
 import com.velora.app.core.utils.ValidationUtils;
 import java.math.BigDecimal;
@@ -23,6 +23,7 @@ public class ShopSettings {
         if (platformFeeRatePercent == null) {
             platformFeeRatePercent = BigDecimal.ZERO;
         }
-        this.platformFeeRatePercent = ValidationUtils.normalizePercentage(platformFeeRatePercent, "platformFeeRatePercent");
+        this.platformFeeRatePercent = ValidationUtils.normalizePercentage(platformFeeRatePercent,
+                "platformFeeRatePercent");
     }
 }

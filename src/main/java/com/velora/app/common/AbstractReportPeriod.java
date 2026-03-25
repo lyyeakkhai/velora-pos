@@ -6,10 +6,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import com.velora.app.core.domain.reportandanalytic.DailySnapshot;
-import com.velora.app.core.domain.reportandanalytic.DailySnapshotRepository;
-import com.velora.app.core.domain.reportandanalytic.DateRange;
-import com.velora.app.core.domain.reportandanalytic.PeriodReportDTO;
+import com.velora.app.modules.report_analyticModule.domain.DailySnapshot;
+import com.velora.app.modules.report_analyticModule.domain.DailySnapshotRepository;
+import com.velora.app.modules.report_analyticModule.domain.DateRange;
+import com.velora.app.modules.report_analyticModule.domain.PeriodReportDTO;
 
 /**
  * Template-method base for report period strategies.
@@ -68,3 +68,4 @@ public abstract class AbstractReportPeriod {
         return new PeriodReportDTO(range, totalGross, totalProfit, avgGross, avgProfit, days);
     }
 }
+
