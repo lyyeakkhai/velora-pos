@@ -1,10 +1,10 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.payment.Invoice;
-import com.velora.app.core.domain.payment.InvoiceRepository;
-
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.paymentModule.domain.Invoice;
+import com.velora.app.modules.paymentModule.domain.InvoiceRepository;
 
 /**
  * PostgreSQL implementation of InvoiceRepository.

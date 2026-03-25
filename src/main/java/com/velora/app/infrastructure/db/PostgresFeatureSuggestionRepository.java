@@ -1,12 +1,12 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.feedback.FeatureSuggestion;
-import com.velora.app.core.domain.feedback.FeatureSuggestionRepository;
-import com.velora.app.core.domain.feedback.SuggestionStatus;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.feedback.domain.FeatureSuggestion;
+import com.velora.app.modules.feedback.domain.FeatureSuggestionRepository;
+import com.velora.app.modules.feedback.domain.SuggestionStatus;
 
 /**
  * PostgreSQL implementation of FeatureSuggestionRepository.

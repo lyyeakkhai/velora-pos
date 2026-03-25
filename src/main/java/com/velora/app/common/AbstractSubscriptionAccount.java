@@ -3,7 +3,7 @@ package com.velora.app.common;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import com.velora.app.core.domain.plan_subscription.SubscriptionPlan;
+import com.velora.app.modules.plan_subscriptionModule.domain.SubscriptionPlan;
 
 /**
  * Abstract base class for subscription account lifecycle management.

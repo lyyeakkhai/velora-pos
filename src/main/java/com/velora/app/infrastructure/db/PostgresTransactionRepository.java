@@ -1,10 +1,10 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.payment.Transaction;
-import com.velora.app.core.domain.payment.TransactionRepository;
-
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.paymentModule.domain.Transaction;
+import com.velora.app.modules.paymentModule.domain.TransactionRepository;
 
 /**
  * PostgreSQL implementation of TransactionRepository.

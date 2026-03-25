@@ -2,6 +2,22 @@ package com.velora.app.core.domain.notification;
 
 import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.notificationModule.domain.DispatchService;
+import com.velora.app.modules.notificationModule.domain.DispatchStatus;
+import com.velora.app.modules.notificationModule.domain.EmailGateway;
+import com.velora.app.modules.notificationModule.domain.Notification;
+import com.velora.app.modules.notificationModule.domain.NotificationChannel;
+import com.velora.app.modules.notificationModule.domain.NotificationDispatchLog;
+import com.velora.app.modules.notificationModule.domain.NotificationDispatchRecord;
+import com.velora.app.modules.notificationModule.domain.NotificationDispatchRepository;
+import com.velora.app.modules.notificationModule.domain.NotificationPreferences;
+import com.velora.app.modules.notificationModule.domain.NotificationPreferencesRepository;
+import com.velora.app.modules.notificationModule.domain.NotificationPriority;
+import com.velora.app.modules.notificationModule.domain.NotificationRepository;
+import com.velora.app.modules.notificationModule.domain.NotificationService;
+import com.velora.app.modules.notificationModule.domain.NotificationType;
+import com.velora.app.modules.notificationModule.domain.PreferenceService;
+
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDateTime;
