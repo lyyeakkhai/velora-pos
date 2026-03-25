@@ -1,7 +1,7 @@
 package com.velora.app.common;
 
-import com.velora.app.core.domain.notification.Notification;
-import com.velora.app.core.domain.notification.NotificationPreferences;
+import com.velora.app.modules.notificationModule.domain.Notification;
+import com.velora.app.modules.notificationModule.domain.NotificationPreferences;
 
 /**
  * Abstract base for all notification dispatchers.

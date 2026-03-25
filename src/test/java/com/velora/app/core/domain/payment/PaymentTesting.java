@@ -13,6 +13,16 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.velora.app.common.DomainException;
+import com.velora.app.modules.paymentModule.domain.CardType;
+import com.velora.app.modules.paymentModule.domain.Invoice;
+import com.velora.app.modules.paymentModule.domain.InvoiceStatus;
+import com.velora.app.modules.paymentModule.domain.PayerType;
+import com.velora.app.modules.paymentModule.domain.PaymentIntent;
+import com.velora.app.modules.paymentModule.domain.PaymentIntentStatus;
+import com.velora.app.modules.paymentModule.domain.PaymentMethod;
+import com.velora.app.modules.paymentModule.domain.PlatformRevenueSnapshot;
+import com.velora.app.modules.paymentModule.domain.Transaction;
+import com.velora.app.modules.paymentModule.domain.TransactionStatus;
 
 public class PaymentTesting {
 

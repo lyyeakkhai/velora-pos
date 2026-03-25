@@ -1,12 +1,12 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.notification.Notification;
-import com.velora.app.core.domain.notification.NotificationRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.notificationModule.domain.Notification;
+import com.velora.app.modules.notificationModule.domain.NotificationRepository;
 
 /**
  * PostgreSQL implementation of NotificationRepository.

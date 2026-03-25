@@ -2,6 +2,12 @@ package com.velora.app.core.domain.feedback;
 
 import com.velora.app.common.DomainException;
 import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.feedback.domain.FeatureSuggestion;
+import com.velora.app.modules.feedback.domain.FeatureSuggestionRepository;
+import com.velora.app.modules.feedback.domain.FeedbackService;
+import com.velora.app.modules.feedback.domain.SuggestionCategory;
+import com.velora.app.modules.feedback.domain.SuggestionStatus;
+
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;

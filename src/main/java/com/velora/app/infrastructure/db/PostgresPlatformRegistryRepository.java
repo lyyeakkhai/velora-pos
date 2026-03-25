@@ -1,10 +1,10 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.plan_subscription.PlatformRegistry;
-import com.velora.app.core.domain.plan_subscription.PlatformRegistryRepository;
-
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.plan_subscriptionModule.domain.PlatformRegistry;
+import com.velora.app.modules.plan_subscriptionModule.domain.PlatformRegistryRepository;
 
 /**
  * PostgreSQL implementation of PlatformRegistryRepository.

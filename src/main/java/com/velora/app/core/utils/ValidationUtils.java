@@ -5,6 +5,14 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Centralized validation utilities for the Velora platform.
+ * Provides consistent validation methods across all domain entities.
+ * 
+ * <p>
+ * This class follows the principle of fail-fast validation with
+ * meaningful error messages for debugging.
+ */
 public class ValidationUtils {
 
     /**
@@ -16,7 +24,6 @@ public class ValidationUtils {
      * @throws IllegalArgumentException if value is null, empty, or doesn't match
      *                                  regex
      */
-
     public static void validateFormat(String value, String regex, String fieldName) {
         if (value == null || value.isBlank()) {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
@@ -67,7 +74,6 @@ public class ValidationUtils {
      * @throws IllegalArgumentException if uuid is null, empty, or not a valid UUID
      */
     public static void validateUUID(Object uuid, String fieldName) {
-
         if (uuid == null || uuid.toString().isBlank()) {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
         }
@@ -252,6 +258,39 @@ public class ValidationUtils {
         if (!receiptNumber.matches("^INV-\\d{4}$")) {
             throw new IllegalArgumentException(fieldName + " must match format INV-XXXX");
         }
+    }
+
+    /**
+     * Validates a phone number in international format.
+     *
+     * @param phone     The phone number to validate
+     * @param fieldName Name of the field for error messages
+     * @throws IllegalArgumentException if phone is invalid
+     */
+    public static void validatePhoneNumber(String phone, String fieldName) {
+        validateFormat(phone, RegexPatterns.PHONE_NUMBER, fieldName);
+    }
+
+    /**
+     * Validates a hexadecimal color code.
+     *
+     * @param color     The color code to validate
+     * @param fieldName Name of the field for error messages
+     * @throws IllegalArgumentException if color is invalid
+     */
+    public static void validateHexColor(String color, String fieldName) {
+        validateFormat(color, RegexPatterns.HEX_COLOR, fieldName);
+    }
+
+    /**
+     * Validates a date string in YYYY-MM-DD format.
+     *
+     * @param date      The date string to validate
+     * @param fieldName Name of the field for error messages
+     * @throws IllegalArgumentException if date is invalid
+     */
+    public static void validateDate(String date, String fieldName) {
+        validateFormat(date, RegexPatterns.DATE, fieldName);
     }
 
     /**

@@ -1,11 +1,11 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.plan_subscription.SubscriptionPlan;
-import com.velora.app.core.domain.plan_subscription.SubscriptionPlanRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.plan_subscriptionModule.domain.SubscriptionPlan;
+import com.velora.app.modules.plan_subscriptionModule.domain.SubscriptionPlanRepository;
 
 /**
  * PostgreSQL implementation of SubscriptionPlanRepository.

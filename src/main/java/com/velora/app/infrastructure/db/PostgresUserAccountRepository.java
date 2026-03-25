@@ -1,11 +1,11 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.plan_subscription.UserAccount;
-import com.velora.app.core.domain.plan_subscription.UserAccountRepository;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.velora.app.modules.plan_subscriptionModule.domain.UserAccount;
+import com.velora.app.modules.plan_subscriptionModule.domain.UserAccountRepository;
 
 /**
  * PostgreSQL implementation of UserAccountRepository.
