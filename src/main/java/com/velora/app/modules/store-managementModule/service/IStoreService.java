@@ -1,8 +1,8 @@
-package com.velora.app.core.service;
+package com.velora.app.modules.store_managementModule.service;
 
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.storemanagement.Address;
-import com.velora.app.core.domain.storemanagement.Shop;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.store_managementModule.domain.Address;
+import com.velora.app.modules.store_managementModule.domain.Shop;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -10,7 +10,8 @@ import java.util.UUID;
 /**
  * Application-layer contract for shop registration and lifecycle management.
  *
- * <p>Requirement: 16.1, 16.4
+ * <p>
+ * Requirement: 16.1, 16.4
  */
 public interface IStoreService {
 
@@ -50,7 +51,8 @@ public interface IStoreService {
     Shop updateAddress(UUID shopId, Address newAddress, Role.RoleName actorRole);
 
     /**
-     * Calculates the shop's payout from a gross amount after platform fee deduction.
+     * Calculates the shop's payout from a gross amount after platform fee
+     * deduction.
      */
     BigDecimal calculatePayout(UUID shopId, BigDecimal grossAmount);
 }

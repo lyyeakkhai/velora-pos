@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.notification;
+package com.velora.app.modules.notificationModule.domain;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures NotificationTesting executes.
@@ -6,3 +6,4 @@ package com.velora.app.core.domain.notification;
 public class NotificationTestingTest extends NotificationTesting {
     // Intentionally empty.
 }
+

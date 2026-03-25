@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.salemanagement;
+package com.velora.app.modules.sale_managementModule.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -256,7 +256,8 @@ public class SaleTesting {
         public List<Order> findByShopId(UUID shopId) {
             List<Order> result = new ArrayList<>();
             for (Order o : byId.values()) {
-                if (o.getShopId().equals(shopId)) result.add(o);
+                if (o.getShopId().equals(shopId))
+                    result.add(o);
             }
             return result;
         }

@@ -1,8 +1,8 @@
 package com.velora.app.modules.admin.service;
 
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.auth.User;
-import com.velora.app.core.domain.storemanagement.Shop;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.authModule.domain.User;
+import com.velora.app.modules.store_managementModule.domain.Shop;
 import com.velora.app.modules.paymentModule.domain.PlatformRevenueSnapshot;
 
 import java.time.LocalDate;
@@ -12,7 +12,8 @@ import java.util.UUID;
 /**
  * Application-layer contract for platform administration operations.
  *
- * <p>Requirement: 16.1
+ * <p>
+ * Requirement: 16.1
  */
 public interface IAdminService {
 

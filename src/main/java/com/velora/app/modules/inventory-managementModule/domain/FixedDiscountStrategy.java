@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -51,3 +51,4 @@ public class FixedDiscountStrategy extends AbstractDiscountCalculator implements
         }
     }
 }
+

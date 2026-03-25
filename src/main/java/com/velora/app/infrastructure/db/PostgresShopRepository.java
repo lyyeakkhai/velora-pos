@@ -1,7 +1,7 @@
 package com.velora.app.infrastructure.db;
 
-import com.velora.app.core.domain.storemanagement.Shop;
-import com.velora.app.core.domain.storemanagement.ShopRepository;
+import com.velora.app.modules.store_managementModule.domain.Shop;
+import com.velora.app.modules.store_managementModule.domain.ShopRepository;
 
 import java.util.List;
 import java.util.Optional;

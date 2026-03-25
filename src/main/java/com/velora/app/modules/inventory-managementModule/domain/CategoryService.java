@@ -1,8 +1,8 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import java.util.UUID;
 
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**
@@ -37,3 +37,4 @@ public class CategoryService {
         return value;
     }
 }
+

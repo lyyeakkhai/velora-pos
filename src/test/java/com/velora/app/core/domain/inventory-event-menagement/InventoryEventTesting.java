@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -15,8 +15,13 @@ import java.util.UUID;
 import org.junit.Test;
 
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.salemanagement.TransactionRunner;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.event_managementModule.domain.EventProduct;
+import com.velora.app.modules.event_managementModule.domain.EventProductStatus;
+import com.velora.app.modules.event_managementModule.domain.EventProductStore;
+import com.velora.app.modules.event_managementModule.domain.EventType;
+import com.velora.app.modules.event_managementModule.domain.EventTypeStore;
+import com.velora.app.modules.sale_managementModule.domain.TransactionRunner;
 
 public class InventoryEventTesting {
 
@@ -154,7 +159,8 @@ public class InventoryEventTesting {
         public List<Category> findByShopId(UUID shopId) {
             List<Category> result = new ArrayList<>();
             for (Category c : byId.values()) {
-                if (c.getShopId().equals(shopId)) result.add(c);
+                if (c.getShopId().equals(shopId))
+                    result.add(c);
             }
             return result;
         }
@@ -198,7 +204,8 @@ public class InventoryEventTesting {
         public List<Product> findByShopId(UUID shopId) {
             List<Product> result = new ArrayList<>();
             for (Product p : byId.values()) {
-                if (p.getShopId().equals(shopId)) result.add(p);
+                if (p.getShopId().equals(shopId))
+                    result.add(p);
             }
             return result;
         }
@@ -241,7 +248,8 @@ public class InventoryEventTesting {
         public List<ProductVariant> findByProductId(UUID productId) {
             List<ProductVariant> result = new ArrayList<>();
             for (ProductVariant v : byId.values()) {
-                if (v.getProductId().equals(productId)) result.add(v);
+                if (v.getProductId().equals(productId))
+                    result.add(v);
             }
             return result;
         }
@@ -271,7 +279,8 @@ public class InventoryEventTesting {
         public List<EventType> findByShopId(UUID shopId) {
             List<EventType> result = new ArrayList<>();
             for (EventType e : byId.values()) {
-                if (e.getShopId().equals(shopId)) result.add(e);
+                if (e.getShopId().equals(shopId))
+                    result.add(e);
             }
             return result;
         }
@@ -302,7 +311,8 @@ public class InventoryEventTesting {
         public List<EventProduct> findByEventId(UUID eventId) {
             List<EventProduct> result = new ArrayList<>();
             for (EventProduct ep : byId.values()) {
-                if (ep.getEventId().equals(eventId)) result.add(ep);
+                if (ep.getEventId().equals(eventId))
+                    result.add(ep);
             }
             return result;
         }
@@ -311,7 +321,8 @@ public class InventoryEventTesting {
         public List<EventProduct> findByProductId(UUID productId) {
             List<EventProduct> result = new ArrayList<>();
             for (EventProduct ep : byId.values()) {
-                if (ep.getProductId().equals(productId)) result.add(ep);
+                if (ep.getProductId().equals(productId))
+                    result.add(ep);
             }
             return result;
         }

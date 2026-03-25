@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures
@@ -7,3 +7,4 @@ package com.velora.app.core.domain.inventoryeventmanagement;
 public class InventoryEventTestingTest extends InventoryEventTesting {
     // Intentionally empty.
 }
+

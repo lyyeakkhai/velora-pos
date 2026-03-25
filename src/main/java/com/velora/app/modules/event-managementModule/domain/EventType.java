@@ -1,10 +1,11 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.event_managementModule.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.velora.app.common.AbstractAuditableEntity;
+import com.velora.app.modules.inventory.domain.DiscountType;
 import com.velora.app.core.utils.ValidationUtils;
 
 /**

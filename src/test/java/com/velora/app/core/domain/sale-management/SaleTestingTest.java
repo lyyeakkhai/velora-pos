@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.salemanagement;
+package com.velora.app.modules.sale_managementModule.domain;
 
 /**
  * Surefire runs tests matching *Test; this wrapper ensures SaleTesting

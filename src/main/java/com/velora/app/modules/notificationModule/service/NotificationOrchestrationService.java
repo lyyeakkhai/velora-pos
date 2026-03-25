@@ -2,7 +2,7 @@ package com.velora.app.modules.notificationModule.service;
 
 import com.velora.app.common.AbstractDomainService;
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.modules.notificationModule.domain.DispatchService;
 import com.velora.app.modules.notificationModule.domain.Notification;
 import com.velora.app.modules.notificationModule.domain.NotificationPreferences;

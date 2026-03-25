@@ -1,4 +1,4 @@
-package com.velora.app.core.domain.inventoryeventmanagement;
+package com.velora.app.modules.inventory.domain;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,3 +16,4 @@ public interface CategoryStore {
 
     List<Category> findByShopId(UUID shopId);
 }
+

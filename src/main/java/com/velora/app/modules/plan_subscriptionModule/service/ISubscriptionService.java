@@ -1,6 +1,6 @@
 package com.velora.app.modules.plan_subscriptionModule.service;
 
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.modules.plan_subscriptionModule.domain.PlanSubscriptionEngine;
 
 import java.util.UUID;

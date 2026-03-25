@@ -1,24 +1,23 @@
-package com.velora.app.core.service.inventory;
+package com.velora.app.modules.inventory_managementModule.service;
 
 import com.velora.app.common.AbstractDomainService;
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.inventoryeventmanagement.Category;
-import com.velora.app.core.domain.inventoryeventmanagement.CategoryService;
-import com.velora.app.core.domain.inventoryeventmanagement.CategoryStore;
-import com.velora.app.core.domain.inventoryeventmanagement.DiscountService;
-import com.velora.app.core.domain.inventoryeventmanagement.DiscountType;
-import com.velora.app.core.domain.inventoryeventmanagement.EventProduct;
-import com.velora.app.core.domain.inventoryeventmanagement.EventProductStatus;
-import com.velora.app.core.domain.inventoryeventmanagement.EventProductStore;
-import com.velora.app.core.domain.inventoryeventmanagement.EventType;
-import com.velora.app.core.domain.inventoryeventmanagement.EventTypeStore;
-import com.velora.app.core.domain.inventoryeventmanagement.Product;
-import com.velora.app.core.domain.inventoryeventmanagement.ProductService;
-import com.velora.app.core.domain.inventoryeventmanagement.ProductStore;
-import com.velora.app.core.domain.inventoryeventmanagement.ProductVariant;
-import com.velora.app.core.domain.inventoryeventmanagement.ProductVariantStore;
-import com.velora.app.core.domain.salemanagement.TransactionRunner;
-import com.velora.app.core.service.IInventoryManagementService;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.inventory.domain.Category;
+import com.velora.app.modules.inventory.domain.CategoryService;
+import com.velora.app.modules.inventory.domain.CategoryStore;
+import com.velora.app.modules.inventory.domain.DiscountService;
+import com.velora.app.modules.inventory.domain.DiscountType;
+import com.velora.app.modules.event_managementModule.domain.EventProduct;
+import com.velora.app.modules.event_managementModule.domain.EventProductStatus;
+import com.velora.app.modules.event_managementModule.domain.EventProductStore;
+import com.velora.app.modules.event_managementModule.domain.EventType;
+import com.velora.app.modules.event_managementModule.domain.EventTypeStore;
+import com.velora.app.modules.inventory.domain.Product;
+import com.velora.app.modules.inventory.domain.ProductService;
+import com.velora.app.modules.inventory.domain.ProductStore;
+import com.velora.app.modules.inventory.domain.ProductVariant;
+import com.velora.app.modules.inventory.domain.ProductVariantStore;
+import com.velora.app.modules.sale_managementModule.domain.TransactionRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,13 +25,16 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Application-layer service for product, variant, category, and event management.
+ * Application-layer service for product, variant, category, and event
+ * management.
  *
- * <p>Extends {@link AbstractDomainService} to reuse {@code requireRole} and
+ * <p>
+ * Extends {@link AbstractDomainService} to reuse {@code requireRole} and
  * {@code requireNotNull} guard methods. Delegates domain logic to
  * {@link ProductService}, {@link DiscountService}, and {@link CategoryService}.
  *
- * <p>Requirements: 16.5
+ * <p>
+ * Requirements: 16.5
  */
 public class InventoryManagementService extends AbstractDomainService implements IInventoryManagementService {
 

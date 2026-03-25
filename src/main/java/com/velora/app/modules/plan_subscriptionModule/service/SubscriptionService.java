@@ -2,18 +2,18 @@ package com.velora.app.modules.plan_subscriptionModule.service;
 
 import com.velora.app.common.AbstractDomainService;
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Membership;
-import com.velora.app.core.domain.auth.MembershipRepository;
-import com.velora.app.core.domain.auth.Role;
-import com.velora.app.core.domain.plan_subscription.PlanSubscriptionEngine;
-import com.velora.app.core.domain.plan_subscription.PlatformRegistry;
-import com.velora.app.core.domain.plan_subscription.PlatformRegistryRepository;
-import com.velora.app.core.domain.plan_subscription.ShopAccount;
-import com.velora.app.core.domain.plan_subscription.ShopAccountRepository;
-import com.velora.app.core.domain.plan_subscription.SubscriptionPlan;
-import com.velora.app.core.domain.plan_subscription.SubscriptionPlanRepository;
-import com.velora.app.core.domain.plan_subscription.UserAccount;
-import com.velora.app.core.domain.plan_subscription.UserAccountRepository;
+import com.velora.app.modules.authModule.domain.Membership;
+import com.velora.app.modules.authModule.Repository.MembershipRepository;
+import com.velora.app.modules.authModule.domain.Role;
+import com.velora.app.modules.plan_subscriptionModule.domain.PlanSubscriptionEngine;
+import com.velora.app.modules.plan_subscriptionModule.domain.PlatformRegistry;
+import com.velora.app.modules.plan_subscriptionModule.domain.PlatformRegistryRepository;
+import com.velora.app.modules.plan_subscriptionModule.domain.ShopAccount;
+import com.velora.app.modules.plan_subscriptionModule.domain.ShopAccountRepository;
+import com.velora.app.modules.plan_subscriptionModule.domain.SubscriptionPlan;
+import com.velora.app.modules.plan_subscriptionModule.domain.SubscriptionPlanRepository;
+import com.velora.app.modules.plan_subscriptionModule.domain.UserAccount;
+import com.velora.app.modules.plan_subscriptionModule.domain.UserAccountRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,10 +21,12 @@ import java.util.UUID;
 /**
  * Application-layer service for subscription lifecycle management.
  *
- * <p>Extends {@link AbstractDomainService} to reuse {@code requireRole} and
+ * <p>
+ * Extends {@link AbstractDomainService} to reuse {@code requireRole} and
  * {@code requireNotNull} guard methods.
  *
- * <p>Requirements: 16.1, 16.3
+ * <p>
+ * Requirements: 16.1, 16.3
  */
 public class SubscriptionService extends AbstractDomainService implements ISubscriptionService {
 
@@ -48,9 +50,12 @@ public class SubscriptionService extends AbstractDomainService implements ISubsc
     }
 
     /**
-     * Onboards a new user: creates PlatformRegistry, UserAccount, and activates the basic plan.
+     * Onboards a new user: creates PlatformRegistry, UserAccount, and activates the
+     * basic plan.
      *
-     * <p>Delegates to {@link PlanSubscriptionEngine#onboardUser} for pure domain logic,
+     * <p>
+     * Delegates to {@link PlanSubscriptionEngine#onboardUser} for pure domain
+     * logic,
      * then persists both the registry and account.
      *
      * @param userId      the user's UUID
@@ -128,7 +133,8 @@ public class SubscriptionService extends AbstractDomainService implements ISubsc
      *
      * @param userId    the user's UUID
      * @param newPlanId the UUID of the new plan
-     * @throws DomainException if the account or plan is not found, or the account is not active
+     * @throws DomainException if the account or plan is not found, or the account
+     *                         is not active
      */
     @Override
     public void upgradeUserPlan(UUID userId, UUID newPlanId) {
@@ -165,7 +171,8 @@ public class SubscriptionService extends AbstractDomainService implements ISubsc
     /**
      * Batch job: iterates all active user and shop accounts and marks expired ones.
      *
-     * <p>Calls {@link UserAccount#markExpiredIfNeeded()} and
+     * <p>
+     * Calls {@link UserAccount#markExpiredIfNeeded()} and
      * {@link ShopAccount#markExpiredIfNeeded()} on each account, then persists
      * any that transitioned to EXPIRED.
      */
@@ -218,7 +225,8 @@ public class SubscriptionService extends AbstractDomainService implements ISubsc
      * @param actorId    the UUID of the admin performing the action
      * @param registryId the UUID of the registry to ban
      * @param reason     the reason for the ban
-     * @throws DomainException if the actor is not SUPER_ADMIN or the registry is not found
+     * @throws DomainException if the actor is not SUPER_ADMIN or the registry is
+     *                         not found
      */
     @Override
     public void banRegistry(UUID actorId, UUID registryId, String reason) {
@@ -241,7 +249,8 @@ public class SubscriptionService extends AbstractDomainService implements ISubsc
     // ---------------------------------------------------------------------------
 
     /**
-     * Resolves the highest-privilege role for the given actor from their memberships.
+     * Resolves the highest-privilege role for the given actor from their
+     * memberships.
      * Returns {@code SELLER} as the default when no membership exists.
      */
     private Role.RoleName resolveActorRole(UUID actorId) {
@@ -265,9 +274,9 @@ public class SubscriptionService extends AbstractDomainService implements ISubsc
     private static int ordinal(Role.RoleName r) {
         return switch (r) {
             case SUPER_ADMIN -> 0;
-            case OWNER       -> 1;
-            case MANAGER     -> 2;
-            case SELLER      -> 3;
+            case OWNER -> 1;
+            case MANAGER -> 2;
+            case SELLER -> 3;
         };
     }
 }

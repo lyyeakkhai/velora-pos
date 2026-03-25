@@ -1,6 +1,6 @@
 package com.velora.app.modules.notificationModule.service;
 
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.modules.notificationModule.domain.Notification;
 import com.velora.app.modules.notificationModule.domain.NotificationPriority;
 import com.velora.app.modules.notificationModule.domain.NotificationType;

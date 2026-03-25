@@ -3,7 +3,7 @@ package com.velora.app.modules.feedback.domain;
 import com.velora.app.common.AbstractAccessPolicy;
 import com.velora.app.common.AccessPolicy;
 import com.velora.app.common.DomainException;
-import com.velora.app.core.domain.auth.Role;
+import com.velora.app.modules.authModule.domain.Role;
 import com.velora.app.core.utils.ValidationUtils;
 import java.util.UUID;
 
