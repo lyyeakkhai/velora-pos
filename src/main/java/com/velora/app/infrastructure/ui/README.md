@@ -54,6 +54,9 @@ The UI is designed to integrate with the existing modular services:
 # Compile
 mvn clean compile
 
+mvn compile exec:java
+
+
 # Run (requires JavaFX)
 mvn exec:java -Dexec.mainClass="com.velora.app.Main"
 
