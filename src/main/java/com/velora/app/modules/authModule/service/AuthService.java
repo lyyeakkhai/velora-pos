@@ -1,7 +1,6 @@
 package com.velora.app.modules.authModule.service;
 
 import com.velora.app.common.AbstractDomainService;
-import com.velora.app.common.DomainException;
 import com.velora.app.modules.authModule.domain.Membership;
 import com.velora.app.modules.authModule.Repository.MembershipRepository;
 import com.velora.app.modules.authModule.domain.PasswordEncoder;
@@ -10,19 +9,15 @@ import com.velora.app.modules.authModule.domain.User;
 import com.velora.app.modules.authModule.domain.UserAuth;
 import com.velora.app.modules.authModule.Repository.UserAuthRepository;
 import com.velora.app.modules.authModule.Repository.UserRepository;
+import com.velora.app.modules.authModule.exception.EmailAlreadyExistsException;
+import com.velora.app.modules.authModule.exception.InvalidCredentialsException;
+import com.velora.app.modules.authModule.exception.MembershipNotFoundException;
+import com.velora.app.modules.authModule.exception.UnsupportedOAuthProviderException;
+import com.velora.app.modules.authModule.exception.UserNotFoundException;
+import com.velora.app.modules.authModule.exception.UsernameAlreadyTakenException;
 
 import java.util.UUID;
 
-/**
- * Application-layer service for authentication and identity management.
- *
- * <p>
- * Extends {@link AbstractDomainService} to reuse {@code requireRole} and
- * {@code requireNotNull} guard methods.
- *
- * <p>
- * Requirements: 16.1, 16.2
- */
 public class AuthService extends AbstractDomainService implements IAuthService {
 
     private final UserRepository userRepository;
@@ -41,19 +36,6 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * Registers a new user with email/password credentials.
-     *
-     * <p>
-     * Validates email uniqueness, hashes the raw password, then persists
-     * a {@link User} and its associated {@link UserAuth}.
-     *
-     * @param username    the desired username
-     * @param email       the user's email address
-     * @param rawPassword the plain-text password to hash and store
-     * @return the persisted {@link User}
-     * @throws DomainException if the email is already registered
-     */
     @Override
     public User registerUser(String username, String email, String rawPassword) {
         requireNotNull(username, "username");
@@ -61,10 +43,10 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         requireNotNull(rawPassword, "rawPassword");
 
         if (userAuthRepository.existsByEmail(email)) {
-            throw new DomainException("Email is already registered: " + email);
+            throw new EmailAlreadyExistsException(email);
         }
         if (userRepository.existsByUsername(username)) {
-            throw new DomainException("Username is already taken: " + username);
+            throw new UsernameAlreadyTakenException(username);
         }
 
         User user = userRepository.save(new User(UUID.randomUUID(), username, null, null));
@@ -81,20 +63,6 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         return user;
     }
 
-    /**
-     * Registers a new user via an OAuth provider.
-     *
-     * <p>
-     * Validates email uniqueness, then persists a {@link User} and its
-     * associated {@link UserAuth} with the given provider details.
-     *
-     * @param username    the desired username
-     * @param email       the user's email address from the OAuth provider
-     * @param provider    the OAuth provider name (e.g. "GOOGLE", "FACEBOOK")
-     * @param providerUid the provider-specific user identifier
-     * @return the persisted {@link User}
-     * @throws DomainException if the email is already registered
-     */
     @Override
     public User registerOAuth(String username, String email, String provider, String providerUid) {
         requireNotNull(username, "username");
@@ -103,17 +71,17 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         requireNotNull(providerUid, "providerUid");
 
         if (userAuthRepository.existsByEmail(email)) {
-            throw new DomainException("Email is already registered: " + email);
+            throw new EmailAlreadyExistsException(email);
         }
         if (userRepository.existsByUsername(username)) {
-            throw new DomainException("Username is already taken: " + username);
+            throw new UsernameAlreadyTakenException(username);
         }
 
         UserAuth.Provider authProvider;
         try {
             authProvider = UserAuth.Provider.valueOf(provider.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new DomainException("Unsupported OAuth provider: " + provider);
+            throw new UnsupportedOAuthProviderException(provider);
         }
 
         User user = userRepository.save(new User(UUID.randomUUID(), username, null, null));
@@ -129,46 +97,25 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         return user;
     }
 
-    /**
-     * Authenticates a user by email and raw password.
-     *
-     * @param email       the user's email address
-     * @param rawPassword the plain-text password to verify
-     * @return the matching {@link UserAuth}
-     * @throws DomainException if credentials are invalid
-     */
     @Override
     public UserAuth login(String email, String rawPassword) {
         requireNotNull(email, "email");
         requireNotNull(rawPassword, "rawPassword");
 
         UserAuth userAuth = userAuthRepository.findByEmail(email)
-                .orElseThrow(() -> new DomainException("Invalid credentials"));
+                .orElseThrow(InvalidCredentialsException::new);
 
         if (!userAuth.isEmailAuth()) {
-            throw new DomainException("Account uses OAuth authentication — password login not allowed");
+            throw new InvalidCredentialsException();
         }
 
         if (!passwordEncoder.matches(rawPassword, userAuth.getPasswordHash())) {
-            throw new DomainException("Invalid credentials");
+            throw new InvalidCredentialsException();
         }
 
         return userAuth;
     }
 
-    /**
-     * Assigns a shop membership role to a user.
-     *
-     * <p>
-     * Requires the actor to hold the {@code OWNER} or {@code SUPER_ADMIN} role.
-     *
-     * @param actorId the ID of the user performing the action
-     * @param userId  the ID of the user to assign the membership to
-     * @param shopId  the ID of the shop
-     * @param role    the role to assign
-     * @return the persisted {@link Membership}
-     * @throws DomainException if the actor lacks the required role
-     */
     @Override
     public Membership assignMembership(UUID actorId, UUID userId, UUID shopId, Role.RoleName role) {
         requireNotNull(actorId, "actorId");
@@ -179,22 +126,11 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         Role.RoleName actorRole = resolveActorRole(actorId);
         requireRole(actorRole, Role.RoleName.OWNER, Role.RoleName.SUPER_ADMIN);
 
-        UUID roleId = UUID.randomUUID(); // Role entity ID — resolved by infrastructure in full impl
+        UUID roleId = UUID.randomUUID();
         Membership membership = new Membership(UUID.randomUUID(), userId, shopId, roleId);
         return membershipRepository.save(membership);
     }
 
-    /**
-     * Revokes a membership by its ID.
-     *
-     * <p>
-     * Requires the actor to hold the {@code OWNER} or {@code SUPER_ADMIN} role.
-     *
-     * @param actorId      the ID of the user performing the action
-     * @param membershipId the ID of the membership to revoke
-     * @throws DomainException if the actor lacks the required role or the
-     *                         membership is not found
-     */
     @Override
     public void revokeMembership(UUID actorId, UUID membershipId) {
         requireNotNull(actorId, "actorId");
@@ -204,24 +140,11 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         requireRole(actorRole, Role.RoleName.OWNER, Role.RoleName.SUPER_ADMIN);
 
         membershipRepository.findById(membershipId)
-                .orElseThrow(() -> new DomainException("Membership not found: " + membershipId));
+                .orElseThrow(() -> new MembershipNotFoundException(membershipId));
 
         membershipRepository.deleteById(membershipId);
     }
 
-    /**
-     * Updates a user's account status.
-     *
-     * <p>
-     * Requires the actor to hold the {@code SUPER_ADMIN} role.
-     *
-     * @param actorId   the ID of the admin performing the action
-     * @param userId    the ID of the user to update
-     * @param newStatus the new status to apply
-     * @return the updated {@link User}
-     * @throws DomainException if the actor is not a SUPER_ADMIN or the user is not
-     *                         found
-     */
     @Override
     public User updateUserStatus(UUID actorId, UUID userId, User.Status newStatus) {
         requireNotNull(actorId, "actorId");
@@ -232,7 +155,7 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         requireRole(actorRole, Role.RoleName.SUPER_ADMIN);
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new DomainException("User not found: " + userId));
+                .orElseThrow(() -> new UserNotFoundException(userId));
 
         switch (newStatus) {
             case ACTIVE -> user.activate();
@@ -243,34 +166,16 @@ public class AuthService extends AbstractDomainService implements IAuthService {
         return userRepository.save(user);
     }
 
-    // ---------------------------------------------------------------------------
-    // Private helpers
-    // ---------------------------------------------------------------------------
-
-    /**
-     * Resolves the highest-privilege role for the given actor by inspecting their
-     * memberships. Returns {@code SELLER} as the default when no membership exists.
-     *
-     * <p>
-     * In a full implementation this would query a role repository; here it
-     * derives the role from the actor's membership records.
-     */
     private Role.RoleName resolveActorRole(UUID actorId) {
         return membershipRepository.findByUserId(actorId).stream()
                 .map(m -> resolveRoleNameFromId(m.getRoleId()))
                 .reduce(Role.RoleName.SELLER, AuthService::highestPrivilege);
     }
 
-    /**
-     * Placeholder — in a full implementation this would load the Role entity.
-     * Returns {@code SELLER} until the Role repository is wired in.
-     */
     private Role.RoleName resolveRoleNameFromId(UUID roleId) {
-        // TODO: inject RoleRepository and look up by roleId
         return Role.RoleName.SELLER;
     }
 
-    /** Returns the higher-privilege role of the two. */
     private static Role.RoleName highestPrivilege(Role.RoleName a, Role.RoleName b) {
         int[] order = { ordinal(a), ordinal(b) };
         return order[0] <= order[1] ? a : b;
